@@ -27,7 +27,7 @@
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -35,16 +35,16 @@
 
   <a href="#main" class="skip">Перейти к содержимому</a>
 
-  <!-- NAVIGATION -->
+  <!-- NAV -->
   <header class="nav" id="nav">
     <div class="nav__inner">
       <a href="#top" class="nav__brand" aria-label="Andrew Artemiev — на главную">
-        <span class="nav__brand-name">Andrew Artemiev</span>
+        <span class="nav__signature">Andrew Artemiev</span>
       </a>
       <nav class="nav__links" aria-label="Основная навигация">
         <a href="#about">Обо мне</a>
-        <a href="#now">Направления</a>
         <a href="#numbers">В цифрах</a>
+        <a href="#now">Направления</a>
         <a href="#contact">Контакты</a>
       </nav>
       <a class="nav__cta" href="https://t.me/andrewsmm1" target="_blank" rel="noopener">
@@ -60,8 +60,8 @@
   <div class="mobile-menu" id="mobile-menu" hidden>
     <nav aria-label="Мобильная навигация">
       <a href="#about">Обо мне</a>
-      <a href="#now">Направления</a>
       <a href="#numbers">В цифрах</a>
+      <a href="#now">Направления</a>
       <a href="#contact">Контакты</a>
       <a class="mobile-menu__cta" href="https://t.me/andrewsmm1" target="_blank" rel="noopener">Telegram →</a>
     </nav>
@@ -69,28 +69,25 @@
 
   <main id="main">
 
-    <!-- HERO — floating portrait with depth -->
+    <!-- HERO -->
     <section class="hero" id="top" aria-labelledby="hero-title">
       <div class="hero__bg" aria-hidden="true">
-        <div class="hero__grid-lines"></div>
         <div class="hero__glow"></div>
       </div>
 
       <div class="hero__wrap">
         <div class="hero__left">
-          <div class="hero__meta">
-            <span class="eyebrow"><span class="dot"></span>Personal Brand · Est. 2026</span>
-          </div>
+          <span class="hero__eyebrow" data-reveal>Personal brand</span>
 
           <h1 class="hero__title" id="hero-title" aria-label="Andrew Artemiev">
-            <span class="hero__title-line" data-reveal><span class="hero__ch">A</span><span class="hero__ch">n</span><span class="hero__ch">d</span><span class="hero__ch">r</span><span class="hero__ch">e</span><span class="hero__ch">w</span></span>
-            <span class="hero__title-line hero__title-line--offset" data-reveal><span class="hero__ch">A</span><span class="hero__ch">r</span><span class="hero__ch">t</span><span class="hero__ch">e</span><span class="hero__ch">m</span><span class="hero__ch">i</span><span class="hero__ch">e</span><span class="hero__ch">v</span></span>
+            <span class="hero__title-line" data-reveal>Andrew</span>
+            <span class="hero__title-line hero__title-line--offset" data-reveal>Artemiev</span>
           </h1>
 
           <p class="hero__role" data-reveal>Предприниматель · Продюсер · Архитектор личных брендов</p>
 
           <p class="hero__desc" data-reveal>
-            17 лет. Развиваю собственные проекты, запускаю экспертов
+            В&nbsp;17&nbsp;лет развиваю собственные проекты, запускаю экспертов
             и&nbsp;создаю системы вокруг личного бренда.
           </p>
 
@@ -106,7 +103,7 @@
         </div>
 
         <div class="hero__right">
-          <div class="portrait" id="portrait">
+          <div class="portrait" id="portrait" data-reveal>
             <div class="portrait__stage">
               <div class="portrait__halo" aria-hidden="true"></div>
               <div class="portrait__frame">
@@ -114,41 +111,16 @@
                      onerror="this.replaceWith(document.getElementById('hero-fallback').content.cloneNode(true))" />
                 <div class="portrait__grain" aria-hidden="true"></div>
               </div>
-              <div class="portrait__chip portrait__chip--tl" aria-hidden="true">
-                <span class="portrait__chip-key">Location</span>
-                <span class="portrait__chip-val">Moscow · MSK</span>
-              </div>
-              <div class="portrait__chip portrait__chip--br" aria-hidden="true">
-                <span class="portrait__chip-key">Focus</span>
-                <span class="portrait__chip-val">Personal brand</span>
-              </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      <div class="hero__marquee" aria-hidden="true">
-        <div class="marquee__track">
-          <span>Digital</span><em>·</em>
-          <span>Личные бренды</span><em>·</em>
-          <span>Запуски</span><em>·</em>
-          <span>Предпринимательство</span><em>·</em>
-          <span>Инвестиции</span><em>·</em>
-          <span>Трейдинг</span><em>·</em>
-          <span>Digital</span><em>·</em>
-          <span>Личные бренды</span><em>·</em>
-          <span>Запуски</span><em>·</em>
-          <span>Предпринимательство</span><em>·</em>
-          <span>Инвестиции</span><em>·</em>
-          <span>Трейдинг</span><em>·</em>
         </div>
       </div>
     </section>
 
     <!-- ABOUT -->
     <section class="about section" id="about" aria-labelledby="about-title">
-      <div class="section__head">
-        <span class="section__index">01</span>
+      <div class="section__head section__head--minimal">
+        <span class="section__kicker" data-reveal>— About</span>
         <h2 class="section__title" id="about-title" data-reveal>Обо&nbsp;мне</h2>
       </div>
 
@@ -164,109 +136,104 @@
               </div>
             </div>
           </div>
-          <figcaption class="portrait__cap">
-            <span>Off — grid</span>
-            <span>02 / 02</span>
-          </figcaption>
         </figure>
 
         <div class="about__text">
           <p class="about__lede" data-reveal>
-            Мне <em>17 лет</em>. В&nbsp;8&nbsp;классе я&nbsp;впервые попробовал
-            заработать самостоятельно&nbsp;— начал с&nbsp;реселлинга часов
-            и&nbsp;ремешков.
+            В&nbsp;17&nbsp;лет уже развиваю собственные проекты
+            и&nbsp;работаю с&nbsp;личными брендами.
           </p>
 
           <p data-reveal>
-            Позже были офис и&nbsp;химическая лаборатория. Этот опыт быстро показал мне,
-            что классический путь мне не&nbsp;подходит. В&nbsp;итоге я&nbsp;полностью
-            ушёл в&nbsp;digital, предпринимательство и&nbsp;торговлю цифровыми активами.
+            Первый заработок был ещё в&nbsp;8&nbsp;классе&nbsp;— начал
+            с&nbsp;реселлинга часов и&nbsp;ремешков. Позже были офис
+            и&nbsp;химическая лаборатория. Этот опыт быстро показал,
+            что классический путь мне не&nbsp;подходит.
           </p>
 
           <p data-reveal>
-            Сегодня я&nbsp;развиваю собственные проекты, занимаюсь запусками экспертов,
-            работаю с&nbsp;личными брендами и&nbsp;инвестирую в&nbsp;отдельные проекты
-            партнёров.
+            В&nbsp;итоге я&nbsp;полностью ушёл в&nbsp;digital,
+            предпринимательство и&nbsp;торговлю цифровыми активами.
+            Сегодня занимаюсь запусками экспертов, работаю с&nbsp;личными
+            брендами и&nbsp;инвестирую в&nbsp;отдельные проекты партнёров.
           </p>
 
-          <div class="about__pullquote" data-reveal>
-            <span aria-hidden="true">“</span>
-            Классический путь мне не&nbsp;подошёл — поэтому я&nbsp;строю свой.
-          </div>
+          <p class="about__coda" data-reveal>
+            Классический путь мне не&nbsp;подошёл&nbsp;— поэтому я&nbsp;строю свой.
+          </p>
         </div>
       </div>
     </section>
 
     <!-- NUMBERS -->
     <section class="numbers section" id="numbers" aria-labelledby="numbers-title">
-      <div class="section__head">
-        <span class="section__index">02</span>
+      <div class="section__head section__head--minimal">
+        <span class="section__kicker" data-reveal>— In numbers</span>
         <h2 class="section__title" id="numbers-title" data-reveal>В&nbsp;цифрах</h2>
       </div>
 
       <div class="numbers__grid">
         <article class="stat" data-reveal>
-          <div class="stat__meta">Возраст</div>
           <div class="stat__value">
-            <span class="stat__num">17</span>
+            <span class="stat__num" data-count-to="17" data-decimals="0">0</span>
           </div>
           <div class="stat__label">лет</div>
+          <div class="stat__meta">Возраст</div>
         </article>
 
-        <article class="stat stat--wide" data-reveal>
-          <div class="stat__meta">Личный результат</div>
+        <article class="stat stat--accent" data-reveal>
           <div class="stat__value">
-            <span class="stat__num">1&nbsp;млн&nbsp;₽</span><span class="stat__plus">+</span>
+            <span class="stat__num" data-count-to="1" data-decimals="0">0</span>
+            <span class="stat__unit">млн&nbsp;₽</span>
+            <span class="stat__plus">+</span>
           </div>
-          <div class="stat__label">лично&nbsp;заработано</div>
+          <div class="stat__label">заработано</div>
+          <div class="stat__meta">Личный результат</div>
         </article>
 
         <article class="stat" data-reveal>
-          <div class="stat__meta">Опыт</div>
           <div class="stat__value">
-            <span class="stat__num">2,5</span><span class="stat__plus">+</span>
+            <span class="stat__num" data-count-to="2.5" data-decimals="1">0,0</span>
+            <span class="stat__plus">+</span>
           </div>
           <div class="stat__label">года в&nbsp;трейдинге</div>
+          <div class="stat__meta">Опыт</div>
         </article>
 
         <article class="stat" data-reveal>
-          <div class="stat__meta">В&nbsp;активной работе</div>
           <div class="stat__value">
-            <span class="stat__num">2</span>
+            <span class="stat__num" data-count-to="2" data-decimals="0">0</span>
           </div>
           <div class="stat__label">собственных бизнеса</div>
+          <div class="stat__meta">В&nbsp;активной работе</div>
         </article>
       </div>
     </section>
 
-    <!-- NOW -->
+    <!-- NOW / DIRECTIONS -->
     <section class="now section" id="now" aria-labelledby="now-title">
-      <div class="section__head">
-        <span class="section__index">03</span>
-        <h2 class="section__title" id="now-title" data-reveal>Сейчас</h2>
+      <div class="section__head section__head--minimal">
+        <span class="section__kicker" data-reveal>— Directions</span>
+        <h2 class="section__title" id="now-title" data-reveal>Направления</h2>
       </div>
 
       <div class="now__grid">
         <article class="now__item" data-reveal>
-          <span class="now__num">01</span>
           <h3 class="now__title">Запуски</h3>
           <p>Работаю с&nbsp;экспертами и&nbsp;выстраиваю вокруг продукта систему маркетинга, контента и&nbsp;продаж.</p>
         </article>
 
         <article class="now__item" data-reveal>
-          <span class="now__num">02</span>
           <h3 class="now__title">Личные бренды</h3>
           <p>Помогаю превращать экспертность и&nbsp;медийность в&nbsp;системный актив, который работает на&nbsp;бизнес.</p>
         </article>
 
         <article class="now__item" data-reveal>
-          <span class="now__num">03</span>
           <h3 class="now__title">Предпринимательство</h3>
           <p>Развиваю собственные проекты и&nbsp;тестирую новые бизнес-модели.</p>
         </article>
 
         <article class="now__item" data-reveal>
-          <span class="now__num">04</span>
           <h3 class="now__title">Инвестиции</h3>
           <p>Вкладываюсь в&nbsp;отдельные проекты партнёров и&nbsp;перспективные направления.</p>
         </article>
@@ -275,8 +242,8 @@
 
     <!-- APPROACH -->
     <section class="approach section" aria-labelledby="approach-title">
-      <div class="section__head">
-        <span class="section__index">04</span>
+      <div class="section__head section__head--minimal">
+        <span class="section__kicker" data-reveal>— Approach</span>
         <h2 class="section__title" id="approach-title" data-reveal>Мой подход</h2>
       </div>
 
@@ -289,73 +256,28 @@
       </blockquote>
     </section>
 
-    <!-- SOCIALS -->
-    <section class="socials section" aria-labelledby="socials-title">
-      <div class="section__head">
-        <span class="section__index">05</span>
-        <h2 class="section__title" id="socials-title" data-reveal>Где меня найти</h2>
-      </div>
-
-      <p class="socials__lede" data-reveal>
-        Пишу о&nbsp;предпринимательстве, маркетинге, продажах, личном бренде,
-        digital и&nbsp;собственном пути.
-      </p>
-
-      <ul class="channels" role="list">
-        <li class="channel" data-reveal>
-          <a href="https://t.me/andrewsmm1" target="_blank" rel="noopener">
-            <span class="channel__num">01</span>
-            <span class="channel__name">Telegram</span>
-            <span class="channel__handle">@andrewsmm1</span>
-            <span class="channel__arrow" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24"><path d="M4 20L20 4M20 4H8M20 4V16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </span>
-          </a>
-        </li>
-        <li class="channel channel--soon" data-reveal>
-          <span>
-            <span class="channel__num">02</span>
-            <span class="channel__name">Instagram</span>
-            <span class="channel__handle">soon</span>
-            <span class="channel__arrow" aria-hidden="true"></span>
-          </span>
-        </li>
-        <li class="channel channel--soon" data-reveal>
-          <span>
-            <span class="channel__num">03</span>
-            <span class="channel__name">YouTube</span>
-            <span class="channel__handle">soon</span>
-            <span class="channel__arrow" aria-hidden="true"></span>
-          </span>
-        </li>
-      </ul>
-    </section>
-
     <!-- CONTACT / FINAL -->
     <section class="contact section" id="contact" aria-labelledby="contact-title">
       <div class="contact__inner">
-        <span class="section__index contact__index" data-reveal>06 — Contact</span>
+        <span class="section__kicker contact__kicker" data-reveal>— Contact</span>
+
         <h2 class="contact__title" id="contact-title" data-reveal>
           Если мы&nbsp;ещё не&nbsp;знакомы&nbsp;— будем знакомы.
         </h2>
+
         <p class="contact__sub" data-reveal>
-          Открыт к&nbsp;сотрудничеству, партнёрствам и&nbsp;интересным разговорам
-          о&nbsp;бизнесе, продукте и&nbsp;личных брендах.
+          Открыт к&nbsp;сотрудничеству, партнёрствам и&nbsp;интересным
+          разговорам о&nbsp;бизнесе, продукте и&nbsp;личных брендах.
         </p>
 
         <a class="cta-lg" href="https://t.me/andrewsmm1" target="_blank" rel="noopener" data-reveal>
           <span class="cta-lg__label">Обсудить сотрудничество</span>
-          <span class="cta-lg__handle">→ @andrewsmm1</span>
           <span class="cta-lg__arrow" aria-hidden="true">
             <svg width="42" height="42" viewBox="0 0 42 42"><path d="M7 35L35 7M35 7H14M35 7V28" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </span>
         </a>
 
-        <div class="contact__meta" data-reveal>
-          <span>Ответ&nbsp;в&nbsp;течение дня</span>
-          <span class="contact__meta-dot" aria-hidden="true"></span>
-          <span>По&nbsp;будням&nbsp;и&nbsp;в&nbsp;выходные</span>
-        </div>
+        <p class="contact__meta" data-reveal>Обычно отвечаю в&nbsp;течение дня</p>
       </div>
     </section>
 
@@ -363,16 +285,15 @@
 
   <footer class="footer">
     <div class="footer__inner">
-      <div class="footer__brand">Andrew Artemiev</div>
+      <div class="footer__brand"><span class="nav__signature">Andrew Artemiev</span></div>
       <div class="footer__meta">
         <span>© <span id="year">2026</span></span>
-        <span>Personal site</span>
       </div>
       <a class="footer__cta" href="https://t.me/andrewsmm1" target="_blank" rel="noopener">t.me/andrewsmm1</a>
     </div>
   </footer>
 
-  <!-- Photo fallbacks — used only if assets/*.jpg are missing -->
+  <!-- Photo fallbacks -->
   <template id="hero-fallback">
     <div class="portrait-fallback" role="img" aria-label="Портрет Andrew Artemiev — заглушка">
       <svg viewBox="0 0 480 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -382,9 +303,6 @@
         </defs>
         <rect width="480" height="600" fill="url(#g1)"/>
         <rect width="480" height="600" fill="url(#r1)"/>
-        <g stroke="#f2efe8" stroke-opacity="0.05">
-          <line x1="0" y1="150" x2="480" y2="150"/><line x1="0" y1="300" x2="480" y2="300"/><line x1="0" y1="450" x2="480" y2="450"/>
-        </g>
         <text x="30" y="570" font-family="Inter Tight, sans-serif" font-size="11" letter-spacing="2" fill="#f2efe8" fill-opacity="0.4">HERO · Замените assets/hero.jpg</text>
       </svg>
     </div>
@@ -399,9 +317,6 @@
         </defs>
         <rect width="500" height="620" fill="url(#g2)"/>
         <rect width="500" height="620" fill="url(#r2)"/>
-        <g stroke="#f2efe8" stroke-opacity="0.05">
-          <line x1="0" y1="155" x2="500" y2="155"/><line x1="0" y1="310" x2="500" y2="310"/><line x1="0" y1="465" x2="500" y2="465"/>
-        </g>
         <text x="30" y="590" font-family="Inter Tight, sans-serif" font-size="11" letter-spacing="2" fill="#f2efe8" fill-opacity="0.4">ABOUT · Замените assets/about.jpg</text>
       </svg>
     </div>

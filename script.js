@@ -41,10 +41,10 @@
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenuOpen(false); });
 
   // ---- Reveal on scroll ----
-  var reveals = document.querySelectorAll('[data-reveal], .hero__title-line');
+  var reveals = document.querySelectorAll('[data-reveal]');
   var forceAll = /(?:^|[?&])show=all(?:&|$)/.test(location.search);
   if (forceAll) {
-    reveals.forEach(function(el){ el.classList.add('is-in'); });
+    reveals.forEach(function (el) { el.classList.add('is-in'); });
   } else if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
@@ -59,10 +59,55 @@
     reveals.forEach(function (el) { el.classList.add('is-in'); });
   }
 
+  // ---- Count-up on numbers block ----
+  var counters = document.querySelectorAll('[data-count-to]');
+  function formatNumber(value, decimals) {
+    var fixed = value.toFixed(decimals);
+    // Russian locale: 1 000 000 (thin space between thousands), decimal comma
+    var parts = fixed.split('.');
+    var intPart = parts[0];
+    // insert thin/nbsp space between every 3 digits from the right
+    intPart = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    return parts.length > 1 ? intPart + ',' + parts[1] : intPart;
+  }
+  function easeOut(t){ return 1 - Math.pow(1 - t, 3); }
+  function runCount(el) {
+    if (el.dataset.done === '1') return;
+    el.dataset.done = '1';
+    var target = parseFloat(el.getAttribute('data-count-to')) || 0;
+    var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
+    if (reduced) { el.textContent = formatNumber(target, decimals); return; }
+    var duration = 1400;
+    var start = null;
+    function step(ts) {
+      if (start === null) start = ts;
+      var t = Math.min(1, (ts - start) / duration);
+      var v = target * easeOut(t);
+      el.textContent = formatNumber(v, decimals);
+      if (t < 1) requestAnimationFrame(step);
+      else el.textContent = formatNumber(target, decimals);
+    }
+    requestAnimationFrame(step);
+  }
+  if (forceAll) {
+    counters.forEach(runCount);
+  } else if ('IntersectionObserver' in window) {
+    var cio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          runCount(entry.target);
+          cio.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    counters.forEach(function (el) { cio.observe(el); });
+  } else {
+    counters.forEach(runCount);
+  }
+
   // ---- Portrait 3D tilt on mouse move (hero only) ----
   var portrait = document.getElementById('portrait');
   if (portrait && !reduced && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    var stage = portrait.querySelector('.portrait__stage');
     var frame = portrait.querySelector('.portrait__frame');
     var raf = 0;
     var targetX = 0, targetY = 0, curX = 0, curY = 0;
@@ -70,17 +115,15 @@
     function loop() {
       curX += (targetX - curX) * 0.08;
       curY += (targetY - curY) * 0.08;
-      if (frame) {
-        frame.style.transform = 'rotateX(' + curY.toFixed(2) + 'deg) rotateY(' + curX.toFixed(2) + 'deg)';
-      }
+      if (frame) frame.style.transform = 'rotateX(' + curY.toFixed(2) + 'deg) rotateY(' + curX.toFixed(2) + 'deg)';
       raf = requestAnimationFrame(loop);
     }
     function onMove(e) {
       var r = portrait.getBoundingClientRect();
       var px = (e.clientX - r.left) / r.width  - 0.5;
       var py = (e.clientY - r.top)  / r.height - 0.5;
-      targetX = px * 6;   // rotateY
-      targetY = -py * 6;  // rotateX
+      targetX = px * 6;
+      targetY = -py * 6;
       if (!raf) raf = requestAnimationFrame(loop);
     }
     function onLeave() {
@@ -96,7 +139,7 @@
     portrait.addEventListener('mouseleave', onLeave);
   }
 
-  // ---- Hero glow parallax on scroll (very subtle) ----
+  // ---- Hero glow subtle scroll parallax ----
   var glow = document.querySelector('.hero__glow');
   if (glow && !reduced) {
     var ticking = false;
