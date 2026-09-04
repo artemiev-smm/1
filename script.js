@@ -1,10 +1,11 @@
 /* Andrew Artemiev — personal site
-   Calm confidence. Subtle motion.
+   Calm confidence. Subtle motion. Readability > effects.
 */
 (function () {
   'use strict';
 
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var isMobile = window.matchMedia('(max-width: 720px)').matches;
 
   // ---- Year in footer ----
   var yearEl = document.getElementById('year');
@@ -59,25 +60,29 @@
     reveals.forEach(function (el) { el.classList.add('is-in'); });
   }
 
-  // ---- Count-up on numbers block ----
+  // ---- Count-up on numbers block (desktop only) ----
   var counters = document.querySelectorAll('[data-count-to]');
+  var NBSP = ' '; // non-breaking space for Russian thousand separator
   function formatNumber(value, decimals) {
     var fixed = value.toFixed(decimals);
-    // Russian locale: 1 000 000 (thin space between thousands), decimal comma
     var parts = fixed.split('.');
-    var intPart = parts[0];
-    // insert thin/nbsp space between every 3 digits from the right
-    intPart = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    var intPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, NBSP);
     return parts.length > 1 ? intPart + ',' + parts[1] : intPart;
   }
   function easeOut(t){ return 1 - Math.pow(1 - t, 3); }
+  function setFinal(el) {
+    var target = parseFloat(el.getAttribute('data-count-to')) || 0;
+    var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
+    el.textContent = formatNumber(target, decimals);
+    el.dataset.done = '1';
+  }
   function runCount(el) {
     if (el.dataset.done === '1') return;
+    if (reduced || isMobile) { setFinal(el); return; }
     el.dataset.done = '1';
     var target = parseFloat(el.getAttribute('data-count-to')) || 0;
     var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
-    if (reduced) { el.textContent = formatNumber(target, decimals); return; }
-    var duration = 1400;
+    var duration = 1500;
     var start = null;
     function step(ts) {
       if (start === null) start = ts;
@@ -89,7 +94,9 @@
     }
     requestAnimationFrame(step);
   }
-  if (forceAll) {
+  if (isMobile || reduced) {
+    counters.forEach(setFinal);
+  } else if (forceAll) {
     counters.forEach(runCount);
   } else if ('IntersectionObserver' in window) {
     var cio = new IntersectionObserver(function (entries) {
@@ -102,50 +109,16 @@
     }, { threshold: 0.5 });
     counters.forEach(function (el) { cio.observe(el); });
   } else {
-    counters.forEach(runCount);
+    counters.forEach(setFinal);
   }
 
-  // ---- Portrait 3D tilt on mouse move (hero only) ----
-  var portrait = document.getElementById('portrait');
-  if (portrait && !reduced && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    var frame = portrait.querySelector('.portrait__frame');
-    var raf = 0;
-    var targetX = 0, targetY = 0, curX = 0, curY = 0;
-
-    function loop() {
-      curX += (targetX - curX) * 0.08;
-      curY += (targetY - curY) * 0.08;
-      if (frame) frame.style.transform = 'rotateX(' + curY.toFixed(2) + 'deg) rotateY(' + curX.toFixed(2) + 'deg)';
-      raf = requestAnimationFrame(loop);
-    }
-    function onMove(e) {
-      var r = portrait.getBoundingClientRect();
-      var px = (e.clientX - r.left) / r.width  - 0.5;
-      var py = (e.clientY - r.top)  / r.height - 0.5;
-      targetX = px * 6;
-      targetY = -py * 6;
-      if (!raf) raf = requestAnimationFrame(loop);
-    }
-    function onLeave() {
-      targetX = 0; targetY = 0;
-      setTimeout(function(){
-        if (Math.abs(curX) < 0.05 && Math.abs(curY) < 0.05) {
-          cancelAnimationFrame(raf); raf = 0;
-          if (frame) frame.style.transform = '';
-        }
-      }, 500);
-    }
-    portrait.addEventListener('mousemove', onMove);
-    portrait.addEventListener('mouseleave', onLeave);
-  }
-
-  // ---- Hero glow subtle scroll parallax ----
+  // ---- Very subtle hero glow drift on scroll (desktop only) ----
   var glow = document.querySelector('.hero__glow');
-  if (glow && !reduced) {
+  if (glow && !reduced && !isMobile) {
     var ticking = false;
     function update() {
       var y = window.scrollY;
-      var t = Math.max(-60, Math.min(60, y * 0.08));
+      var t = Math.max(-40, Math.min(40, y * 0.06));
       glow.style.setProperty('transform', 'translate3d(0,' + t.toFixed(1) + 'px,0)');
       ticking = false;
     }
