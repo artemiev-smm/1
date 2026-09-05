@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="12" fill="#0a0a0a"/>
-  <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle"
-        font-family="Inter Tight, system-ui, sans-serif" font-weight="500"
-        font-style="italic" font-size="40" fill="#f2efe8">A</text>
+  <rect width="64" height="64" rx="10" fill="#0d0b09"/>
+  <text x="50%" y="56%" dominant-baseline="middle" text-anchor="middle"
+        font-family="'Fraunces', ui-serif, Georgia, serif" font-weight="400"
+        font-style="italic" font-size="44" fill="#f0ebe0">A</text>
 </svg>

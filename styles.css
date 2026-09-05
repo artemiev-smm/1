@@ -19,6 +19,7 @@
 
   --accent:        #c9a56b;
   --accent-hover:  #dcb87d;
+  --accent-2:      #8ea79a;   /* muted sage — used only for Directions hover */
   --focus:         #c9a56b;
 
   --f-display: 'Fraunces', ui-serif, Georgia, 'Times New Roman', serif;
@@ -30,30 +31,17 @@
 
   --r-sm: 4px; --r-md: 8px; --r-lg: 16px; --r-pill: 999px;
 
-  --ease:      cubic-bezier(.2,.7,.2,1);
+  --ease:       cubic-bezier(.2,.7,.2,1);
   --ease-strip: cubic-bezier(.75,0,.25,1);
-  --dur-fast:  200ms;
-  --dur:       300ms;
-  --dur-slow:  450ms;
-  --dur-strip: 700ms;
+  --dur-fast:   200ms;
+  --dur:        300ms;
+  --dur-slow:   450ms;
+  --dur-strip:  700ms;
 
   --wrap:  1360px;
   --pad-x: clamp(20px, 4vw, 64px);
 
   color-scheme: dark;
-}
-
-.hero__title,
-.chapter__title,
-.about__lede,
-.about__coda,
-.row__num,
-.dir__title,
-.approach__quote,
-.banner__title,
-.contact__title{
-  font-family: var(--f-display);
-  font-variation-settings: "opsz" 144, "SOFT" 30, "WONK" 1;
 }
 
 *, *::before, *::after{ box-sizing: border-box; }
@@ -101,10 +89,9 @@ button{ font-family: inherit; }
 }
 
 /* ============================================================
-   CUSTOM CURSOR — desktop / fine pointer only
+   CUSTOM CURSOR
    ============================================================ */
-.cursor-dot,
-.cursor-trail{
+.cursor-dot, .cursor-trail{
   position: fixed;
   top: 0; left: 0;
   pointer-events: none;
@@ -127,7 +114,6 @@ button{ font-family: inherit; }
   border: 1px solid rgba(255,255,255,0.55);
   transition: opacity var(--dur-fast) var(--ease), width var(--dur) var(--ease), height var(--dur) var(--ease), border-color var(--dur) var(--ease);
 }
-/* Enable custom cursor only on fine-pointer + hover-capable devices */
 @media (hover: hover) and (pointer: fine){
   html.js.has-cursor,
   html.js.has-cursor body,
@@ -145,14 +131,10 @@ button{ font-family: inherit; }
     border-color: rgba(255,255,255,0.85);
   }
 }
-@media (prefers-reduced-motion: reduce){
-  .cursor-trail{ transition: none; }
-}
+@media (prefers-reduced-motion: reduce){ .cursor-trail{ transition: none; } }
 
 /* ============================================================
-   STRIP REVEAL — content opens through vertical bars
-   Bars sit above the target; on .is-in they slide up out.
-   Non-JS or reduced-motion: bars never rendered (see JS-injected .strips).
+   STRIP REVEAL
    ============================================================ */
 .strip-wrap{ position: relative; overflow: hidden; }
 .strip-wrap > .strips{
@@ -170,7 +152,6 @@ button{ font-family: inherit; }
 }
 .strip-wrap.is-in > .strips > span{ transform: translateY(-101%); }
 
-/* Standard fade reveal (non-strips) */
 .js [data-reveal]:not([data-reveal="strips"]){
   opacity: 0;
   transform: translateY(12px);
@@ -191,7 +172,7 @@ button{ font-family: inherit; }
 }
 
 /* ============================================================
-   NAVIGATION — sans, no numbering
+   NAVIGATION — logo A instead of full name
    ============================================================ */
 .nav{
   position: fixed;
@@ -219,15 +200,23 @@ button{ font-family: inherit; }
   align-items: center;
   gap: 32px;
 }
-.nav__brand{ color: var(--fg-strong); line-height: 1; }
-.nav__sig{
+.nav__brand{ color: var(--fg-strong); line-height: 1; display: inline-flex; align-items: center; }
+.nav__mark{
+  display: inline-flex;
+  align-items: center; justify-content: center;
   font-family: var(--f-display);
   font-style: italic;
   font-weight: 400;
-  font-size: clamp(18px, 1.4vw, 20px);
-  letter-spacing: -0.015em;
+  font-size: 28px;
+  line-height: 1;
+  color: var(--fg-strong);
+  letter-spacing: -0.02em;
   font-variation-settings: "opsz" 24, "SOFT" 40, "WONK" 1;
+  width: 32px; height: 32px;
+  transition: color var(--dur) var(--ease);
 }
+.nav__brand:hover .nav__mark,
+.nav__brand:focus-visible .nav__mark{ color: var(--accent); }
 
 .nav__links{
   justify-self: end;
@@ -272,11 +261,7 @@ button{ font-family: inherit; }
   min-height: 40px;
 }
 .nav__cta:hover,
-.nav__cta:focus-visible{
-  background: var(--fg);
-  color: var(--bg);
-  border-color: var(--fg);
-}
+.nav__cta:focus-visible{ background: var(--fg); color: var(--bg); border-color: var(--fg); }
 .nav__cta svg{ transition: transform var(--dur) var(--ease); }
 .nav__cta:hover svg{ transform: translate(2px,-2px); }
 
@@ -329,7 +314,7 @@ button{ font-family: inherit; }
 }
 
 /* ============================================================
-   HERO
+   HERO — unified Inter Tight typography, no italic on name
    ============================================================ */
 .hero{
   position: relative;
@@ -341,7 +326,6 @@ button{ font-family: inherit; }
   grid-template-rows: auto 1fr auto;
   gap: clamp(32px, 5vw, 64px);
 }
-
 .hero__meta{ display: flex; align-items: baseline; }
 
 .hero__grid{
@@ -350,36 +334,28 @@ button{ font-family: inherit; }
   gap: clamp(32px, 6vw, 80px);
   align-items: center;
 }
-
 .hero__left{ max-width: 780px; }
 
 .hero__title{
   margin: 0;
   color: var(--fg-strong);
-  font-weight: 400;
+  font-family: var(--f-body);
+  font-weight: 500;
   letter-spacing: -0.045em;
-  line-height: 0.86;
-  font-size: clamp(64px, 12vw, 160px);
+  line-height: 1;              /* was 0.86 — no more descender clipping */
+  font-size: clamp(64px, 12vw, 156px);
   display: flex; flex-direction: column;
+  padding-bottom: 0.05em;      /* breathing room for tightest tracking */
 }
-.hero__l1{ white-space: nowrap; font-style: normal; }
+.hero__l1,
 .hero__l2{
+  display: block;
   white-space: nowrap;
-  padding-left: clamp(16px, 3.5vw, 56px);
-  font-style: italic;
-  font-weight: 400;
-  position: relative;
-  display: inline-block;
+  font-family: var(--f-body);
+  font-style: normal;
+  font-weight: 500;
 }
-.hero__l2 em{
-  font-style: italic;
-  color: var(--fg-strong);
-  background-image: linear-gradient(var(--accent), var(--accent));
-  background-repeat: no-repeat;
-  background-position: 0 92%;
-  background-size: 100% 3px;
-  padding-bottom: 0.02em;
-}
+.hero__l2{ padding-left: clamp(12px, 2.5vw, 40px); }  /* small asymmetric offset — same font */
 
 .hero__role{
   margin: clamp(24px, 3vw, 40px) 0 0 clamp(6px, 1vw, 14px);
@@ -429,7 +405,7 @@ button{ font-family: inherit; }
 }
 .photo-fallback svg{ width: 100%; height: 100%; }
 
-/* Subtle levitation on photos (~6-8px, 7s) */
+/* Subtle levitation */
 .photo--float{
   animation: floatY 7s var(--ease) infinite;
   will-change: transform;
@@ -439,37 +415,40 @@ button{ font-family: inherit; }
   50%     { transform: translate3d(0,  6px, 0); }
 }
 .photo--about{ animation-duration: 9s; animation-delay: -2s; }
-@media (prefers-reduced-motion: reduce){
-  .photo--float{ animation: none; }
-}
+@media (prefers-reduced-motion: reduce){ .photo--float{ animation: none; } }
 
-/* Hero foot — cyclic scroll indicator */
+/* Hero foot — mouse-wheel scroll indicator */
 .hero__foot{
   display: flex; align-items: center; justify-content: flex-end;
   padding-top: clamp(16px, 2vw, 24px);
   border-top: 1px solid var(--border);
 }
-.scroll-indicator{
+.mouse-scroll{
   display: inline-block;
-  width: 1px; height: 44px;
+  width: 22px; height: 36px;
+  border: 1.4px solid var(--fg-muted);
+  border-radius: 12px;
   position: relative;
-  overflow: hidden;
-  background: var(--border-strong);
+  transition: border-color var(--dur) var(--ease);
 }
-.scroll-indicator__line{
+.mouse-scroll:hover{ border-color: var(--fg); }
+.mouse-scroll__dot{
   position: absolute;
-  left: 0; right: 0; top: 0;
-  height: 40%;
-  background: var(--fg);
-  animation: scrollDrip 1.8s var(--ease) infinite;
+  left: 50%; top: 6px;
+  width: 2px; height: 6px;
+  background: var(--fg-muted);
+  border-radius: 2px;
+  transform: translateX(-50%);
+  animation: mouseWheel 1.9s var(--ease) infinite;
 }
-@keyframes scrollDrip{
-  0%   { transform: translateY(-100%); }
-  60%  { transform: translateY(150%);  }
-  100% { transform: translateY(150%);  }
+@keyframes mouseWheel{
+  0%   { opacity: 0; transform: translate(-50%, 0); }
+  25%  { opacity: 1; }
+  75%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, 14px); }
 }
 @media (prefers-reduced-motion: reduce){
-  .scroll-indicator__line{ animation: none; transform: none; }
+  .mouse-scroll__dot{ animation: none; opacity: 1; transform: translate(-50%, 4px); }
 }
 
 /* ============================================================
@@ -512,12 +491,15 @@ button{ font-family: inherit; }
 .chapter__title{
   margin: 0;
   color: var(--fg-strong);
+  font-family: var(--f-display);
   font-weight: 400;
   font-style: italic;
   font-size: clamp(40px, 5.2vw, 64px);
   letter-spacing: -0.03em;
-  line-height: 0.98;
+  line-height: 1.1;
+  padding-bottom: 0.05em;
   display: inline-block;
+  font-variation-settings: "opsz" 144, "SOFT" 30, "WONK" 1;
 }
 
 /* ============================================================
@@ -537,18 +519,17 @@ button{ font-family: inherit; }
 }
 .about__figure .photo img{ filter: none; }
 
-.about__text{
-  max-width: 46ch;
-  padding-top: clamp(8px, 2vw, 24px);
-}
+.about__text{ max-width: 46ch; padding-top: clamp(8px, 2vw, 24px); }
 .about__lede{
   margin: 0 0 clamp(28px, 3vw, 40px);
   color: var(--fg-strong);
+  font-family: var(--f-display);
   font-weight: 400;
   font-style: italic;
   font-size: clamp(28px, 3.4vw, 44px);
   letter-spacing: -0.02em;
-  line-height: 1.15;
+  line-height: 1.2;
+  font-variation-settings: "opsz" 144, "SOFT" 30, "WONK" 1;
 }
 .about__body{
   margin: 0 0 clamp(28px, 3vw, 40px);
@@ -567,19 +548,18 @@ button{ font-family: inherit; }
   font-size: clamp(20px, 1.8vw, 24px);
   color: var(--fg);
   letter-spacing: -0.01em;
-  line-height: 1.35;
+  line-height: 1.4;
+  font-variation-settings: "opsz" 144, "SOFT" 30, "WONK" 1;
 }
 .about__coda em{ font-style: italic; color: var(--accent); }
 
 /* ============================================================
-   NUMBERS — editorial ledger (no index chip, minimal labels)
+   NUMBERS — number + label side by side, no huge gap
    ============================================================ */
 .ledger{ list-style: none; padding: 0; margin: 0; display: grid; gap: 0; }
 .row{
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: baseline;
-  gap: clamp(24px, 5vw, 64px);
+  display: flex; align-items: baseline;
+  gap: clamp(16px, 2vw, 32px);
   padding: clamp(20px, 2.6vw, 36px) 0;
   border-top: 1px solid var(--border);
   transition: background-color var(--dur) var(--ease);
@@ -595,11 +575,13 @@ button{ font-family: inherit; }
   font-size: clamp(56px, 9.5vw, 120px);
   color: var(--fg-strong);
   letter-spacing: -0.035em;
-  line-height: 0.9;
+  line-height: 1;
   font-variant-numeric: lining-nums;
   display: inline-flex; align-items: baseline;
   white-space: nowrap;
   min-width: 0;
+  font-variation-settings: "opsz" 144, "SOFT" 30, "WONK" 1;
+  padding-bottom: 0.02em;
 }
 .row__num > span{ font-variant-numeric: lining-nums tabular-nums; }
 .row__unit{
@@ -617,17 +599,15 @@ button{ font-family: inherit; }
 }
 .row__label{
   font-family: var(--f-body);
-  font-size: clamp(15px, 1.1vw, 18px);
+  font-size: clamp(15px, 1.15vw, 19px);
   color: var(--fg-muted);
-  text-align: right;
-  line-height: 1.4;
-  max-width: 30ch;
-  justify-self: end;
+  line-height: 1.3;
   letter-spacing: -0.005em;
+  align-self: baseline;
 }
 
 /* ============================================================
-   DIRECTIONS
+   DIRECTIONS — larger, non-italic titles, sage-2 hover accent
    ============================================================ */
 .dirs{ list-style: none; padding: 0; margin: 0; display: grid; gap: 0; }
 .dir{
@@ -635,7 +615,7 @@ button{ font-family: inherit; }
   grid-template-columns: 1fr 1.2fr;
   align-items: baseline;
   gap: clamp(24px, 4vw, 56px);
-  padding: clamp(24px, 3vw, 40px) 0;
+  padding: clamp(28px, 3.4vw, 44px) 0;
   border-top: 1px solid var(--border);
   transition: background-color var(--dur) var(--ease),
               padding-left var(--dur-slow) var(--ease);
@@ -647,18 +627,39 @@ button{ font-family: inherit; }
   margin: 0;
   font-family: var(--f-display);
   font-weight: 400;
-  font-style: italic;
-  font-size: clamp(24px, 2.8vw, 36px);
-  letter-spacing: -0.02em;
+  font-style: normal;      /* was italic — differentiate from other sections */
+  font-size: clamp(28px, 3.6vw, 44px);
+  letter-spacing: -0.025em;
   color: var(--fg-strong);
-  line-height: 1.1;
+  line-height: 1.05;
+  transition: color var(--dur) var(--ease);
+  font-variation-settings: "opsz" 144, "SOFT" 30, "WONK" 0;
 }
+.dir:hover .dir__title{ color: var(--accent-2); }
 .dir__desc{
   margin: 0;
   color: var(--fg-muted);
-  font-size: clamp(15px, 1.1vw, 17px);
+  font-size: clamp(15px, 1.15vw, 18px);
   line-height: 1.55;
   max-width: 46ch;
+}
+
+/* ============================================================
+   BREAK — third photo, editorial wide crop
+   ============================================================ */
+.break{
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: clamp(48px, 8vw, 120px) var(--pad-x);
+}
+.break__figure{ margin: 0; }
+.photo--wide{
+  aspect-ratio: 16 / 9;
+  max-width: 100%;
+  border: 1px solid var(--border);
+}
+@media (max-width: 640px){
+  .photo--wide{ aspect-ratio: 4/5; }
 }
 
 /* ============================================================
@@ -681,7 +682,8 @@ button{ font-family: inherit; }
   font-style: italic;
   font-size: clamp(38px, 6vw, 84px);
   letter-spacing: -0.03em;
-  line-height: 1.05;
+  line-height: 1.1;
+  padding-bottom: 0.05em;
   color: var(--fg-strong);
   font-variation-settings: "opsz" 144, "SOFT" 50, "WONK" 1;
   text-wrap: balance;
@@ -694,7 +696,7 @@ button{ font-family: inherit; }
 }
 
 /* ============================================================
-   TELEGRAM CHANNEL — editorial banner
+   TELEGRAM CHANNEL
    ============================================================ */
 .channel{
   padding-top: clamp(48px, 6vw, 96px);
@@ -704,7 +706,7 @@ button{ font-family: inherit; }
   display: grid;
   grid-template-columns: 1fr auto;
   grid-template-rows: auto auto;
-  gap: 12px clamp(24px, 4vw, 56px);
+  gap: 16px clamp(24px, 4vw, 56px);
   padding: clamp(36px, 5vw, 64px) clamp(4px, 1vw, 16px);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
@@ -717,12 +719,35 @@ button{ font-family: inherit; }
   margin: 0;
   font-family: var(--f-display);
   font-weight: 400;
-  font-size: clamp(32px, 4vw, 56px);
-  letter-spacing: -0.025em;
+  font-size: clamp(36px, 5vw, 72px);
+  letter-spacing: -0.03em;
   line-height: 1.05;
   color: var(--fg-strong);
+  padding-bottom: 0.06em;
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3em;
+  font-variation-settings: "opsz" 144, "SOFT" 30, "WONK" 1;
 }
-.banner__title em{ font-style: italic; font-weight: 400; }
+.banner__prefix{
+  font-family: var(--f-display);
+  font-weight: 400;
+  font-style: normal;
+  font-size: 0.55em;
+  color: var(--fg-muted);
+  letter-spacing: -0.02em;
+}
+.banner__brand{
+  font-family: var(--f-display);
+  font-weight: 500;
+  font-style: normal;
+  color: var(--fg-strong);
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.12em;
+  transition: text-decoration-color var(--dur) var(--ease);
+}
+.banner:hover .banner__brand{ text-decoration-color: var(--accent-hover); }
+
 .banner__desc{
   grid-column: 1;
   margin: 0;
@@ -749,13 +774,11 @@ button{ font-family: inherit; }
   min-height: 44px;
 }
 .banner__go svg{ transition: transform var(--dur) var(--ease); }
-.banner:hover .banner__go{
-  background: var(--fg); color: var(--bg); border-color: var(--fg);
-}
+.banner:hover .banner__go{ background: var(--fg); color: var(--bg); border-color: var(--fg); }
 .banner:hover .banner__go svg{ transform: translate(3px,-3px); }
 
 /* ============================================================
-   CONTACT / FINAL
+   CONTACT / FINAL — no descender clipping
    ============================================================ */
 .contact{
   padding-top: clamp(96px, 12vw, 160px);
@@ -765,23 +788,25 @@ button{ font-family: inherit; }
 .contact__title{
   margin: 0 0 clamp(20px, 2.4vw, 32px);
   color: var(--fg-strong);
+  font-family: var(--f-display);
   font-weight: 400;
   font-style: normal;
   font-size: clamp(44px, 8vw, 120px);
   letter-spacing: -0.04em;
-  line-height: 0.98;
+  line-height: 1.08;         /* was 0.98 — descenders (ы, м) no longer clip */
+  padding-bottom: 0.08em;
   max-width: 22ch;
   text-wrap: balance;
+  font-variation-settings: "opsz" 144, "SOFT" 30, "WONK" 1;
 }
 .contact__title em{
   font-style: italic;
   font-weight: 400;
   color: var(--fg-strong);
-  background-image: linear-gradient(var(--accent), var(--accent));
-  background-repeat: no-repeat;
-  background-position: 0 92%;
-  background-size: 100% 3px;
-  padding-bottom: 0.02em;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 0.12em;
 }
 .contact__sub{
   margin: 0 0 clamp(36px, 4.5vw, 56px);
@@ -837,12 +862,14 @@ button{ font-family: inherit; }
   color: var(--fg-quiet);
   letter-spacing: -0.005em;
 }
-.footer__sig{
+.footer__mark{
   font-family: var(--f-display);
   font-style: italic;
   font-weight: 400;
-  font-size: 15px;
+  font-size: 20px;
   color: var(--fg);
+  line-height: 1;
+  font-variation-settings: "opsz" 24, "SOFT" 40, "WONK" 1;
 }
 .footer__year{ justify-self: center; }
 .footer__link{
@@ -867,9 +894,8 @@ button{ font-family: inherit; }
   .about__figure .photo{ max-width: 480px; }
 
   .row__num{ font-size: clamp(52px, 10vw, 88px); }
-
   .dir{ grid-template-columns: 1fr 1fr; gap: 24px; }
-  .dir__title{ font-size: clamp(22px, 4vw, 28px); }
+  .dir__title{ font-size: clamp(24px, 4.4vw, 34px); }
 }
 @media (max-width: 900px){
   .nav__links{ display: none; }
@@ -884,8 +910,8 @@ button{ font-family: inherit; }
   .chapter__title{ font-size: clamp(36px, 10vw, 44px); }
 
   .hero{ padding-top: 108px; padding-bottom: 40px; gap: 32px; }
-  .hero__title{ font-size: clamp(60px, 18vw, 76px); line-height: 0.9; }
-  .hero__l2{ padding-left: 12px; }
+  .hero__title{ font-size: clamp(56px, 17vw, 76px); line-height: 1.02; padding-bottom: 0.05em; }
+  .hero__l2{ padding-left: 10px; }
   .hero__role{ margin-top: 20px; font-size: 15px; }
   .hero__desc{ margin-top: 18px; font-size: 16px; }
   .hero__figure{ justify-content: center; }
@@ -895,13 +921,12 @@ button{ font-family: inherit; }
   .about__coda{ font-size: 19px; }
 
   .row{
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
-    gap: 4px;
+    flex-wrap: wrap;
+    gap: 4px 16px;
     padding: 22px 0;
   }
-  .row__num{ grid-row: 1; font-size: clamp(54px, 16vw, 78px); }
-  .row__label{ grid-row: 2; text-align: left; max-width: none; font-size: 14px; }
+  .row__num{ font-size: clamp(54px, 16vw, 78px); }
+  .row__label{ flex-basis: 100%; font-size: 15px; }
 
   .dir{
     grid-template-columns: 1fr;
@@ -912,6 +937,8 @@ button{ font-family: inherit; }
   .dir__title{ font-size: 26px; }
   .dir__desc{ font-size: 15px; }
 
+  .break{ padding-top: 40px; padding-bottom: 40px; }
+
   .approach{ padding-top: 64px; padding-bottom: 64px; }
   .approach__quote{ font-size: clamp(36px, 11vw, 48px); max-width: 100%; }
 
@@ -921,7 +948,8 @@ button{ font-family: inherit; }
     padding: 28px 0;
     gap: 18px;
   }
-  .banner__title{ font-size: clamp(28px, 8vw, 34px); }
+  .banner__title{ font-size: clamp(30px, 9vw, 44px); }
+  .banner__prefix{ font-size: 0.5em; }
   .banner__go{
     grid-column: 1;
     grid-row: auto;
@@ -930,7 +958,7 @@ button{ font-family: inherit; }
   }
 
   .contact{ padding-top: 80px; padding-bottom: 80px; }
-  .contact__title{ font-size: clamp(44px, 13vw, 60px); }
+  .contact__title{ font-size: clamp(40px, 12vw, 56px); line-height: 1.1; }
   .cta{ padding: 16px 22px; gap: 14px; max-width: 100%; }
   .cta > span:first-child{ font-size: 18px; }
   .cta__arrow{ margin-left: auto; }
@@ -941,5 +969,5 @@ button{ font-family: inherit; }
 }
 @media (max-width: 380px){
   :root{ --pad-x: 16px; }
-  .hero__title{ font-size: 62px; }
+  .hero__title{ font-size: 58px; }
 }
