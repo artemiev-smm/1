@@ -1,14 +1,13 @@
 <!doctype html>
-<html lang="ru">
+<html lang="ru" class="no-js">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Andrew Artemiev — Entrepreneur &amp; Personal Brand</title>
   <meta name="description" content="Andrew Artemiev — предприниматель, продюсер и архитектор личных брендов. Собственные проекты, запуски экспертов, digital и инвестиции." />
-  <meta name="theme-color" content="#0a0a0a" />
+  <meta name="theme-color" content="#0d0b09" />
   <meta name="color-scheme" content="dark" />
 
-  <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Andrew Artemiev — Entrepreneur & Personal Brand" />
   <meta property="og:description" content="Предприниматель. Продюсер. Архитектор личных брендов." />
@@ -24,9 +23,13 @@
   <meta name="twitter:image" content="assets/og.svg" />
 
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+
+  <!-- No-JS reveal fallback: strip 'no-js' before external fonts to avoid FOUC on the class swap -->
+  <script>document.documentElement.classList.remove('no-js');document.documentElement.classList.add('js');</script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -38,17 +41,17 @@
   <header class="nav" id="nav">
     <div class="nav__inner">
       <a href="#top" class="nav__brand" aria-label="Andrew Artemiev — на главную">
-        <span class="nav__signature">Andrew Artemiev</span>
+        <span class="nav__sig">Andrew Artemiev</span>
       </a>
       <nav class="nav__links" aria-label="Основная навигация">
-        <a href="#about">Обо мне</a>
-        <a href="#numbers">В цифрах</a>
-        <a href="#now">Направления</a>
-        <a href="#contact">Контакты</a>
+        <a href="#about"><i>01</i><span>Обо мне</span></a>
+        <a href="#numbers"><i>02</i><span>В цифрах</span></a>
+        <a href="#now"><i>03</i><span>Направления</span></a>
+        <a href="#contact"><i>04</i><span>Контакты</span></a>
       </nav>
       <a class="nav__cta" href="https://t.me/andrewsmm1" target="_blank" rel="noopener">
         <span>Telegram</span>
-        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 12L12 2M12 2H4.5M12 2V9.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
       </a>
       <button class="nav__toggle" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-menu">
         <span></span><span></span>
@@ -58,32 +61,32 @@
 
   <div class="mobile-menu" id="mobile-menu" hidden>
     <nav aria-label="Мобильная навигация">
-      <a href="#about">Обо мне</a>
-      <a href="#numbers">В цифрах</a>
-      <a href="#now">Направления</a>
-      <a href="#contact">Контакты</a>
+      <a href="#about"><i>01</i><span>Обо&nbsp;мне</span></a>
+      <a href="#numbers"><i>02</i><span>В&nbsp;цифрах</span></a>
+      <a href="#now"><i>03</i><span>Направления</span></a>
+      <a href="#contact"><i>04</i><span>Контакты</span></a>
       <a class="mobile-menu__cta" href="https://t.me/andrewsmm1" target="_blank" rel="noopener">Telegram →</a>
     </nav>
   </div>
 
   <main id="main">
 
-    <!-- HERO -->
+    <!-- ── HERO ────────────────────────────────────────────── -->
     <section class="hero" id="top" aria-labelledby="hero-title">
-      <div class="hero__bg" aria-hidden="true">
-        <div class="hero__glow"></div>
+      <div class="hero__meta">
+        <span class="mono">Portfolio&nbsp;· Est.&nbsp;2026</span>
       </div>
 
-      <div class="hero__wrap">
+      <div class="hero__grid">
         <div class="hero__left">
-          <span class="hero__eyebrow" data-reveal>PERSONAL BRAND</span>
-
           <h1 class="hero__title" id="hero-title" aria-label="Andrew Artemiev">
-            <span class="hero__title-line" data-reveal>Andrew</span>
-            <span class="hero__title-line hero__title-line--offset" data-reveal>Artemiev</span>
+            <span class="hero__l1" data-reveal>Andrew</span>
+            <span class="hero__l2" data-reveal><em>Artemiev</em></span>
           </h1>
 
-          <p class="hero__role" data-reveal>Предприниматель · Продюсер · Архитектор личных брендов</p>
+          <p class="hero__role" data-reveal>
+            Предприниматель · Продюсер · Архитектор личных брендов
+          </p>
 
           <p class="hero__desc" data-reveal>
             В&nbsp;17&nbsp;лет уже строю собственные проекты
@@ -92,48 +95,43 @@
 
           <div class="hero__actions" data-reveal>
             <a class="btn btn--primary" href="https://t.me/andrewsmm1" target="_blank" rel="noopener">
-              <span class="btn__label">Написать в&nbsp;Telegram</span>
+              <span>Написать в&nbsp;Telegram</span>
               <span class="btn__arrow" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 18 18"><path d="M3 15L15 3M15 3H6M15 3V12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <svg width="16" height="16" viewBox="0 0 16 16"><path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
               </span>
             </a>
-            <a class="btn btn--ghost" href="#about">Обо мне</a>
           </div>
         </div>
 
-        <div class="hero__right">
-          <div class="portrait" id="portrait" data-reveal>
-            <div class="portrait__stage">
-              <div class="portrait__halo" aria-hidden="true"></div>
-              <div class="portrait__frame">
-                <img src="assets/hero.jpg" alt="Портрет Andrew Artemiev" loading="eager" decoding="async"
-                     onerror="this.replaceWith(document.getElementById('hero-fallback').content.cloneNode(true))" />
-                <div class="portrait__grain" aria-hidden="true"></div>
-              </div>
-            </div>
+        <figure class="hero__figure" data-reveal>
+          <span class="mono photo__cap-top">— 01 / Portrait</span>
+          <div class="photo">
+            <img src="assets/hero.jpg" alt="Портрет Andrew Artemiev" loading="eager" decoding="async"
+                 onerror="this.replaceWith(document.getElementById('hero-fallback').content.cloneNode(true))" />
           </div>
-        </div>
+        </figure>
+      </div>
+
+      <div class="hero__foot" aria-hidden="true">
+        <span class="mono">Scroll</span>
+        <svg width="10" height="20" viewBox="0 0 10 20"><path d="M5 1v16M2 14l3 3 3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg>
       </div>
     </section>
 
-    <!-- ABOUT -->
-    <section class="about section" id="about" aria-labelledby="about-title">
-      <div class="section__head">
-        <h2 class="section__title" id="about-title" data-reveal>Обо&nbsp;мне</h2>
-      </div>
+    <!-- ── ABOUT ───────────────────────────────────────────── -->
+    <section class="chapter about" id="about" aria-labelledby="about-title">
+      <header class="chapter__head">
+        <span class="mono chapter__mark">— 01 / About</span>
+        <h2 class="chapter__title" id="about-title" data-reveal>Обо&nbsp;мне</h2>
+      </header>
 
       <div class="about__grid">
-        <figure class="about__photo" data-reveal>
-          <div class="portrait portrait--about">
-            <div class="portrait__stage">
-              <div class="portrait__halo portrait__halo--warm" aria-hidden="true"></div>
-              <div class="portrait__frame">
-                <img src="assets/about.jpg" alt="Andrew Artemiev за работой" loading="lazy" decoding="async"
-                     onerror="this.replaceWith(document.getElementById('about-fallback').content.cloneNode(true))" />
-                <div class="portrait__grain" aria-hidden="true"></div>
-              </div>
-            </div>
+        <figure class="about__figure" data-reveal>
+          <div class="photo photo--about">
+            <img src="assets/about.jpg" alt="Andrew Artemiev за работой" loading="lazy" decoding="async"
+                 onerror="this.replaceWith(document.getElementById('about-fallback').content.cloneNode(true))" />
           </div>
+          <figcaption class="mono photo__cap">— 02 / Off&#8209;grid · Working remotely</figcaption>
         </figure>
 
         <div class="about__text">
@@ -141,136 +139,127 @@
             С&nbsp;раннего возраста интересовался предпринимательством и&nbsp;деньгами.
           </p>
 
-          <p data-reveal>
-            Попробовал классический путь и&nbsp;найм&nbsp;— быстро понял, что это
-            не&nbsp;моё. Ушёл в&nbsp;digital и&nbsp;торговлю цифровыми активами.
+          <p class="about__body" data-reveal>
+            Попробовал классический путь и&nbsp;найм&nbsp;— быстро понял, что&nbsp;это не&nbsp;моё. Ушёл в&nbsp;digital и&nbsp;торговлю цифровыми активами.
           </p>
 
           <p class="about__coda" data-reveal>
-            Классический путь мне не&nbsp;подошёл&nbsp;— поэтому я&nbsp;строю свой.
+            Классический путь мне не&nbsp;подошёл&nbsp;— поэтому <em>я&nbsp;строю&nbsp;свой</em>.
           </p>
         </div>
       </div>
     </section>
 
-    <!-- NUMBERS -->
-    <section class="numbers section" id="numbers" aria-labelledby="numbers-title">
-      <div class="section__head">
-        <h2 class="section__title" id="numbers-title" data-reveal>В&nbsp;цифрах</h2>
-      </div>
+    <!-- ── IN NUMBERS ──────────────────────────────────────── -->
+    <section class="chapter numbers" id="numbers" aria-labelledby="numbers-title">
+      <header class="chapter__head">
+        <span class="mono chapter__mark">— 02 / In numbers</span>
+        <h2 class="chapter__title" id="numbers-title" data-reveal>В&nbsp;цифрах</h2>
+      </header>
 
-      <div class="numbers__grid">
-        <article class="stat" data-reveal>
-          <div class="stat__value">
-            <span class="stat__num" data-count-to="17" data-decimals="0">17</span>
-          </div>
-          <div class="stat__label">лет</div>
-        </article>
-
-        <article class="stat" data-reveal>
-          <div class="stat__value">
-            <span class="stat__num" data-count-to="1000000" data-decimals="0" data-format="ru">1&nbsp;000&nbsp;000</span>
-            <span class="stat__unit">₽</span>
-            <span class="stat__plus">+</span>
-          </div>
-          <div class="stat__label">первый миллион</div>
-        </article>
-
-        <article class="stat" data-reveal>
-          <div class="stat__value">
-            <span class="stat__num" data-count-to="2.5" data-decimals="1">2,5</span>
-            <span class="stat__plus">+</span>
-            <span class="stat__unit stat__unit--sm">года</span>
-          </div>
-          <div class="stat__label">в&nbsp;трейдинге</div>
-        </article>
-
-        <article class="stat" data-reveal>
-          <div class="stat__value">
-            <span class="stat__num" data-count-to="2" data-decimals="0">2</span>
-          </div>
-          <div class="stat__label">собственных бизнеса</div>
-        </article>
-
-        <article class="stat" data-reveal>
-          <div class="stat__value">
-            <span class="stat__num" data-count-to="150" data-decimals="0">150</span>
-          </div>
-          <div class="stat__label">часов в&nbsp;найме</div>
-        </article>
-      </div>
+      <ol class="ledger" role="list">
+        <li class="row" data-reveal>
+          <span class="row__idx mono">01</span>
+          <span class="row__num"><span data-count-to="17" data-decimals="0">17</span></span>
+          <span class="row__label"><em>лет</em>&nbsp;— возраст</span>
+        </li>
+        <li class="row" data-reveal>
+          <span class="row__idx mono">02</span>
+          <span class="row__num"><span data-count-to="1000000" data-decimals="0">1 000 000</span><span class="row__unit">&nbsp;₽</span><span class="row__plus">+</span></span>
+          <span class="row__label"><em>первый&nbsp;миллион</em>&nbsp;— лично&nbsp;заработано</span>
+        </li>
+        <li class="row" data-reveal>
+          <span class="row__idx mono">03</span>
+          <span class="row__num"><span data-count-to="2.5" data-decimals="1">2,5</span><span class="row__plus">+</span></span>
+          <span class="row__label"><em>года</em>&nbsp;— в&nbsp;трейдинге</span>
+        </li>
+        <li class="row" data-reveal>
+          <span class="row__idx mono">04</span>
+          <span class="row__num"><span data-count-to="2" data-decimals="0">2</span></span>
+          <span class="row__label"><em>собственных</em>&nbsp;— бизнеса в&nbsp;активной работе</span>
+        </li>
+        <li class="row" data-reveal>
+          <span class="row__idx mono">05</span>
+          <span class="row__num"><span data-count-to="150" data-decimals="0">150</span></span>
+          <span class="row__label"><em>часов</em>&nbsp;— в&nbsp;найме</span>
+        </li>
+      </ol>
     </section>
 
-    <!-- NOW / DIRECTIONS -->
-    <section class="now section" id="now" aria-labelledby="now-title">
-      <div class="section__head">
-        <h2 class="section__title" id="now-title" data-reveal>Направления</h2>
-      </div>
+    <!-- ── DIRECTIONS ──────────────────────────────────────── -->
+    <section class="chapter now" id="now" aria-labelledby="now-title">
+      <header class="chapter__head">
+        <span class="mono chapter__mark">— 03 / Directions</span>
+        <h2 class="chapter__title" id="now-title" data-reveal>Направления</h2>
+      </header>
 
-      <div class="now__grid">
-        <article class="now__item" data-reveal>
-          <h3 class="now__title">Запуски</h3>
-          <p>Помогаю экспертам выстроить систему вокруг продукта.</p>
-        </article>
-
-        <article class="now__item" data-reveal>
-          <h3 class="now__title">Личные бренды</h3>
-          <p>Превращаю экспертность и&nbsp;медийность в&nbsp;системный актив.</p>
-        </article>
-
-        <article class="now__item" data-reveal>
-          <h3 class="now__title">Предпринимательство</h3>
-          <p>Развиваю собственные проекты и&nbsp;тестирую новые модели.</p>
-        </article>
-
-        <article class="now__item" data-reveal>
-          <h3 class="now__title">Инвестиции</h3>
-          <p>Вкладываюсь в&nbsp;проекты партнёров и&nbsp;перспективные направления.</p>
-        </article>
-      </div>
+      <ol class="dirs" role="list">
+        <li class="dir" data-reveal>
+          <span class="dir__idx mono">01</span>
+          <h3 class="dir__title"><em>Запуски</em></h3>
+          <p class="dir__desc">Помогаю экспертам выстроить систему вокруг продукта.</p>
+        </li>
+        <li class="dir" data-reveal>
+          <span class="dir__idx mono">02</span>
+          <h3 class="dir__title"><em>Личные бренды</em></h3>
+          <p class="dir__desc">Превращаю экспертность и&nbsp;медийность в&nbsp;системный актив.</p>
+        </li>
+        <li class="dir" data-reveal>
+          <span class="dir__idx mono">03</span>
+          <h3 class="dir__title"><em>Предпринимательство</em></h3>
+          <p class="dir__desc">Развиваю собственные проекты и&nbsp;тестирую новые модели.</p>
+        </li>
+        <li class="dir" data-reveal>
+          <span class="dir__idx mono">04</span>
+          <h3 class="dir__title"><em>Инвестиции</em></h3>
+          <p class="dir__desc">Вкладываюсь в&nbsp;проекты партнёров и&nbsp;перспективные направления.</p>
+        </li>
+      </ol>
     </section>
 
-    <!-- APPROACH — quote only, no heading -->
-    <section class="approach section" aria-labelledby="approach-quote">
-      <blockquote class="approach__quote" id="approach-quote" data-reveal>
-        <p>Я&nbsp;не&nbsp;люблю усложнять то, что можно построить <em>просто</em>.</p>
+    <!-- ── APPROACH ────────────────────────────────────────── -->
+    <section class="chapter approach" aria-labelledby="approach-title">
+      <span class="mono chapter__mark chapter__mark--center">— 04 / Philosophy</span>
+      <blockquote class="approach__quote" id="approach-title" data-reveal>
+        <p>Я&nbsp;не&nbsp;люблю усложнять&nbsp;то, что&nbsp;можно построить <em>просто</em>.</p>
       </blockquote>
     </section>
 
-    <!-- TELEGRAM CHANNEL -->
-    <section class="channel section" aria-labelledby="channel-title">
-      <a class="channel__card" href="https://t.me/+_qoYUp5SE_hiMDgy" target="_blank" rel="noopener" data-reveal>
-        <div class="channel__body">
-          <span class="channel__meta">TELEGRAM-канал</span>
-          <h2 class="channel__title" id="channel-title">Мой Telegram-канал</h2>
-          <p class="channel__desc">Мысли о&nbsp;бизнесе, маркетинге, предпринимательстве и&nbsp;собственном пути.</p>
-        </div>
-        <span class="channel__go">
-          <span>Перейти в&nbsp;Telegram</span>
-          <span class="channel__arrow" aria-hidden="true">
-            <svg width="22" height="22" viewBox="0 0 24 24"><path d="M4 20L20 4M20 4H8M20 4V16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </span>
+    <!-- ── TELEGRAM CHANNEL ────────────────────────────────── -->
+    <section class="chapter channel" aria-labelledby="channel-title">
+      <a class="banner" href="https://t.me/+_qoYUp5SE_hiMDgy" target="_blank" rel="noopener" data-reveal>
+        <span class="banner__mark mono">— 05 / Channel</span>
+        <h2 class="banner__title" id="channel-title">Мой <em>Telegram&#8209;канал</em></h2>
+        <p class="banner__desc">Мысли о&nbsp;бизнесе, маркетинге, предпринимательстве и&nbsp;собственном пути.</p>
+        <span class="banner__go mono">
+          Перейти в&nbsp;Telegram
+          <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
         </span>
       </a>
     </section>
 
-    <!-- CONTACT / FINAL -->
-    <section class="contact section" id="contact" aria-labelledby="contact-title">
+    <!-- ── FINAL / CONTACT ─────────────────────────────────── -->
+    <section class="chapter contact" id="contact" aria-labelledby="contact-title">
+      <header class="chapter__head">
+        <span class="mono chapter__mark">— 06 / Contact</span>
+      </header>
+
       <div class="contact__inner">
         <h2 class="contact__title" id="contact-title" data-reveal>
-          Если мы&nbsp;ещё не&nbsp;знакомы&nbsp;— будем знакомы.
+          Если мы&nbsp;ещё не&nbsp;знакомы&nbsp;— <em>будем знакомы</em>.
         </h2>
-
         <p class="contact__sub" data-reveal>
           Открыт к&nbsp;сотрудничеству, партнёрствам и&nbsp;интересным разговорам о&nbsp;бизнесе.
         </p>
 
-        <a class="cta-lg" href="https://t.me/andrewsmm1" target="_blank" rel="noopener" data-reveal>
-          <span class="cta-lg__label">Обсудить сотрудничество</span>
-          <span class="cta-lg__arrow" aria-hidden="true">
-            <svg width="42" height="42" viewBox="0 0 42 42"><path d="M7 35L35 7M35 7H14M35 7V28" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <a class="cta" href="https://t.me/andrewsmm1" target="_blank" rel="noopener" data-reveal>
+          <span>Обсудить сотрудничество</span>
+          <span class="cta__arrow" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 28 28"><path d="M5 23L23 5M23 5H9M23 5V19" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
           </span>
         </a>
+
+        <p class="contact__meta mono" data-reveal>Обычно отвечаю в&nbsp;течение дня</p>
       </div>
     </section>
 
@@ -278,39 +267,26 @@
 
   <footer class="footer">
     <div class="footer__inner">
-      <div class="footer__brand"><span class="nav__signature">Andrew Artemiev</span></div>
-      <div class="footer__meta">
-        <span>© <span id="year">2026</span></span>
-      </div>
-      <a class="footer__cta" href="https://t.me/andrewsmm1" target="_blank" rel="noopener">t.me/andrewsmm1</a>
+      <span class="mono">Andrew Artemiev</span>
+      <span class="mono footer__muted">© <span id="year">2026</span> · Personal site</span>
+      <a class="mono footer__link" href="https://t.me/andrewsmm1" target="_blank" rel="noopener">t.me/andrewsmm1&nbsp;→</a>
     </div>
   </footer>
 
-  <!-- Photo fallbacks -->
+  <!-- Photo fallbacks (used only if assets/*.jpg fail to load) -->
   <template id="hero-fallback">
-    <div class="portrait-fallback" role="img" aria-label="Портрет Andrew Artemiev — заглушка">
+    <div class="photo-fallback">
       <svg viewBox="0 0 480 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <defs>
-          <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1e1e1e"/><stop offset="1" stop-color="#050505"/></linearGradient>
-          <radialGradient id="r1" cx="0.7" cy="0.3" r="0.7"><stop offset="0" stop-color="#2f2f2f" stop-opacity="0.9"/><stop offset="1" stop-color="#0a0a0a" stop-opacity="0"/></radialGradient>
-        </defs>
+        <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1e1a14"/><stop offset="1" stop-color="#0a0806"/></linearGradient></defs>
         <rect width="480" height="600" fill="url(#g1)"/>
-        <rect width="480" height="600" fill="url(#r1)"/>
-        <text x="30" y="570" font-family="Inter Tight, sans-serif" font-size="11" letter-spacing="2" fill="#f2efe8" fill-opacity="0.4">HERO · Замените assets/hero.jpg</text>
       </svg>
     </div>
   </template>
-
   <template id="about-fallback">
-    <div class="portrait-fallback" role="img" aria-label="Andrew Artemiev — заглушка">
+    <div class="photo-fallback">
       <svg viewBox="0 0 500 620" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <defs>
-          <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#161616"/><stop offset="1" stop-color="#080808"/></linearGradient>
-          <radialGradient id="r2" cx="0.3" cy="0.3" r="0.7"><stop offset="0" stop-color="#242424" stop-opacity="0.9"/><stop offset="1" stop-color="#080808" stop-opacity="0"/></radialGradient>
-        </defs>
+        <defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1a1712"/><stop offset="1" stop-color="#080604"/></linearGradient></defs>
         <rect width="500" height="620" fill="url(#g2)"/>
-        <rect width="500" height="620" fill="url(#r2)"/>
-        <text x="30" y="590" font-family="Inter Tight, sans-serif" font-size="11" letter-spacing="2" fill="#f2efe8" fill-opacity="0.4">ABOUT · Замените assets/about.jpg</text>
       </svg>
     </div>
   </template>

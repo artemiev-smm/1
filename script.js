@@ -1,5 +1,5 @@
 /* Andrew Artemiev — personal site
-   Calm confidence. Subtle motion. Readability > effects.
+   Editorial minimal · Subtle motion · Readability first
 */
 (function () {
   'use strict';
@@ -7,44 +7,41 @@
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var isMobile = window.matchMedia('(max-width: 720px)').matches;
 
-  // ---- Year in footer ----
+  // Footer year
   var yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
-  // ---- Sticky nav state ----
+  // ── Sticky nav state ─────────────────────────────────────
   var nav = document.getElementById('nav');
-  var lastScrolled = null;
+  var scrolled = null;
   function onScroll() {
-    var scrolled = window.scrollY > 20;
-    if (scrolled !== lastScrolled) {
-      nav.classList.toggle('is-scrolled', scrolled);
-      lastScrolled = scrolled;
-    }
+    var v = window.scrollY > 20;
+    if (v !== scrolled) { nav.classList.toggle('is-scrolled', v); scrolled = v; }
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  // ---- Mobile menu ----
+  // ── Mobile menu ──────────────────────────────────────────
   var toggle = document.querySelector('.nav__toggle');
-  var mobileMenu = document.getElementById('mobile-menu');
-  function setMenuOpen(open) {
-    if (!toggle || !mobileMenu) return;
+  var menu   = document.getElementById('mobile-menu');
+  function setMenu(open) {
+    if (!toggle || !menu) return;
     toggle.setAttribute('aria-expanded', String(open));
-    mobileMenu.hidden = !open;
+    menu.hidden = !open;
     document.documentElement.style.overflow = open ? 'hidden' : '';
   }
   if (toggle) toggle.addEventListener('click', function () {
-    setMenuOpen(toggle.getAttribute('aria-expanded') !== 'true');
+    setMenu(toggle.getAttribute('aria-expanded') !== 'true');
   });
-  if (mobileMenu) mobileMenu.addEventListener('click', function (e) {
-    if (e.target && e.target.tagName === 'A') setMenuOpen(false);
+  if (menu) menu.addEventListener('click', function (e) {
+    if (e.target && e.target.tagName === 'A') setMenu(false);
   });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenuOpen(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
 
-  // ---- Reveal on scroll ----
+  // ── Scroll-reveal ────────────────────────────────────────
   var reveals = document.querySelectorAll('[data-reveal]');
   var forceAll = /(?:^|[?&])show=all(?:&|$)/.test(location.search);
-  if (forceAll) {
+  if (forceAll || reduced) {
     reveals.forEach(function (el) { el.classList.add('is-in'); });
   } else if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (entries) {
@@ -60,35 +57,36 @@
     reveals.forEach(function (el) { el.classList.add('is-in'); });
   }
 
-  // ---- Count-up on numbers block (desktop only) ----
-  var counters = document.querySelectorAll('[data-count-to]');
-  var NBSP = ' '; // non-breaking space for Russian thousand separator
-  function formatNumber(value, decimals) {
-    var fixed = value.toFixed(decimals);
-    var parts = fixed.split('.');
-    var intPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, NBSP);
-    return parts.length > 1 ? intPart + ',' + parts[1] : intPart;
+  // ── Count-up on numbers block ────────────────────────────
+  // Uses U+00A0 (non-breaking) as thousand separator so "1 000 000" never wraps
+  var NBSP = ' ';
+  function formatNumber(v, d) {
+    var s = v.toFixed(d);
+    var p = s.split('.');
+    p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, NBSP);
+    return p.length > 1 ? p[0] + ',' + p[1] : p[0];
   }
   function easeOut(t){ return 1 - Math.pow(1 - t, 3); }
+  var counters = document.querySelectorAll('[data-count-to]');
   function setFinal(el) {
+    if (el.dataset.done) return;
+    el.dataset.done = '1';
     var target = parseFloat(el.getAttribute('data-count-to')) || 0;
     var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
     el.textContent = formatNumber(target, decimals);
-    el.dataset.done = '1';
   }
   function runCount(el) {
-    if (el.dataset.done === '1') return;
+    if (el.dataset.done) return;
     if (reduced || isMobile) { setFinal(el); return; }
     el.dataset.done = '1';
     var target = parseFloat(el.getAttribute('data-count-to')) || 0;
     var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
-    var duration = 1500;
+    var duration = 1400;
     var start = null;
     function step(ts) {
       if (start === null) start = ts;
       var t = Math.min(1, (ts - start) / duration);
-      var v = target * easeOut(t);
-      el.textContent = formatNumber(v, decimals);
+      el.textContent = formatNumber(target * easeOut(t), decimals);
       if (t < 1) requestAnimationFrame(step);
       else el.textContent = formatNumber(target, decimals);
     }
@@ -101,29 +99,11 @@
   } else if ('IntersectionObserver' in window) {
     var cio = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          runCount(entry.target);
-          cio.unobserve(entry.target);
-        }
+        if (entry.isIntersecting) { runCount(entry.target); cio.unobserve(entry.target); }
       });
     }, { threshold: 0.5 });
     counters.forEach(function (el) { cio.observe(el); });
   } else {
     counters.forEach(setFinal);
-  }
-
-  // ---- Very subtle hero glow drift on scroll (desktop only) ----
-  var glow = document.querySelector('.hero__glow');
-  if (glow && !reduced && !isMobile) {
-    var ticking = false;
-    function update() {
-      var y = window.scrollY;
-      var t = Math.max(-40, Math.min(40, y * 0.06));
-      glow.style.setProperty('transform', 'translate3d(0,' + t.toFixed(1) + 'px,0)');
-      ticking = false;
-    }
-    window.addEventListener('scroll', function () {
-      if (!ticking) { requestAnimationFrame(update); ticking = true; }
-    }, { passive: true });
   }
 })();
