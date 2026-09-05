@@ -1,20 +1,27 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#17140f"/><stop offset="1" stop-color="#0d0b09"/>
+      <stop offset="0" stop-color="#111"/><stop offset="1" stop-color="#050505"/>
     </linearGradient>
-    <radialGradient id="glow" cx="0.85" cy="0.15" r="0.7">
-      <stop offset="0" stop-color="#c9a875" stop-opacity=".18"/>
-      <stop offset="1" stop-color="#0d0b09" stop-opacity="0"/>
+    <radialGradient id="r" cx="0.85" cy="0.2" r="0.7">
+      <stop offset="0" stop-color="#2a2a2a" stop-opacity=".9"/>
+      <stop offset="1" stop-color="#050505" stop-opacity="0"/>
     </radialGradient>
   </defs>
   <rect width="1200" height="630" fill="url(#bg)"/>
-  <rect width="1200" height="630" fill="url(#glow)"/>
+  <rect width="1200" height="630" fill="url(#r)"/>
 
-  <g fill="#f2ede2" font-family="Fraunces, Georgia, serif">
-    <text x="80" y="140" font-family="'JetBrains Mono', monospace" font-size="14" letter-spacing="4" fill="#a29d92">— PORTFOLIO / EST. 2026</text>
-    <text x="80" y="340" font-size="150" font-weight="400" letter-spacing="-6">Andrew</text>
-    <text x="120" y="480" font-size="150" font-weight="400" font-style="italic" letter-spacing="-6" fill="#dcbf8e">Artemiev</text>
-    <text x="80" y="555" font-family="'JetBrains Mono', monospace" font-size="15" letter-spacing="3" fill="#a29d92">ПРЕДПРИНИМАТЕЛЬ · ПРОДЮСЕР · АРХИТЕКТОР ЛИЧНЫХ БРЕНДОВ</text>
+  <g font-family="Inter Tight, system-ui, sans-serif" fill="#f2efe8">
+    <text x="80" y="130" font-size="18" letter-spacing="4" fill="#8a867e">PERSONAL BRAND · 2026</text>
+    <text x="80" y="320" font-size="132" font-weight="500" letter-spacing="-6">ANDREW</text>
+    <text x="80" y="450" font-size="132" font-weight="500" letter-spacing="-6">ARTEMIEV</text>
+    <text x="80" y="530" font-size="26" fill="#c9c6be">Предприниматель. Продюсер. Архитектор личных брендов.</text>
+    <text x="80" y="575" font-size="22" fill="#8a867e">t.me/andrewsmm1</text>
   </g>
+
+  <g stroke="#f2efe8" stroke-opacity=".12">
+    <line x1="1000" y1="60" x2="1000" y2="570"/>
+    <line x1="1080" y1="60" x2="1080" y2="570"/>
+  </g>
+  <text x="1020" y="90" font-family="Inter Tight, system-ui, sans-serif" font-size="14" letter-spacing="3" fill="#8a867e" transform="rotate(90 1020,90)">A—A</text>
 </svg>
