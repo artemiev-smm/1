@@ -24,18 +24,21 @@
 
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
 
-  <!-- No-JS reveal fallback: strip 'no-js' before external fonts to avoid FOUC on the class swap -->
   <script>document.documentElement.classList.remove('no-js');document.documentElement.classList.add('js');</script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
   <a href="#main" class="skip">Перейти к содержимому</a>
+
+  <!-- Custom cursor (desktop only, injected via CSS) -->
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-trail" aria-hidden="true"></div>
 
   <!-- NAV -->
   <header class="nav" id="nav">
@@ -44,10 +47,10 @@
         <span class="nav__sig">Andrew Artemiev</span>
       </a>
       <nav class="nav__links" aria-label="Основная навигация">
-        <a href="#about"><i>01</i><span>Обо мне</span></a>
-        <a href="#numbers"><i>02</i><span>В цифрах</span></a>
-        <a href="#now"><i>03</i><span>Направления</span></a>
-        <a href="#contact"><i>04</i><span>Контакты</span></a>
+        <a href="#about">Обо мне</a>
+        <a href="#numbers">В цифрах</a>
+        <a href="#now">Направления</a>
+        <a href="#contact">Контакты</a>
       </nav>
       <a class="nav__cta" href="https://t.me/andrewsmm1" target="_blank" rel="noopener">
         <span>Telegram</span>
@@ -61,27 +64,27 @@
 
   <div class="mobile-menu" id="mobile-menu" hidden>
     <nav aria-label="Мобильная навигация">
-      <a href="#about"><i>01</i><span>Обо&nbsp;мне</span></a>
-      <a href="#numbers"><i>02</i><span>В&nbsp;цифрах</span></a>
-      <a href="#now"><i>03</i><span>Направления</span></a>
-      <a href="#contact"><i>04</i><span>Контакты</span></a>
+      <a href="#about">Обо&nbsp;мне</a>
+      <a href="#numbers">В&nbsp;цифрах</a>
+      <a href="#now">Направления</a>
+      <a href="#contact">Контакты</a>
       <a class="mobile-menu__cta" href="https://t.me/andrewsmm1" target="_blank" rel="noopener">Telegram →</a>
     </nav>
   </div>
 
   <main id="main">
 
-    <!-- ── HERO ────────────────────────────────────────────── -->
+    <!-- ── HERO ── -->
     <section class="hero" id="top" aria-labelledby="hero-title">
       <div class="hero__meta">
-        <span class="mono">Portfolio&nbsp;· Est.&nbsp;2026</span>
+        <span class="eyebrow">Personal Brand</span>
       </div>
 
       <div class="hero__grid">
         <div class="hero__left">
           <h1 class="hero__title" id="hero-title" aria-label="Andrew Artemiev">
-            <span class="hero__l1" data-reveal>Andrew</span>
-            <span class="hero__l2" data-reveal><em>Artemiev</em></span>
+            <span class="hero__l1" data-reveal="strips">Andrew</span>
+            <span class="hero__l2" data-reveal="strips"><em>Artemiev</em></span>
           </h1>
 
           <p class="hero__role" data-reveal>
@@ -103,35 +106,33 @@
           </div>
         </div>
 
-        <figure class="hero__figure" data-reveal>
-          <span class="mono photo__cap-top">— 01 / Portrait</span>
-          <div class="photo">
-            <img src="assets/hero.jpg" alt="Портрет Andrew Artemiev" loading="eager" decoding="async"
+        <figure class="hero__figure" data-reveal="strips">
+          <div class="photo photo--float">
+            <img src="assets/hero.jpg" alt="Andrew Artemiev" loading="eager" decoding="async"
                  onerror="this.replaceWith(document.getElementById('hero-fallback').content.cloneNode(true))" />
           </div>
         </figure>
       </div>
 
       <div class="hero__foot" aria-hidden="true">
-        <span class="mono">Scroll</span>
-        <svg width="10" height="20" viewBox="0 0 10 20"><path d="M5 1v16M2 14l3 3 3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg>
+        <span class="scroll-indicator">
+          <span class="scroll-indicator__line"></span>
+        </span>
       </div>
     </section>
 
-    <!-- ── ABOUT ───────────────────────────────────────────── -->
+    <!-- ── ABOUT ── -->
     <section class="chapter about" id="about" aria-labelledby="about-title">
       <header class="chapter__head">
-        <span class="mono chapter__mark">— 01 / About</span>
-        <h2 class="chapter__title" id="about-title" data-reveal>Обо&nbsp;мне</h2>
+        <h2 class="chapter__title" id="about-title" data-reveal="strips">Обо&nbsp;мне</h2>
       </header>
 
       <div class="about__grid">
-        <figure class="about__figure" data-reveal>
-          <div class="photo photo--about">
-            <img src="assets/about.jpg" alt="Andrew Artemiev за работой" loading="lazy" decoding="async"
+        <figure class="about__figure" data-reveal="strips">
+          <div class="photo photo--float photo--about">
+            <img src="assets/about.jpg" alt="Andrew Artemiev" loading="lazy" decoding="async"
                  onerror="this.replaceWith(document.getElementById('about-fallback').content.cloneNode(true))" />
           </div>
-          <figcaption class="mono photo__cap">— 02 / Off&#8209;grid · Working remotely</figcaption>
         </figure>
 
         <div class="about__text">
@@ -140,7 +141,7 @@
           </p>
 
           <p class="about__body" data-reveal>
-            Попробовал классический путь и&nbsp;найм&nbsp;— быстро понял, что&nbsp;это не&nbsp;моё. Ушёл в&nbsp;digital и&nbsp;торговлю цифровыми активами.
+            Попробовал найм&nbsp;— быстро понял, что&nbsp;это не&nbsp;моё. Ушёл в&nbsp;digital и&nbsp;торговлю цифровыми активами.
           </p>
 
           <p class="about__coda" data-reveal>
@@ -150,102 +151,85 @@
       </div>
     </section>
 
-    <!-- ── IN NUMBERS ──────────────────────────────────────── -->
+    <!-- ── IN NUMBERS ── -->
     <section class="chapter numbers" id="numbers" aria-labelledby="numbers-title">
       <header class="chapter__head">
-        <span class="mono chapter__mark">— 02 / In numbers</span>
-        <h2 class="chapter__title" id="numbers-title" data-reveal>В&nbsp;цифрах</h2>
+        <h2 class="chapter__title" id="numbers-title" data-reveal="strips">В&nbsp;цифрах</h2>
       </header>
 
       <ol class="ledger" role="list">
         <li class="row" data-reveal>
-          <span class="row__idx mono">01</span>
           <span class="row__num"><span data-count-to="17" data-decimals="0">17</span></span>
-          <span class="row__label"><em>лет</em>&nbsp;— возраст</span>
+          <span class="row__label">лет</span>
         </li>
         <li class="row" data-reveal>
-          <span class="row__idx mono">02</span>
           <span class="row__num"><span data-count-to="1000000" data-decimals="0">1 000 000</span><span class="row__unit">&nbsp;₽</span><span class="row__plus">+</span></span>
-          <span class="row__label"><em>первый&nbsp;миллион</em>&nbsp;— лично&nbsp;заработано</span>
+          <span class="row__label">первый миллион</span>
         </li>
         <li class="row" data-reveal>
-          <span class="row__idx mono">03</span>
           <span class="row__num"><span data-count-to="2.5" data-decimals="1">2,5</span><span class="row__plus">+</span></span>
-          <span class="row__label"><em>года</em>&nbsp;— в&nbsp;трейдинге</span>
+          <span class="row__label">года в&nbsp;трейдинге</span>
         </li>
         <li class="row" data-reveal>
-          <span class="row__idx mono">04</span>
           <span class="row__num"><span data-count-to="2" data-decimals="0">2</span></span>
-          <span class="row__label"><em>собственных</em>&nbsp;— бизнеса в&nbsp;активной работе</span>
+          <span class="row__label">собственных бизнеса</span>
         </li>
         <li class="row" data-reveal>
-          <span class="row__idx mono">05</span>
           <span class="row__num"><span data-count-to="150" data-decimals="0">150</span></span>
-          <span class="row__label"><em>часов</em>&nbsp;— в&nbsp;найме</span>
+          <span class="row__label">часов в&nbsp;найме</span>
         </li>
       </ol>
     </section>
 
-    <!-- ── DIRECTIONS ──────────────────────────────────────── -->
+    <!-- ── DIRECTIONS ── -->
     <section class="chapter now" id="now" aria-labelledby="now-title">
       <header class="chapter__head">
-        <span class="mono chapter__mark">— 03 / Directions</span>
-        <h2 class="chapter__title" id="now-title" data-reveal>Направления</h2>
+        <h2 class="chapter__title" id="now-title" data-reveal="strips">Направления</h2>
       </header>
 
       <ol class="dirs" role="list">
         <li class="dir" data-reveal>
-          <span class="dir__idx mono">01</span>
           <h3 class="dir__title"><em>Запуски</em></h3>
           <p class="dir__desc">Помогаю экспертам выстроить систему вокруг продукта.</p>
         </li>
         <li class="dir" data-reveal>
-          <span class="dir__idx mono">02</span>
           <h3 class="dir__title"><em>Личные бренды</em></h3>
           <p class="dir__desc">Превращаю экспертность и&nbsp;медийность в&nbsp;системный актив.</p>
         </li>
         <li class="dir" data-reveal>
-          <span class="dir__idx mono">03</span>
           <h3 class="dir__title"><em>Предпринимательство</em></h3>
           <p class="dir__desc">Развиваю собственные проекты и&nbsp;тестирую новые модели.</p>
         </li>
         <li class="dir" data-reveal>
-          <span class="dir__idx mono">04</span>
           <h3 class="dir__title"><em>Инвестиции</em></h3>
           <p class="dir__desc">Вкладываюсь в&nbsp;проекты партнёров и&nbsp;перспективные направления.</p>
         </li>
       </ol>
     </section>
 
-    <!-- ── APPROACH ────────────────────────────────────────── -->
-    <section class="chapter approach" aria-labelledby="approach-title">
-      <span class="mono chapter__mark chapter__mark--center">— 04 / Philosophy</span>
-      <blockquote class="approach__quote" id="approach-title" data-reveal>
+    <!-- ── APPROACH ── -->
+    <section class="chapter approach">
+      <blockquote class="approach__quote" data-reveal="strips">
         <p>Я&nbsp;не&nbsp;люблю усложнять&nbsp;то, что&nbsp;можно построить <em>просто</em>.</p>
       </blockquote>
     </section>
 
-    <!-- ── TELEGRAM CHANNEL ────────────────────────────────── -->
+    <!-- ── TELEGRAM CHANNEL ── -->
     <section class="chapter channel" aria-labelledby="channel-title">
       <a class="banner" href="https://t.me/+_qoYUp5SE_hiMDgy" target="_blank" rel="noopener" data-reveal>
-        <span class="banner__mark mono">— 05 / Channel</span>
         <h2 class="banner__title" id="channel-title">Мой <em>Telegram&#8209;канал</em></h2>
         <p class="banner__desc">Мысли о&nbsp;бизнесе, маркетинге, предпринимательстве и&nbsp;собственном пути.</p>
-        <span class="banner__go mono">
+        <span class="banner__go">
           Перейти в&nbsp;Telegram
           <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
         </span>
       </a>
     </section>
 
-    <!-- ── FINAL / CONTACT ─────────────────────────────────── -->
+    <!-- ── FINAL ── -->
     <section class="chapter contact" id="contact" aria-labelledby="contact-title">
-      <header class="chapter__head">
-        <span class="mono chapter__mark">— 06 / Contact</span>
-      </header>
-
       <div class="contact__inner">
-        <h2 class="contact__title" id="contact-title" data-reveal>
+        <h2 class="contact__title" id="contact-title" data-reveal="strips">
           Если мы&nbsp;ещё не&nbsp;знакомы&nbsp;— <em>будем знакомы</em>.
         </h2>
         <p class="contact__sub" data-reveal>
@@ -258,8 +242,6 @@
             <svg width="28" height="28" viewBox="0 0 28 28"><path d="M5 23L23 5M23 5H9M23 5V19" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
           </span>
         </a>
-
-        <p class="contact__meta mono" data-reveal>Обычно отвечаю в&nbsp;течение дня</p>
       </div>
     </section>
 
@@ -267,13 +249,12 @@
 
   <footer class="footer">
     <div class="footer__inner">
-      <span class="mono">Andrew Artemiev</span>
-      <span class="mono footer__muted">© <span id="year">2026</span> · Personal site</span>
-      <a class="mono footer__link" href="https://t.me/andrewsmm1" target="_blank" rel="noopener">t.me/andrewsmm1&nbsp;→</a>
+      <span class="footer__sig">Andrew Artemiev</span>
+      <span class="footer__year">© <span id="year">2026</span></span>
+      <a class="footer__link" href="https://t.me/andrewsmm1" target="_blank" rel="noopener">t.me/andrewsmm1&nbsp;→</a>
     </div>
   </footer>
 
-  <!-- Photo fallbacks (used only if assets/*.jpg fail to load) -->
   <template id="hero-fallback">
     <div class="photo-fallback">
       <svg viewBox="0 0 480 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
