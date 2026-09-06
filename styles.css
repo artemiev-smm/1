@@ -846,10 +846,14 @@ button{ font-family: inherit; }
 }
 
 /* Channel CTA — richer presentation than the generic .btn--primary.
-   Warm brass surface with a soft internal light, hairline highlight
-   on the top edge, gentle outer halo. Hover lifts the halo slightly
-   and shifts the surface a touch warmer. Text and arrow untouched. */
+   Larger footprint, warm brass surface with a soft internal light,
+   a Telegram brand icon on the left, and a slow shimmer that reads
+   as ambient light on metal, not as a moving highlight. */
 .channel-card .btn--primary{
+  padding: 20px 32px;
+  min-height: 60px;
+  font-size: 16px;
+  gap: 14px;
   background:
     linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 55%),
     linear-gradient(180deg, var(--accent-hover) 0%, var(--accent) 100%);
@@ -859,14 +863,58 @@ button{ font-family: inherit; }
     inset 0 1px 0 rgba(255,255,255,0.28),
     inset 0 -1px 0 rgba(0,0,0,0.10),
     0 1px 0 rgba(0,0,0,0.20),
-    0 10px 28px -12px rgba(201,165,107,0.55),
+    0 12px 32px -12px rgba(201,165,107,0.55),
     0 0 0 0 rgba(220,184,125,0);
   transition:
     background-color var(--dur) var(--ease),
     box-shadow var(--dur) var(--ease),
     transform var(--dur) var(--ease),
     border-color var(--dur) var(--ease);
+  position: relative;
+  overflow: hidden;              /* clip the shimmer inside the pill */
+  isolation: isolate;
 }
+/* Brand mark — mono, sits left of the label. Uses currentColor so it
+   inherits the deep-brown text color; no color shift, no pathos. */
+.btn__brand{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px; height: 22px;
+  color: #1a1207;
+  flex: 0 0 auto;
+}
+.btn__brand svg{ display: block; }
+
+/* Slow ambient shimmer — a wide, low-opacity light sweep passing across
+   the metal every ~6s. Sits above the surface, below the label, and is
+   completely disabled for reduced-motion users. */
+.channel-card .btn--primary::before{
+  content: "";
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(
+    115deg,
+    rgba(255,255,255,0) 30%,
+    rgba(255,255,255,0.28) 50%,
+    rgba(255,255,255,0) 70%
+  );
+  transform: translateX(-140%);
+  animation: btnShimmer 6.5s ease-in-out 1.4s infinite;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  z-index: 0;
+}
+.channel-card .btn--primary > *{ position: relative; z-index: 1; }
+@keyframes btnShimmer{
+  0%   { transform: translateX(-140%); }
+  55%  { transform: translateX(140%); }
+  100% { transform: translateX(140%); }   /* pause off-screen before repeating */
+}
+@media (prefers-reduced-motion: reduce){
+  .channel-card .btn--primary::before{ animation: none; opacity: 0; }
+}
+
 .channel-card .btn--primary:hover,
 .channel-card .btn--primary:focus-visible{
   background:
@@ -877,10 +925,22 @@ button{ font-family: inherit; }
     inset 0 1px 0 rgba(255,255,255,0.35),
     inset 0 -1px 0 rgba(0,0,0,0.10),
     0 1px 0 rgba(0,0,0,0.22),
-    0 14px 34px -12px rgba(201,165,107,0.70),
+    0 16px 38px -12px rgba(201,165,107,0.72),
     0 0 0 6px rgba(220,184,125,0.10);
 }
 .channel-card .btn--primary:active{ transform: translateY(1px); }
+
+/* Mobile — keep the CTA readable without stretching to full width */
+@media (max-width: 640px){
+  .channel-card .btn--primary{
+    padding: 18px 26px;
+    min-height: 56px;
+    font-size: 15px;
+    gap: 12px;
+  }
+  .btn__brand{ width: 20px; height: 20px; }
+  .btn__brand svg{ width: 18px; height: 18px; }
+}
 
 /* ============================================================
    CONTACT / FINAL
