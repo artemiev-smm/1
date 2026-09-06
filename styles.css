@@ -394,24 +394,6 @@ button{ font-family: inherit; }
   .hero::before, .hero::after{ display: none; }
 }
 
-/* Second ambient accent — sits between numbers and directions area.
-   Uses the .numbers section as anchor (it already has generous vertical
-   whitespace on desktop). Soft brass fill pushed to the left side. */
-.numbers{ position: relative; isolation: isolate; overflow: hidden; }
-.numbers::before{
-  content: "";
-  position: absolute;
-  top: 40%;
-  left: -12%;
-  width: min(46vw, 640px);
-  height: min(46vw, 640px);
-  background: radial-gradient(closest-side, rgba(196,164,110,0.10), rgba(196,164,110,0.03) 45%, rgba(196,164,110,0) 72%);
-  filter: blur(4px);
-  pointer-events: none;
-  z-index: -1;
-}
-@media (max-width: 900px){ .numbers::before{ display: none; } }
-
 /* Third ambient accent — final contact section. Warm glow behind the big
    closing title, off-center right, keeps it from feeling flat. */
 .contact{ position: relative; isolation: isolate; overflow: hidden; }
