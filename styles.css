@@ -282,12 +282,13 @@ button{ font-family: inherit; }
 
 .nav__toggle{
   display: none;
-  align-items: center; justify-content: center;
-  background: rgba(240,235,224,0.03);
+  align-items: center; justify-content: space-between;
+  background: rgba(240,235,224,0.04);
   border: 1px solid var(--border-strong);
-  border-radius: var(--r-sm);
-  padding: 0;
-  width: 44px; height: 44px;
+  border-radius: var(--r-pill);
+  padding: 0 20px;
+  width: 100%;
+  height: 44px;
   color: var(--fg-strong);
   cursor: pointer;
   transition: border-color var(--dur) var(--ease),
@@ -296,9 +297,16 @@ button{ font-family: inherit; }
 .nav__toggle:hover,
 .nav__toggle:focus-visible{
   border-color: var(--fg-muted);
-  background: rgba(240,235,224,0.06);
+  background: rgba(240,235,224,0.07);
 }
-.nav__toggle svg{ display: block; overflow: visible; }
+.nav__toggle-label{
+  font-family: var(--f-body);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  color: var(--fg);
+  line-height: 1;
+}
+.nav__toggle-icon{ display: block; overflow: visible; }
 .nav__toggle-line{
   transform-origin: 50% 50%;
   transition: transform var(--dur) var(--ease),
@@ -355,34 +363,71 @@ button{ font-family: inherit; }
   align-items: center;
   isolation: isolate;
 }
-/* Subtle ambient accents — desktop only, purely decorative, non-interactive */
+/* Subtle ambient accents — desktop only, purely decorative, non-interactive.
+   Soft brass "light source" from top-right of the hero, gentle ivory fill
+   from bottom-left. Just enough to lift the composition, not a spotlight. */
 .hero::before{
   content: "";
   position: absolute;
-  top: 18%;
-  right: -6%;
-  width: min(46vw, 620px);
-  height: min(46vw, 620px);
-  background: radial-gradient(closest-side, rgba(196,164,110,0.055), rgba(196,164,110,0) 72%);
-  filter: blur(6px);
+  top: 12%;
+  right: -8%;
+  width: min(52vw, 720px);
+  height: min(52vw, 720px);
+  background: radial-gradient(closest-side, rgba(196,164,110,0.14), rgba(196,164,110,0.04) 45%, rgba(196,164,110,0) 72%);
+  filter: blur(2px);
   pointer-events: none;
   z-index: -1;
 }
 .hero::after{
   content: "";
   position: absolute;
-  bottom: 8%;
-  left: -8%;
-  width: min(38vw, 480px);
-  height: min(38vw, 480px);
-  background: radial-gradient(closest-side, rgba(240,235,224,0.03), rgba(240,235,224,0) 72%);
-  filter: blur(8px);
+  bottom: 4%;
+  left: -10%;
+  width: min(42vw, 560px);
+  height: min(42vw, 560px);
+  background: radial-gradient(closest-side, rgba(240,235,224,0.07), rgba(240,235,224,0) 70%);
+  filter: blur(4px);
   pointer-events: none;
   z-index: -1;
 }
 @media (max-width: 900px){
   .hero::before, .hero::after{ display: none; }
 }
+
+/* Second ambient accent — sits between numbers and directions area.
+   Uses the .numbers section as anchor (it already has generous vertical
+   whitespace on desktop). Soft brass fill pushed to the left side. */
+.numbers{ position: relative; isolation: isolate; overflow: hidden; }
+.numbers::before{
+  content: "";
+  position: absolute;
+  top: 40%;
+  left: -12%;
+  width: min(46vw, 640px);
+  height: min(46vw, 640px);
+  background: radial-gradient(closest-side, rgba(196,164,110,0.10), rgba(196,164,110,0.03) 45%, rgba(196,164,110,0) 72%);
+  filter: blur(4px);
+  pointer-events: none;
+  z-index: -1;
+}
+@media (max-width: 900px){ .numbers::before{ display: none; } }
+
+/* Third ambient accent — final contact section. Warm glow behind the big
+   closing title, off-center right, keeps it from feeling flat. */
+.contact{ position: relative; isolation: isolate; overflow: hidden; }
+.contact::before{
+  content: "";
+  position: absolute;
+  top: 20%;
+  right: -6%;
+  width: min(48vw, 660px);
+  height: min(48vw, 660px);
+  background: radial-gradient(closest-side, rgba(196,164,110,0.11), rgba(196,164,110,0.03) 45%, rgba(196,164,110,0) 72%);
+  filter: blur(4px);
+  pointer-events: none;
+  z-index: -1;
+}
+@media (max-width: 900px){ .contact::before{ display: none; } }
 .hero__grid{
   width: 100%;
   display: grid;
@@ -910,7 +955,14 @@ button{ font-family: inherit; }
 @media (max-width: 900px){
   .nav__links{ display: none; }
   .nav__cta{ display: none; }
-  .nav__toggle{ display: inline-flex; align-items: center; justify-content: center; }
+  /* 2-track grid: logo (auto) + stretched toggle (1fr) */
+  .nav__inner{ grid-template-columns: auto 1fr; gap: 16px; }
+  .nav__toggle{ display: flex; grid-column: 2; justify-self: stretch; }
+}
+/* On slightly wider mobile (tablet portrait), cap the toggle width so it
+   doesn't span the whole 1fr and look banner-like on ~700–900px */
+@media (min-width: 560px) and (max-width: 900px){
+  .nav__toggle{ justify-self: end; max-width: 320px; width: 100%; }
 }
 @media (max-width: 720px){
   /* Hide desktop-only scroll cue on mobile — overlaps hero photo */
