@@ -28,7 +28,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@300;400;500;600&family=Marck+Script&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -43,7 +43,12 @@
   <header class="nav" id="nav">
     <div class="nav__inner">
       <a href="#top" class="nav__brand" aria-label="Andrew Artemiev — на главную">
-        <span class="nav__mark"><span class="nav__mark-glyph">A</span></span>
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="18" height="18">
+            <path d="M4 27L16 5L28 27" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" stroke-linejoin="miter" fill="none"/>
+            <path d="M10 19H22" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" fill="none"/>
+          </svg>
+        </span>
       </a>
       <nav class="nav__links" aria-label="Основная навигация">
         <a href="#about">Обо мне</a>
@@ -75,25 +80,17 @@
 
     <!-- ── HERO ── -->
     <section class="hero" id="top" aria-labelledby="hero-title">
-      <div class="hero__meta">
-        <span class="eyebrow">Personal Brand</span>
-      </div>
-
       <div class="hero__grid">
         <div class="hero__left">
-          <h1 class="hero__title" id="hero-title" aria-label="Andrew Artemiev">
-            <span class="hero__l1" data-reveal="strips">Andrew</span>
-            <span class="hero__l2" data-reveal="strips">Artemiev</span>
+          <span class="eyebrow" data-reveal>Personal Brand</span>
+
+          <h1 class="hero__title" id="hero-title" aria-label="Andrew Artemiev" data-reveal>
+            <span class="hero__line">Andrew</span>
+            <span class="hero__line hero__line--offset">Artemiev</span>
           </h1>
 
-          <ul class="hero__roles" data-reveal>
-            <li>Предприниматель</li>
-            <li>Продюсер</li>
-            <li>Архитектор личных&nbsp;брендов</li>
-          </ul>
-
           <p class="hero__desc" data-reveal>
-            В&nbsp;17&nbsp;лет уже строю собственные проекты и&nbsp;работаю с&nbsp;экспертами.
+            17&nbsp;лет. Развиваю собственные проекты, занимаюсь запусками и&nbsp;развиваю личный&nbsp;бренд.
           </p>
 
           <div class="hero__actions" data-reveal>
@@ -113,7 +110,6 @@
           </div>
         </figure>
       </div>
-
     </section>
 
     <div class="scroll-cue" id="scroll-cue" aria-hidden="true">
@@ -207,11 +203,20 @@
       </ol>
     </section>
 
-    <!-- ── APPROACH ── -->
+    <!-- ── APPROACH — quote + photo split ── -->
     <section class="chapter approach">
-      <blockquote class="approach__quote" data-reveal="strips">
-        <p>Я&nbsp;не&nbsp;люблю усложнять&nbsp;то, что&nbsp;можно построить <em>просто</em>.</p>
-      </blockquote>
+      <div class="approach__grid">
+        <blockquote class="approach__quote" data-reveal="strips">
+          <span class="approach__mark" aria-hidden="true">“</span>
+          <p>Я&nbsp;не&nbsp;люблю усложнять&nbsp;то, что&nbsp;можно построить <em>просто</em>.</p>
+        </blockquote>
+        <figure class="approach__figure" data-reveal="strips">
+          <div class="photo photo--float photo--approach">
+            <img src="assets/three.jpg" alt="Andrew Artemiev" loading="lazy" decoding="async"
+                 onerror="this.replaceWith(document.getElementById('three-fallback').content.cloneNode(true))" />
+          </div>
+        </figure>
+      </div>
     </section>
 
     <!-- ── TELEGRAM CHANNEL CARD ── -->
@@ -221,9 +226,7 @@
         <p class="channel-card__desc">Мысли о&nbsp;бизнесе, маркетинге, предпринимательстве и&nbsp;собственном пути.</p>
         <span class="channel-card__cta">
           <span>Перейти в&nbsp;канал</span>
-          <span class="channel-card__arrow" aria-hidden="true">
-            <svg width="16" height="16" viewBox="0 0 16 16"><path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          </span>
+          <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
         </span>
       </a>
     </section>
@@ -251,7 +254,12 @@
 
   <footer class="footer">
     <div class="footer__inner">
-      <span class="footer__mark"><span class="nav__mark-glyph">A</span></span>
+      <span class="brand-mark brand-mark--sm" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="16" height="16">
+          <path d="M4 27L16 5L28 27" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" fill="none"/>
+          <path d="M10 19H22" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" fill="none"/>
+        </svg>
+      </span>
       <span class="footer__year">© <span id="year">2026</span></span>
       <a class="footer__link" href="https://t.me/andrewsmm1" target="_blank" rel="noopener">t.me/andrewsmm1&nbsp;→</a>
     </div>
@@ -270,6 +278,14 @@
       <svg viewBox="0 0 500 620" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
         <defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1a1712"/><stop offset="1" stop-color="#080604"/></linearGradient></defs>
         <rect width="500" height="620" fill="url(#g2)"/>
+      </svg>
+    </div>
+  </template>
+  <template id="three-fallback">
+    <div class="photo-fallback">
+      <svg viewBox="0 0 500 620" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs><linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c1814"/><stop offset="1" stop-color="#0a0806"/></linearGradient></defs>
+        <rect width="500" height="620" fill="url(#g3)"/>
       </svg>
     </div>
   </template>

@@ -1,6 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <rect width="64" height="64" rx="10" fill="#0d0b09"/>
-  <text x="50%" y="56%" dominant-baseline="middle" text-anchor="middle"
-        font-family="'Fraunces', ui-serif, Georgia, serif" font-weight="400"
-        font-style="italic" font-size="44" fill="#f0ebe0">A</text>
+  <g stroke="#f0ebe0" stroke-width="3" stroke-linecap="square" fill="none">
+    <path d="M14 52L32 14L50 52"/>
+    <path d="M22 40H42"/>
+  </g>
 </svg>

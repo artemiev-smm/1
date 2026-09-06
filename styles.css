@@ -19,15 +19,16 @@
 
   --accent:        #c9a56b;    /* brass — used sparingly */
   --accent-hover:  #dcb87d;
-  --accent-warm:   #d2c5a4;    /* warm champagne-grey — used for direction titles */
+  --accent-warm:   #d2c5a4;    /* champagne — direction titles only */
   --focus:         #c9a56b;
 
-  --f-display: 'Instrument Serif', 'Fraunces', ui-serif, Georgia, serif;
+  --f-display: 'Instrument Serif', ui-serif, Georgia, serif;
   --f-body:    'Inter Tight', system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --f-hero:    'Marck Script', ui-serif, 'Instrument Serif', cursive, serif;
 
   --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px;
   --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px;
-  --s-9: 96px; --s-10: 128px; --s-11: 160px; --s-12: 200px;
+  --s-9: 96px; --s-10: 128px; --s-11: 160px;
 
   --r-sm: 4px; --r-md: 8px; --r-lg: 16px; --r-xl: 24px; --r-pill: 999px;
 
@@ -80,12 +81,40 @@ button{ font-family: inherit; }
 }
 
 .eyebrow{
+  display: inline-block;
   font-family: var(--f-body);
   font-weight: 400;
-  font-size: 13px;
-  letter-spacing: 0.16em;
+  font-size: 12px;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--fg-muted);
+}
+
+/* ============================================================
+   BRAND MARK — geometric SVG monogram
+   ============================================================ */
+.brand-mark{
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  width: 40px; height: 40px;
+  border: 1.5px solid var(--fg-muted);
+  border-radius: 8px;
+  color: var(--fg-strong);
+  transition: border-color var(--dur) var(--ease),
+              color var(--dur) var(--ease),
+              background-color var(--dur) var(--ease);
+}
+.brand-mark svg{ display: block; }
+.brand-mark--sm{
+  width: 32px; height: 32px;
+  border-width: 1.4px;
+  border-radius: 6px;
+}
+.brand-mark--sm svg{ width: 14px; height: 14px; }
+.nav__brand:hover .brand-mark,
+.nav__brand:focus-visible .brand-mark{
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 /* ============================================================
@@ -172,7 +201,7 @@ button{ font-family: inherit; }
 }
 
 /* ============================================================
-   NAVIGATION — subtle separation even at rest
+   NAVIGATION
    ============================================================ */
 .nav{
   position: fixed;
@@ -203,37 +232,7 @@ button{ font-family: inherit; }
   align-items: center;
   gap: 32px;
 }
-
-/* Brand mark — real logo container, not stray letter */
-.nav__brand{ color: var(--fg-strong); line-height: 1; display: inline-flex; align-items: center; }
-.nav__mark{
-  display: inline-flex;
-  align-items: center; justify-content: center;
-  width: 34px; height: 34px;
-  border: 1px solid var(--border-strong);
-  border-radius: 6px;
-  background: rgba(240,235,224,0.02);
-  transition: border-color var(--dur) var(--ease),
-              background-color var(--dur) var(--ease),
-              color var(--dur) var(--ease);
-}
-.nav__mark-glyph{
-  display: inline-block;
-  font-family: var(--f-display);
-  font-style: italic;
-  font-weight: 400;
-  font-size: 22px;
-  line-height: 1;
-  color: var(--fg-strong);
-  letter-spacing: 0;
-  transform: translateY(-1px);
-}
-.nav__brand:hover .nav__mark,
-.nav__brand:focus-visible .nav__mark{
-  border-color: var(--accent);
-  background: rgba(201,165,107,0.06);
-}
-.nav__brand:hover .nav__mark-glyph{ color: var(--accent); }
+.nav__brand{ line-height: 1; display: inline-flex; align-items: center; }
 
 .nav__links{
   justify-self: end;
@@ -331,21 +330,19 @@ button{ font-family: inherit; }
 }
 
 /* ============================================================
-   HERO — Instrument Serif italic (one font, both lines)
+   HERO — Marck Script name, centered composition
    ============================================================ */
 .hero{
   position: relative;
   max-width: var(--wrap);
   margin: 0 auto;
-  padding: clamp(120px, 15vh, 160px) var(--pad-x) clamp(48px, 6vw, 80px);
+  padding: clamp(110px, 14vh, 150px) var(--pad-x) clamp(80px, 12vh, 140px);
   min-height: 100svh;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  gap: clamp(32px, 5vw, 64px);
+  display: flex;
+  align-items: center;
 }
-.hero__meta{ display: flex; align-items: baseline; }
-
 .hero__grid{
+  width: 100%;
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   gap: clamp(32px, 6vw, 80px);
@@ -354,60 +351,39 @@ button{ font-family: inherit; }
 .hero__left{ max-width: 780px; }
 
 .hero__title{
-  margin: 0;
+  margin: clamp(16px, 2vw, 24px) 0 0 -0.05em;
   color: var(--fg-strong);
-  font-family: var(--f-display);
-  font-style: italic;
+  font-family: var(--f-hero);
+  font-style: normal;
   font-weight: 400;
-  letter-spacing: -0.015em;
-  line-height: 1.0;
-  font-size: clamp(72px, 13vw, 176px);
+  letter-spacing: 0;
+  line-height: 1.04;
+  font-size: clamp(72px, 12vw, 168px);
   display: flex; flex-direction: column;
-  padding-bottom: 0.08em;
+  padding: 0.05em 0.08em 0.12em 0.08em; /* prevent calligraphic tails from being clipped */
+  overflow: visible;
 }
-.hero__l1,
-.hero__l2{
+.hero__line{
   display: block;
   white-space: nowrap;
-  font-family: var(--f-display);
-  font-style: italic;
+  font-family: var(--f-hero);
+  font-style: normal;
   font-weight: 400;
+  overflow: visible;
 }
-.hero__l2{ padding-left: clamp(12px, 2.5vw, 42px); }
-
-/* Roles — editorial stacked manifest, distinct hierarchy from body */
-.hero__roles{
-  list-style: none;
-  padding: 0;
-  margin: clamp(28px, 3.4vw, 44px) 0 0 clamp(6px, 1vw, 14px);
-  display: grid;
-  gap: 4px;
-  font-family: var(--f-body);
-  font-weight: 500;
-  font-size: clamp(11px, 0.9vw, 12.5px);
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--fg-strong);
-}
-.hero__roles li{
-  padding: 8px 0;
-  border-top: 1px solid var(--border);
-  line-height: 1.3;
-}
-.hero__roles li:first-child{ border-top: 1px solid var(--border-strong); }
-.hero__roles li:last-child{ border-bottom: 1px solid var(--border); }
+.hero__line--offset{ padding-left: clamp(20px, 3.5vw, 60px); }
 
 .hero__desc{
-  margin: clamp(24px, 2.6vw, 32px) 0 0 clamp(6px, 1vw, 14px);
+  margin: clamp(28px, 3.4vw, 40px) 0 0 clamp(4px, 0.6vw, 10px);
   font-family: var(--f-body);
   font-weight: 400;
-  font-size: clamp(14px, 1vw, 15px);
+  font-size: clamp(15px, 1.05vw, 17px);
   color: var(--fg-muted);
   max-width: 44ch;
   line-height: 1.6;
 }
 .hero__actions{
-  margin: clamp(28px, 3.4vw, 44px) 0 0 clamp(6px, 1vw, 14px);
+  margin: clamp(32px, 3.8vw, 44px) 0 0 clamp(4px, 0.6vw, 10px);
   display: flex; flex-wrap: wrap; gap: 12px;
 }
 
@@ -445,9 +421,10 @@ button{ font-family: inherit; }
   50%     { transform: translate3d(0,  6px, 0); }
 }
 .photo--about{ animation-duration: 9s; animation-delay: -2s; }
+.photo--approach{ animation-duration: 8s; animation-delay: -3s; }
 @media (prefers-reduced-motion: reduce){ .photo--float{ animation: none; } }
 
-/* Scroll cue — pinned to viewport bottom-right, fades after first scroll */
+/* Scroll cue — fixed to viewport bottom-right, fades on scroll */
 .scroll-cue{
   position: fixed;
   bottom: clamp(20px, 3vw, 40px);
@@ -458,14 +435,15 @@ button{ font-family: inherit; }
   align-items: center;
   gap: 6px;
   color: var(--fg-muted);
-  transition: color var(--dur) var(--ease), opacity var(--dur-slow) var(--ease), transform var(--dur-slow) var(--ease);
+  transition: color var(--dur) var(--ease),
+              opacity var(--dur-slow) var(--ease),
+              transform var(--dur-slow) var(--ease);
   pointer-events: none;
 }
 .scroll-cue.is-hidden{
   opacity: 0;
   transform: translateY(8px);
 }
-.scroll-cue:hover{ color: var(--fg); }
 .scroll-cue__label{
   font-family: var(--f-body);
   font-size: 10px;
@@ -484,30 +462,38 @@ button{ font-family: inherit; }
 }
 
 /* ============================================================
-   BUTTONS
+   BUTTONS — clean, no artifacts
    ============================================================ */
 .btn{
   display: inline-flex; align-items: center; gap: 12px;
-  padding: 14px 20px;
+  padding: 16px 24px;
   border-radius: var(--r-pill);
   font-family: var(--f-body);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
   border: 1px solid transparent;
   cursor: pointer;
   transition: background-color var(--dur) var(--ease),
               color var(--dur) var(--ease),
-              border-color var(--dur) var(--ease),
               transform var(--dur) var(--ease);
-  min-height: 44px;
+  min-height: 48px;
+  position: relative;    /* no ::before/::after used */
 }
 .btn__arrow{ display: inline-flex; }
 .btn__arrow svg{ transition: transform var(--dur) var(--ease); }
 .btn:hover .btn__arrow svg{ transform: translate(3px,-3px); }
 .btn:active{ transform: translateY(1px); }
-.btn--primary{ background: var(--fg); color: var(--bg); }
+.btn--primary{
+  background: var(--fg);
+  color: var(--bg);
+  border-color: var(--fg);
+}
 .btn--primary:hover,
-.btn--primary:focus-visible{ background: var(--accent-hover); color: var(--bg); }
+.btn--primary:focus-visible{
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  color: var(--bg);
+}
 
 /* ============================================================
    CHAPTER
@@ -635,7 +621,7 @@ button{ font-family: inherit; }
 }
 
 /* ============================================================
-   DIRECTIONS — warm champagne accent on titles
+   DIRECTIONS
    ============================================================ */
 .dirs{ list-style: none; padding: 0; margin: 0; display: grid; gap: 0; }
 .dir{
@@ -650,7 +636,6 @@ button{ font-family: inherit; }
 }
 .dir:last-child{ border-bottom: 1px solid var(--border); }
 .dir:hover{ background: rgba(240,235,224,0.012); padding-left: 8px; }
-
 .dir__title{
   margin: 0;
   font-family: var(--f-display);
@@ -672,28 +657,31 @@ button{ font-family: inherit; }
 }
 
 /* ============================================================
-   APPROACH
+   APPROACH — quote + photo split
    ============================================================ */
 .approach{
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
-  text-align: center;
-  padding-top: clamp(72px, 12vw, 160px);
-  padding-bottom: clamp(72px, 12vw, 160px);
+  padding-top: clamp(80px, 12vw, 160px);
+  padding-bottom: clamp(80px, 12vw, 160px);
+}
+.approach__grid{
   display: grid;
-  justify-items: center;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: clamp(40px, 6vw, 96px);
+  align-items: center;
 }
 .approach__quote{
   margin: 0; padding: 0;
-  max-width: 22ch;
+  position: relative;
+  color: var(--fg-strong);
   font-family: var(--f-display);
   font-weight: 400;
   font-style: italic;
-  font-size: clamp(38px, 6vw, 88px);
+  font-size: clamp(34px, 5vw, 68px);
   letter-spacing: -0.015em;
-  line-height: 1.1;
+  line-height: 1.15;
   padding-bottom: 0.05em;
-  color: var(--fg-strong);
   text-wrap: balance;
 }
 .approach__quote p{ margin: 0; }
@@ -702,9 +690,27 @@ button{ font-family: inherit; }
   font-weight: 400;
   color: var(--accent);
 }
+.approach__mark{
+  position: absolute;
+  top: -0.5em; left: -0.35em;
+  font-family: var(--f-display);
+  font-style: italic;
+  font-size: 1.6em;
+  color: var(--fg-quiet);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+.approach__figure{ margin: 0; }
+.approach__figure .photo{
+  aspect-ratio: 4/5;
+  max-width: min(460px, 100%);
+  margin: 0 0 0 auto;
+  border: 1px solid var(--border-strong);
+}
 
 /* ============================================================
-   TELEGRAM CHANNEL — proper card
+   TELEGRAM CHANNEL CARD — clean, single-piece, no artifacts
    ============================================================ */
 .channel{
   padding-top: clamp(48px, 6vw, 96px);
@@ -720,13 +726,17 @@ button{ font-family: inherit; }
   border-radius: var(--r-xl);
   text-align: center;
   transition: background-color var(--dur-slow) var(--ease),
-              border-color var(--dur-slow) var(--ease),
-              transform var(--dur-slow) var(--ease);
+              border-color var(--dur-slow) var(--ease);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
 }
-.channel-card:hover{
+.channel-card::before,
+.channel-card::after{ content: none; }  /* explicitly no decorative pseudo bars */
+.channel-card:hover,
+.channel-card:focus-visible{
   background: var(--surface);
   border-color: var(--accent);
-  transform: translateY(-2px);
 }
 .channel-card__title{
   margin: 0 0 clamp(14px, 1.4vw, 20px);
@@ -735,12 +745,12 @@ button{ font-family: inherit; }
   font-style: italic;
   font-size: clamp(36px, 5vw, 64px);
   letter-spacing: -0.015em;
-  line-height: 1.05;
+  line-height: 1.1;
   padding-bottom: 0.06em;
   color: var(--fg-strong);
 }
 .channel-card__desc{
-  margin: 0 auto clamp(24px, 3vw, 36px);
+  margin: 0 auto clamp(24px, 3vw, 32px);
   color: var(--fg-muted);
   font-size: clamp(15px, 1.1vw, 17px);
   line-height: 1.5;
@@ -748,20 +758,26 @@ button{ font-family: inherit; }
 }
 .channel-card__cta{
   display: inline-flex; align-items: center; gap: 10px;
-  padding: 14px 26px;
+  padding: 16px 28px;
   background: var(--fg);
   color: var(--bg);
+  border: 1px solid var(--fg);
   border-radius: var(--r-pill);
   font-family: var(--f-body);
   font-weight: 500;
   font-size: 15px;
   letter-spacing: -0.005em;
-  transition: background-color var(--dur) var(--ease);
-  min-height: 44px;
+  transition: background-color var(--dur) var(--ease),
+              border-color var(--dur) var(--ease);
+  min-height: 48px;
 }
-.channel-card:hover .channel-card__cta{ background: var(--accent-hover); }
-.channel-card__arrow svg{ transition: transform var(--dur) var(--ease); }
-.channel-card:hover .channel-card__arrow svg{ transform: translate(3px,-3px); }
+.channel-card__cta svg{ transition: transform var(--dur) var(--ease); }
+.channel-card:hover .channel-card__cta,
+.channel-card:focus-visible .channel-card__cta{
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+.channel-card:hover .channel-card__cta svg{ transform: translate(3px,-3px); }
 
 /* ============================================================
    CONTACT / FINAL
@@ -806,19 +822,22 @@ button{ font-family: inherit; }
   padding: clamp(16px, 2vw, 22px) clamp(24px, 2.6vw, 30px);
   background: var(--fg);
   color: var(--bg);
+  border: 1px solid var(--fg);
   border-radius: var(--r-pill);
   font-family: var(--f-body);
   font-weight: 500;
   font-size: clamp(18px, 1.6vw, 22px);
   letter-spacing: -0.01em;
   transition: background-color var(--dur) var(--ease),
+              border-color var(--dur) var(--ease),
               transform var(--dur) var(--ease),
               box-shadow var(--dur-slow) var(--ease);
-  min-height: 44px;
+  min-height: 48px;
 }
 .cta:hover,
 .cta:focus-visible{
   background: var(--accent-hover);
+  border-color: var(--accent-hover);
   transform: translateY(-1px);
   box-shadow: 0 20px 60px -20px rgba(201,165,107,0.28);
 }
@@ -847,14 +866,6 @@ button{ font-family: inherit; }
   color: var(--fg-quiet);
   letter-spacing: -0.005em;
 }
-.footer__mark{
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 30px; height: 30px;
-  border: 1px solid var(--border-strong);
-  border-radius: 5px;
-  background: rgba(240,235,224,0.02);
-}
-.footer__mark .nav__mark-glyph{ font-size: 19px; }
 .footer__year{ justify-self: center; }
 .footer__link{
   justify-self: end;
@@ -868,11 +879,11 @@ button{ font-family: inherit; }
    RESPONSIVE
    ============================================================ */
 @media (max-width: 1100px){
-  .hero{ min-height: auto; padding-top: 120px; }
-  .hero__grid{ grid-template-columns: 1fr; gap: 48px; }
+  .hero{ min-height: auto; padding-top: 120px; padding-bottom: 96px; }
+  .hero__grid{ grid-template-columns: 1fr; gap: 44px; }
   .hero__figure{ justify-content: flex-start; }
   .hero__figure .photo{ max-width: min(420px, 100%); }
-  .hero__l2{ padding-left: 22px; }
+  .hero__line--offset{ padding-left: 24px; }
 
   .about__grid{ grid-template-columns: 1fr; gap: 48px; }
   .about__figure .photo{ max-width: 480px; }
@@ -880,6 +891,9 @@ button{ font-family: inherit; }
   .row__num{ font-size: clamp(52px, 10vw, 92px); }
   .dir{ grid-template-columns: 1fr 1fr; gap: 24px; }
   .dir__title{ font-size: clamp(24px, 4.4vw, 34px); }
+
+  .approach__grid{ grid-template-columns: 1fr; gap: 48px; }
+  .approach__figure .photo{ margin: 0; max-width: 480px; }
 }
 @media (max-width: 900px){
   .nav__links{ display: none; }
@@ -889,19 +903,20 @@ button{ font-family: inherit; }
 @media (max-width: 640px){
   :root{ --pad-x: 20px; }
 
+  .brand-mark{ width: 36px; height: 36px; }
+  .brand-mark svg{ width: 16px; height: 16px; }
+
   .chapter{ padding-top: 64px; padding-bottom: 64px; }
   .chapter__head{ margin-bottom: 40px; }
   .chapter__title{ font-size: clamp(36px, 10vw, 46px); }
 
-  .hero{ padding-top: 96px; padding-bottom: 40px; gap: 28px; }
-  .hero__title{ font-size: clamp(62px, 19vw, 88px); line-height: 1.02; padding-bottom: 0.06em; }
-  .hero__l2{ padding-left: 12px; }
-  .hero__roles{ margin-top: 24px; font-size: 11px; letter-spacing: 0.22em; }
-  .hero__roles li{ padding: 7px 0; }
-  .hero__desc{ margin-top: 20px; font-size: 15px; }
+  .hero{ padding-top: 100px; padding-bottom: 72px; gap: 24px; }
+  .hero__title{ font-size: clamp(70px, 20vw, 108px); line-height: 1.05; }
+  .hero__line--offset{ padding-left: 16px; }
+  .hero__desc{ margin-top: 24px; font-size: 15px; }
+  .hero__actions{ margin-top: 32px; }
   .hero__figure{ justify-content: center; }
   .hero__figure .photo{ max-width: min(340px, 90%); }
-  .hero__foot{ padding-top: 20px; }
 
   .about__lede{ font-size: clamp(26px, 7vw, 30px); }
   .about__coda{ font-size: 19px; }
@@ -924,11 +939,14 @@ button{ font-family: inherit; }
   .dir__desc{ font-size: 15px; }
 
   .approach{ padding-top: 64px; padding-bottom: 64px; }
-  .approach__quote{ font-size: clamp(36px, 11vw, 52px); max-width: 100%; }
+  .approach__quote{ font-size: clamp(30px, 8vw, 40px); }
+  .approach__mark{ font-size: 1.4em; top: -0.4em; left: -0.2em; }
+  .approach__figure .photo{ max-width: min(340px, 90%); margin: 0 auto; }
 
   .channel{ padding-top: 48px; padding-bottom: 48px; }
   .channel-card{ padding: 32px 24px; border-radius: var(--r-lg); }
   .channel-card__title{ font-size: clamp(32px, 9vw, 40px); }
+  .channel-card__cta{ padding: 14px 22px; font-size: 14px; }
 
   .contact{ padding-top: 80px; padding-bottom: 80px; }
   .contact__title{ font-size: clamp(40px, 12vw, 56px); line-height: 1.1; }
@@ -942,5 +960,5 @@ button{ font-family: inherit; }
 }
 @media (max-width: 380px){
   :root{ --pad-x: 16px; }
-  .hero__title{ font-size: 64px; }
+  .hero__title{ font-size: 68px; }
 }
