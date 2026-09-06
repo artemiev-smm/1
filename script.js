@@ -20,6 +20,17 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
+  // ── Scroll cue fade-out ─────────────────────────────────
+  var cue = document.getElementById('scroll-cue');
+  var cueHidden = null;
+  function updateCue() {
+    if (!cue) return;
+    var v = window.scrollY > 60;
+    if (v !== cueHidden) { cue.classList.toggle('is-hidden', v); cueHidden = v; }
+  }
+  window.addEventListener('scroll', updateCue, { passive: true });
+  updateCue();
+
   // ── Mobile menu ──────────────────────────────────────────
   var toggle = document.querySelector('.nav__toggle');
   var menu   = document.getElementById('mobile-menu');
