@@ -47,7 +47,7 @@
 }
 
 *, *::before, *::after{ box-sizing: border-box; }
-html, body{ background: var(--bg); overflow-x: clip; }
+html, body{ background: var(--bg); overflow-x: hidden; overflow-x: clip; }
 html{ scroll-behavior: smooth; }
 
 body{
@@ -61,6 +61,9 @@ body{
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   font-feature-settings: "kern","liga","cv11";
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 img, svg{ display: block; max-width: 100%; }
@@ -326,6 +329,8 @@ button{ font-family: inherit; }
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   padding: 96px var(--pad-x) 40px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .mobile-menu[hidden]{ display: none; }
 .mobile-menu nav{
@@ -358,6 +363,7 @@ button{ font-family: inherit; }
   max-width: var(--wrap);
   margin: 0 auto;
   padding: clamp(110px, 14vh, 150px) var(--pad-x) clamp(80px, 12vh, 140px);
+  min-height: 100vh;
   min-height: 100svh;
   display: flex;
   align-items: center;
@@ -1085,7 +1091,8 @@ button{ font-family: inherit; }
   .chapter__title{ font-size: clamp(36px, 10vw, 46px); }
 
   .hero{ padding-top: 100px; padding-bottom: 72px; gap: 24px; }
-  .hero__title{ font-size: clamp(70px, 20vw, 108px); line-height: 1.05; overflow-wrap: break-word; }
+  .hero__title{ font-size: clamp(48px, 18vw, 108px); line-height: 1.05; overflow-wrap: break-word; }
+  .hero__line{ white-space: normal; overflow-wrap: break-word; word-break: break-word; }
   .hero__line--offset{ padding-left: 16px; }
   .hero__desc{ margin-top: 24px; font-size: 15px; overflow-wrap: break-word; }
   .hero__actions{ margin-top: 32px; }
@@ -1101,8 +1108,8 @@ button{ font-family: inherit; }
     gap: 4px 16px;
     padding: 22px 0;
   }
-  .row__num{ font-size: clamp(54px, 16vw, 80px); }
-  .row__label{ flex-basis: 100%; font-size: 15px; }
+  .row__num{ font-size: clamp(42px, 14vw, 80px); white-space: normal; overflow-wrap: break-word; }
+  .row__label{ flex-basis: 100%; font-size: 15px; overflow-wrap: break-word; word-break: break-word; }
 
   .dir{
     grid-template-columns: 1fr;
@@ -1114,19 +1121,20 @@ button{ font-family: inherit; }
   .dir__desc{ font-size: 15px; overflow-wrap: break-word; }
 
   .approach{ padding-top: 64px; padding-bottom: 64px; }
-  .approach__quote{ font-size: clamp(30px, 8vw, 40px); }
+  .approach__quote{ font-size: clamp(30px, 8vw, 40px); overflow-wrap: break-word; word-break: break-word; }
   .approach__mark{ font-size: 1.4em; top: -0.4em; left: -0.2em; }
   .approach__figure .photo{ max-width: min(340px, 90%); margin: 0 auto; }
 
   .channel{ padding-top: 48px; padding-bottom: 48px; }
   .channel-card{ padding: 32px 24px; border-radius: var(--r-lg); }
-  .channel-card__title{ font-size: clamp(32px, 9vw, 40px); }
+  .channel-card__title{ font-size: clamp(32px, 9vw, 40px); overflow-wrap: break-word; word-break: break-word; }
 
   .contact{ padding-top: 80px; padding-bottom: 80px; }
-  .contact__title{ font-size: clamp(40px, 12vw, 56px); line-height: 1.1; }
-  .cta{ padding: 16px 22px; gap: 14px; max-width: 100%; }
-  .cta > span:first-child{ font-size: 18px; }
-  .cta__arrow{ margin-left: auto; }
+  .contact__title{ font-size: clamp(40px, 12vw, 56px); line-height: 1.1; overflow-wrap: break-word; word-break: break-word; }
+  .contact__sub{ overflow-wrap: break-word; word-break: break-word; }
+  .cta{ padding: 16px 22px; gap: 14px; max-width: 100%; min-width: 0; }
+  .cta > span:first-child{ font-size: 18px; min-width: 0; overflow-wrap: break-word; }
+  .cta__arrow{ margin-left: auto; flex-shrink: 0; }
   .cta__arrow svg{ width: 24px; height: 24px; }
 
   .footer__inner{ grid-template-columns: 1fr; gap: 12px; }
@@ -1134,5 +1142,33 @@ button{ font-family: inherit; }
 }
 @media (max-width: 380px){
   :root{ --pad-x: 16px; }
-  .hero__title{ font-size: 68px; }
+}
+/* ============================================================
+   SAFE AREA — notches, rounded corners, home-bar
+   Enhances padding on edge-touching elements when env() insets
+   are available (viewport-fit=cover in <meta>).
+   ============================================================ */
+@supports(padding: max(0px, env(safe-area-inset-left))){
+  .nav{
+    padding-left: max(var(--pad-x), env(safe-area-inset-left));
+    padding-right: max(var(--pad-x), env(safe-area-inset-right));
+  }
+  .hero{
+    padding-left: max(var(--pad-x), env(safe-area-inset-left));
+    padding-right: max(var(--pad-x), env(safe-area-inset-right));
+  }
+  .chapter{
+    padding-left: max(var(--pad-x), env(safe-area-inset-left));
+    padding-right: max(var(--pad-x), env(safe-area-inset-right));
+  }
+  .mobile-menu{
+    padding-left: max(var(--pad-x), env(safe-area-inset-left));
+    padding-right: max(var(--pad-x), env(safe-area-inset-right));
+    padding-bottom: max(40px, env(safe-area-inset-bottom));
+  }
+  .footer{
+    padding-left: max(var(--pad-x), env(safe-area-inset-left));
+    padding-right: max(var(--pad-x), env(safe-area-inset-right));
+    padding-bottom: max(32px, env(safe-area-inset-bottom));
+  }
 }
