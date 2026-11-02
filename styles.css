@@ -1036,6 +1036,15 @@ button{ font-family: inherit; }
   letter-spacing: -0.005em;
 }
 .footer__year{ justify-self: center; }
+.footer__legal{
+  max-width: var(--wrap);
+  margin: 16px auto 0;
+  font-family: var(--f-body);
+  font-size: 11px;
+  color: var(--fg-quiet);
+  letter-spacing: -0.005em;
+  text-align: center;
+}
 .footer__link{
   justify-self: end;
   color: var(--fg);
