@@ -85,20 +85,38 @@
       <div class="hero__media" aria-hidden="true">
         <video class="hero__video" id="hero-video"
                autoplay muted loop playsinline
-               preload="metadata"
-               poster="assets/hero-poster.jpg"></video>
+               preload="auto"
+               poster="assets/hero-poster.jpg">
+          <source src="assets/hero.mp4" media="(min-width: 769px)" type="video/mp4" />
+          <source src="assets/hero-mobile.mp4" type="video/mp4" />
+        </video>
+        <script>
+          /* Synchronous source pick for Chrome/FF which ignore media on <source>.
+             Replaces the sources with a single picked one and kicks load/play early. */
+          (function(){
+            var v=document.getElementById('hero-video'); if(!v) return;
+            var narrow=window.matchMedia('(max-width: 900px)').matches;
+            while(v.firstChild) v.removeChild(v.firstChild);
+            var s=document.createElement('source');
+            s.type='video/mp4';
+            s.src=narrow?'assets/hero-mobile.mp4':'assets/hero.mp4';
+            v.appendChild(s);
+            try{v.load();}catch(e){}
+            var p=v.play(); if(p&&p.catch)p.catch(function(){});
+          })();
+        </script>
         <div class="hero__scrim"></div>
         <div class="hero__vignette"></div>
       </div>
 
       <div class="hero__inner">
-        <span class="eyebrow eyebrow--hero" data-reveal>Andrew&nbsp;Artemiev · Personal&nbsp;Brand</span>
-        <h1 class="hero__title" id="hero-title" data-reveal>
+        <span class="eyebrow eyebrow--hero">Andrew&nbsp;Artemiev · Personal&nbsp;Brand</span>
+        <h1 class="hero__title" id="hero-title">
           В&nbsp;17 сделал <em>первый миллион рублей</em>,<br />
           запустил два&nbsp;бизнеса и&nbsp;строю<br />
           проекты в&nbsp;digital.
         </h1>
-        <div class="hero__cta" data-reveal>
+        <div class="hero__cta">
           <a class="btn btn--primary" href="https://t.me/andrewsmm1" target="_blank" rel="noopener">
             <span>Написать в&nbsp;Телеграм</span>
             <span class="btn__arrow" aria-hidden="true">
@@ -117,11 +135,11 @@
     <!-- ── ABOUT ── -->
     <section class="chapter about" id="about" aria-labelledby="about-title">
       <header class="chapter__head">
-        <h2 class="chapter__title" id="about-title" data-reveal="strips">Обо&nbsp;мне</h2>
+        <h2 class="chapter__title" id="about-title" data-reveal>Обо&nbsp;мне</h2>
       </header>
 
       <div class="about__grid">
-        <figure class="about__figure" data-reveal="strips">
+        <figure class="about__figure" data-reveal>
           <div class="photo photo--float photo--about">
             <img src="assets/about.jpg" alt="Andrew Artemiev" loading="lazy" decoding="async"
                  onerror="this.replaceWith(document.getElementById('about-fallback').content.cloneNode(true))" />
@@ -129,16 +147,11 @@
         </figure>
 
         <div class="about__text">
-          <p class="about__lede" data-reveal>
+          <p class="about__lede">
             С&nbsp;раннего возраста интересовался предпринимательством и&nbsp;деньгами.
           </p>
-
-          <p class="about__body" data-reveal>
-            Попробовал найм&nbsp;— быстро понял, что&nbsp;классический путь не&nbsp;мой.
-          </p>
-
-          <p class="about__coda" data-reveal>
-            Поэтому <em>я&nbsp;строю&nbsp;свой</em>.
+          <p class="about__body">
+            Попробовал найм&nbsp;— классический путь оказался не&nbsp;моим, поэтому <em>я&nbsp;строю свой</em>.
           </p>
         </div>
       </div>
@@ -147,25 +160,25 @@
     <!-- ── IN NUMBERS ── -->
     <section class="chapter numbers" id="numbers" aria-labelledby="numbers-title">
       <header class="chapter__head">
-        <h2 class="chapter__title" id="numbers-title" data-reveal="strips">В&nbsp;цифрах</h2>
+        <h2 class="chapter__title" id="numbers-title" data-reveal>В&nbsp;цифрах</h2>
       </header>
 
       <ol class="metrics" role="list">
-        <li class="metric" data-reveal>
-          <span class="metric__num"><span data-count-to="1000000" data-decimals="0">1 000 000</span><span class="metric__unit">&nbsp;₽</span></span>
-          <span class="metric__label">первый&nbsp;заработанный миллион</span>
+        <li class="metric">
+          <span class="metric__num"><span data-count-to="17" data-decimals="0">17</span></span>
+          <span class="metric__label">лет, когда сделал первый миллион</span>
         </li>
-        <li class="metric" data-reveal>
+        <li class="metric">
+          <span class="metric__num"><span data-count-to="1000000" data-decimals="0">1 000 000</span><span class="metric__unit">&nbsp;₽</span><span class="metric__plus">+</span></span>
+          <span class="metric__label">заработано</span>
+        </li>
+        <li class="metric">
           <span class="metric__num"><span data-count-to="2" data-decimals="0">2</span></span>
-          <span class="metric__label">запущенных бизнеса</span>
+          <span class="metric__label">собственных бизнеса</span>
         </li>
-        <li class="metric" data-reveal>
-          <span class="metric__num"><span data-count-to="10" data-decimals="0">10</span><span class="metric__plus">+</span></span>
-          <span class="metric__label">экспертов&nbsp;в&nbsp;работе</span>
-        </li>
-        <li class="metric" data-reveal>
-          <span class="metric__num"><span data-count-to="3.1" data-decimals="1">3,1</span><span class="metric__unit">&nbsp;млн&nbsp;₽</span><span class="metric__plus">+</span></span>
-          <span class="metric__label">выручка&nbsp;запусков</span>
+        <li class="metric">
+          <span class="metric__num"><span data-count-to="150" data-decimals="0">150</span></span>
+          <span class="metric__label">часов в&nbsp;найме</span>
         </li>
       </ol>
     </section>
@@ -174,7 +187,7 @@
     <section class="chapter now" id="now" aria-labelledby="now-title">
       <header class="chapter__head chapter__head--direction">
         <span class="eyebrow" data-reveal>Направление</span>
-        <h2 class="chapter__title chapter__title--xl" id="now-title" data-reveal="strips">Продвижение и&nbsp;монетизация экспертов</h2>
+        <h2 class="chapter__title chapter__title--xl" id="now-title" data-reveal>Продвижение и&nbsp;монетизация экспертов</h2>
         <p class="chapter__sub" data-reveal>Единая система работы с&nbsp;личным брендом.</p>
       </header>
 
@@ -219,18 +232,16 @@
 
     <!-- ── APPROACH ── -->
     <section class="chapter approach">
-      <div class="approach__grid">
-        <blockquote class="approach__quote" data-reveal="strips">
-          <span class="approach__mark" aria-hidden="true">“</span>
-          <p>Я&nbsp;не&nbsp;люблю усложнять&nbsp;то, что&nbsp;можно построить <em>просто</em>.</p>
-        </blockquote>
-        <figure class="approach__figure" data-reveal="strips">
-          <div class="photo photo--float photo--approach">
-            <img src="assets/four.jpg" alt="Andrew Artemiev" loading="lazy" decoding="async"
-                 onerror="this.replaceWith(document.getElementById('four-fallback').content.cloneNode(true))" />
-          </div>
-        </figure>
-      </div>
+      <figure class="approach__figure">
+        <div class="photo photo--float photo--approach">
+          <img src="assets/four.jpg" alt="Andrew Artemiev" loading="lazy" decoding="async"
+               onerror="this.replaceWith(document.getElementById('four-fallback').content.cloneNode(true))" />
+        </div>
+        <figcaption class="approach__caption">
+          <span class="approach__quote">«Я&nbsp;не&nbsp;люблю усложнять&nbsp;то, что&nbsp;можно построить просто.»</span>
+          <span class="approach__attr">— личный принцип</span>
+        </figcaption>
+      </figure>
     </section>
 
     <!-- ── TELEGRAM CHANNEL CARD ── -->
@@ -255,7 +266,7 @@
     <!-- ── FINAL ── -->
     <section class="chapter contact" id="contact" aria-labelledby="contact-title">
       <div class="contact__inner">
-        <h2 class="contact__title" id="contact-title" data-reveal="strips">
+        <h2 class="contact__title" id="contact-title" data-reveal>
           Если мы&nbsp;ещё не&nbsp;знакомы&nbsp;— <em>будем знакомы</em>.
         </h2>
         <p class="contact__sub" data-reveal>

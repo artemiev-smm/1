@@ -11,38 +11,24 @@
   var yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
-  // ── HERO VIDEO — pick source by width, fade in on canplay ───
+  // ── HERO VIDEO — retry play (inline <source> handles initial load) ───
   var video = document.getElementById('hero-video');
   if (video) {
-    try {
-      var src = isNarrow ? 'assets/hero-mobile.mp4' : 'assets/hero.mp4';
-      var s = document.createElement('source');
-      s.src = src;
-      s.type = 'video/mp4';
-      video.appendChild(s);
-      if (!isNarrow) {
-        var s2 = document.createElement('source');
-        s2.src = 'assets/hero-mobile.mp4';
-        s2.type = 'video/mp4';
-        video.appendChild(s2);
-      }
-      video.load();
-
-      var markReady = function () { video.classList.add('is-ready'); };
-      video.addEventListener('canplay', markReady, { once: true });
-      video.addEventListener('loadeddata', markReady, { once: true });
-      setTimeout(markReady, 1600);
-
-      var tryPlay = function () {
+    var tryPlay = function () {
+      try {
         var p = video.play();
         if (p && typeof p.catch === 'function') {
-          p.catch(function () { /* ignore — poster stays */ });
+          p.catch(function () { /* autoplay blocked — poster stays */ });
         }
-      };
-      tryPlay();
-      var retry = function () { tryPlay(); document.removeEventListener('pointerdown', retry); };
-      document.addEventListener('pointerdown', retry, { once: true, passive: true });
-    } catch (e) { /* ignore */ }
+      } catch (e) { /* ignore */ }
+    };
+    tryPlay();
+    var retry = function () { tryPlay(); document.removeEventListener('pointerdown', retry); };
+    document.addEventListener('pointerdown', retry, { once: true, passive: true });
+    // Also retry on visibilitychange — some browsers pause hidden tabs
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden) tryPlay();
+    });
   }
 
   // ── Sticky nav state ─────────────────────────────────────
@@ -102,11 +88,17 @@
   }
 
   // ── Scroll-reveal (plain, strips, skill bars) ───────────
+  // Arm reveals only after we've wired the observer, so if the observer
+  // is unavailable the fallback path below keeps everything visible.
   var reveals = document.querySelectorAll('[data-reveal]');
   var forceAll = /(?:^|[?&])show=all(?:&|$)/.test(location.search);
-  if (forceAll || reduced) {
+  function revealAll() {
     reveals.forEach(function (el) { el.classList.add('is-in'); fillSkillIfNeeded(el, true); });
+  }
+  if (forceAll || reduced) {
+    revealAll();
   } else if ('IntersectionObserver' in window) {
+    document.documentElement.classList.add('reveals-armed');
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
@@ -117,8 +109,20 @@
       });
     }, { threshold: 0.14, rootMargin: '0px 0px -6% 0px' });
     reveals.forEach(function (el) { io.observe(el); });
+    // Safety: anything already in viewport that the observer didn't fire for
+    // within 400ms gets force-revealed. Covers Safari edge cases + slow pages.
+    setTimeout(function () {
+      reveals.forEach(function (el) {
+        if (el.classList.contains('is-in')) return;
+        var r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight && r.bottom > 0) {
+          el.classList.add('is-in');
+          fillSkillIfNeeded(el, false);
+        }
+      });
+    }, 400);
   } else {
-    reveals.forEach(function (el) { el.classList.add('is-in'); fillSkillIfNeeded(el, true); });
+    revealAll();
   }
 
   function fillSkillIfNeeded(el, instant) {
@@ -152,11 +156,11 @@
   }
   function runCount(el) {
     if (el.dataset.done) return;
-    if (reduced || isMobile) { setFinal(el); return; }
+    if (reduced) { setFinal(el); return; }
     el.dataset.done = '1';
     var target = parseFloat(el.getAttribute('data-count-to')) || 0;
     var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
-    var duration = 1400, start = null;
+    var duration = isMobile ? 1100 : 1500, start = null;
     function step(ts) {
       if (start === null) start = ts;
       var t = Math.min(1, (ts - start) / duration);
@@ -166,7 +170,7 @@
     }
     requestAnimationFrame(step);
   }
-  if (isMobile || reduced) {
+  if (reduced) {
     counters.forEach(setFinal);
   } else if (forceAll) {
     counters.forEach(runCount);
