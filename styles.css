@@ -4,7 +4,7 @@
    ============================================================ */
 
 :root{
-  --bg:            #0d0b09;
+  --bg:            #0a0806;
   --bg-2:          #141210;
   --surface:       #1a1714;
   --surface-2:     #242019;
@@ -19,12 +19,11 @@
 
   --accent:        #c9a56b;    /* brass — used sparingly */
   --accent-hover:  #dcb87d;
-  --accent-warm:   #d2c5a4;    /* champagne — direction titles only */
+  --accent-warm:   #d2c5a4;    /* champagne — section accent */
   --focus:         #c9a56b;
 
   --f-display: 'Instrument Serif', ui-serif, Georgia, serif;
   --f-body:    'Inter Tight', system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
-  --f-hero:    'Bonheur Royale', 'Instrument Serif', cursive, serif;
   --f-mark:    'Bonheur Royale', 'Instrument Serif', ui-serif, Georgia, serif;
 
   --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px;
@@ -35,10 +34,12 @@
 
   --ease:       cubic-bezier(.2,.7,.2,1);
   --ease-strip: cubic-bezier(.75,0,.25,1);
+  --ease-fill:  cubic-bezier(.22,.61,.36,1);
   --dur-fast:   200ms;
   --dur:        300ms;
   --dur-slow:   450ms;
   --dur-strip:  700ms;
+  --dur-fill:   1600ms;
 
   --wrap:  1360px;
   --pad-x: clamp(20px, 4vw, 64px);
@@ -48,7 +49,10 @@
 
 *, *::before, *::after{ box-sizing: border-box; }
 html, body{ background: var(--bg); overflow-x: hidden; overflow-x: clip; }
+/* With the custom smooth scroll active (js) we use auto so our raf
+   lerp doesn't fight the browser's own smooth behaviour. */
 html{ scroll-behavior: smooth; }
+html.js{ scroll-behavior: auto; }
 
 body{
   margin: 0;
@@ -66,7 +70,7 @@ body{
   text-size-adjust: 100%;
 }
 
-img, svg{ display: block; max-width: 100%; }
+img, svg, video{ display: block; max-width: 100%; }
 a{ color: inherit; text-decoration: none; }
 button{ font-family: inherit; }
 ::selection{ background: var(--accent); color: var(--bg); }
@@ -93,9 +97,12 @@ button{ font-family: inherit; }
   text-transform: uppercase;
   color: var(--fg-muted);
 }
+.eyebrow--hero{
+  color: rgba(255,255,255,0.72);
+}
 
 /* ============================================================
-   BRAND MARK — elegant script letter, no border
+   BRAND MARK
    ============================================================ */
 .brand-mark{
   display: inline-flex;
@@ -185,7 +192,7 @@ button{ font-family: inherit; }
 
 .js [data-reveal]:not([data-reveal="strips"]){
   opacity: 0;
-  transform: translateY(12px);
+  transform: translateY(14px);
   transition: opacity var(--dur-slow) var(--ease), transform var(--dur-slow) var(--ease);
   will-change: opacity, transform;
 }
@@ -210,17 +217,17 @@ button{ font-family: inherit; }
   top: 0; left: 0; right: 0;
   z-index: 60;
   padding: 16px var(--pad-x);
-  background: rgba(13,11,9,0.5);
+  background: rgba(10,8,6,0.35);
   backdrop-filter: saturate(140%) blur(10px);
   -webkit-backdrop-filter: saturate(140%) blur(10px);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid transparent;
   transition: background-color var(--dur-slow) var(--ease),
               backdrop-filter var(--dur-slow) var(--ease),
               padding var(--dur) var(--ease),
               border-color var(--dur-slow) var(--ease);
 }
 .nav.is-scrolled{
-  background: rgba(13,11,9,0.82);
+  background: rgba(10,8,6,0.82);
   backdrop-filter: saturate(160%) blur(16px);
   -webkit-backdrop-filter: saturate(160%) blur(16px);
   border-bottom-color: var(--border-strong);
@@ -325,7 +332,7 @@ button{ font-family: inherit; }
 
 .mobile-menu{
   position: fixed; inset: 0; z-index: 55;
-  background: rgba(13,11,9,0.97);
+  background: rgba(10,8,6,0.97);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   padding: 96px var(--pad-x) 40px;
@@ -356,160 +363,116 @@ button{ font-family: inherit; }
 }
 
 /* ============================================================
-   HERO — Marck Script name, centered composition
+   HERO — fullscreen video background + editorial headline
    ============================================================ */
 .hero{
   position: relative;
-  max-width: var(--wrap);
-  margin: 0 auto;
-  padding: clamp(110px, 14vh, 150px) var(--pad-x) clamp(80px, 12vh, 140px);
+  width: 100%;
   min-height: 100vh;
   min-height: 100svh;
   display: flex;
   align-items: center;
+  overflow: hidden;
   isolation: isolate;
+  padding: clamp(110px, 14vh, 150px) var(--pad-x) clamp(80px, 12vh, 140px);
 }
-/* Subtle ambient accents — desktop only, purely decorative, non-interactive.
-   Soft brass "light source" from top-right of the hero, gentle ivory fill
-   from bottom-left. Just enough to lift the composition, not a spotlight. */
-.hero::before{
+/* ─ Media layer ─ full-bleed video, cover fit ─ */
+.hero__media{
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: #000;
+}
+.hero__video{
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+  opacity: 0;
+  transition: opacity 1.2s var(--ease);
+}
+.hero__video.is-ready{ opacity: 1; }
+/* Poster fallback — the <video poster> fills while buffering; this ::before
+   is the belt-and-braces image in case the browser blocks autoplay AND
+   suppresses the poster. */
+.hero__media::before{
   content: "";
   position: absolute;
-  top: 12%;
-  right: -8%;
-  width: min(52vw, 720px);
-  height: min(52vw, 720px);
-  background: radial-gradient(closest-side, rgba(196,164,110,0.14), rgba(196,164,110,0.04) 45%, rgba(196,164,110,0) 72%);
-  filter: blur(2px);
-  pointer-events: none;
-  z-index: -1;
+  inset: 0;
+  background: #000 center/cover no-repeat url("assets/hero-poster.jpg");
+  opacity: 1;
+  z-index: 0;
 }
-.hero::after{
-  content: "";
+.hero__video{ z-index: 1; }
+/* ─ Scrim — darken the video for white text contrast ─ */
+.hero__scrim{
   position: absolute;
-  bottom: 4%;
-  left: -10%;
-  width: min(42vw, 560px);
-  height: min(42vw, 560px);
-  background: radial-gradient(closest-side, rgba(240,235,224,0.07), rgba(240,235,224,0) 70%);
-  filter: blur(4px);
+  inset: 0;
+  z-index: 2;
+  background:
+    linear-gradient(180deg, rgba(10,8,6,0.55) 0%, rgba(10,8,6,0.35) 40%, rgba(10,8,6,0.65) 100%),
+    linear-gradient(90deg, rgba(10,8,6,0.55) 0%, rgba(10,8,6,0.10) 55%, rgba(10,8,6,0.00) 100%);
   pointer-events: none;
-  z-index: -1;
 }
-@media (max-width: 900px){
-  .hero::before, .hero::after{ display: none; }
+/* ─ Vignette — soft corner darkening ─ */
+.hero__vignette{
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0) 45%, rgba(0,0,0,0.5) 100%);
+  pointer-events: none;
 }
 
-/* Third ambient accent — final contact section. Warm glow behind the big
-   closing title, off-center right, keeps it from feeling flat. */
-.contact{ position: relative; isolation: isolate; overflow: hidden; }
-.contact::before{
-  content: "";
-  position: absolute;
-  top: 20%;
-  right: -6%;
-  width: min(48vw, 660px);
-  height: min(48vw, 660px);
-  background: radial-gradient(closest-side, rgba(196,164,110,0.11), rgba(196,164,110,0.03) 45%, rgba(196,164,110,0) 72%);
-  filter: blur(4px);
-  pointer-events: none;
-  z-index: -1;
-}
-@media (max-width: 900px){ .contact::before{ display: none; } }
-.hero__grid{
+/* ─ Content ─ */
+.hero__inner{
+  position: relative;
+  z-index: 5;
+  max-width: var(--wrap);
   width: 100%;
+  margin: 0 auto;
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: clamp(32px, 6vw, 80px);
-  align-items: center;
+  gap: clamp(24px, 3vw, 40px);
+  justify-items: start;
 }
-.hero__left{ max-width: 820px; }
 
 .hero__title{
-  margin: clamp(16px, 2vw, 24px) 0 0 -0.02em;
-  color: var(--fg-strong);
-  font-family: var(--f-hero);
-  font-style: normal;
-  font-weight: 400;
-  letter-spacing: 0;
-  line-height: 1.1;
-  font-size: clamp(72px, 12vw, 172px);
-  display: flex; flex-direction: column;
-  padding: 0.06em 0.08em 0.15em 0.08em;   /* room for script ascenders/descenders/tails */
-  overflow: visible;
-}
-.hero__line{
-  display: block;
-  white-space: nowrap;
-  font-family: var(--f-hero);
-  font-style: normal;
-  font-weight: 400;
-  overflow: visible;
-}
-.hero__line--offset{ padding-left: clamp(20px, 3.5vw, 60px); }
-
-.hero__desc{
-  margin: clamp(28px, 3.4vw, 40px) 0 0 clamp(4px, 0.6vw, 10px);
-  font-family: var(--f-body);
-  font-weight: 400;
-  font-size: clamp(15px, 1.05vw, 17px);
-  color: var(--fg-muted);
-  max-width: 44ch;
-  line-height: 1.6;
-}
-.hero__actions{
-  margin: clamp(32px, 3.8vw, 44px) 0 0 clamp(4px, 0.6vw, 10px);
-  display: flex; flex-wrap: wrap; gap: 12px;
-}
-
-.hero__figure{
   margin: 0;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  width: 100%;
+  color: var(--fg-strong);
+  font-family: var(--f-display);
+  font-weight: 400;
+  font-style: normal;
+  font-size: clamp(36px, 5.6vw, 80px);
+  letter-spacing: -0.015em;
+  line-height: 1.08;
+  max-width: 28ch;
+  text-wrap: balance;
 }
-.hero__figure .photo{ max-width: min(460px, 100%); }
+.hero__title em{
+  font-style: italic;
+  color: var(--accent-warm);
+  font-weight: 400;
+}
+/* On narrow screens, drop the hard breaks and let text flow naturally */
+@media (max-width: 720px){
+  .hero__title br{ display: none; }
+}
 
-.photo{
-  position: relative;
-  aspect-ratio: 4/5;
-  overflow: hidden;
-  border-radius: var(--r-md);
-  border: 1px solid var(--border);
-  background: var(--surface);
-}
-.photo img,
-.photo > .photo-fallback{
-  width: 100%; height: 100%;
-  object-fit: cover; object-position: center;
-  display: block;
-}
-.photo-fallback svg{ width: 100%; height: 100%; }
+.hero__cta{ margin-top: clamp(8px, 1.5vw, 20px); }
 
-.photo--float{
-  animation: floatY 7s var(--ease) infinite;
-  will-change: transform;
-}
-@keyframes floatY{
-  0%,100% { transform: translate3d(0, -6px, 0); }
-  50%     { transform: translate3d(0,  6px, 0); }
-}
-.photo--about{ animation-duration: 9s; animation-delay: -2s; }
-.photo--approach{ animation-duration: 8s; animation-delay: -3s; }
-@media (prefers-reduced-motion: reduce){ .photo--float{ animation: none; } }
-
-/* Scroll cue — fixed to viewport bottom-right, fades on scroll */
+/* Scroll cue — now anchored within the hero section, not fixed */
 .scroll-cue{
-  position: fixed;
-  bottom: clamp(20px, 3vw, 40px);
-  right: clamp(20px, 3vw, 40px);
-  z-index: 40;
+  position: absolute;
+  bottom: clamp(24px, 3vh, 44px);
+  right: clamp(20px, 3vw, 44px);
+  z-index: 5;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  color: var(--fg-muted);
+  color: rgba(255,255,255,0.72);
   transition: color var(--dur) var(--ease),
               opacity var(--dur-slow) var(--ease),
               transform var(--dur-slow) var(--ease);
@@ -534,10 +497,11 @@ button{ font-family: inherit; }
 }
 @media (prefers-reduced-motion: reduce){
   .scroll-cue__arrow{ animation: none; opacity: 1; transform: translateY(0); }
+  .hero__video{ opacity: 1; transition: none; }
 }
 
 /* ============================================================
-   BUTTONS — clean, no artifacts
+   BUTTONS
    ============================================================ */
 .btn{
   display: inline-flex; align-items: center; gap: 12px;
@@ -552,7 +516,7 @@ button{ font-family: inherit; }
               color var(--dur) var(--ease),
               transform var(--dur) var(--ease);
   min-height: 48px;
-  position: relative;    /* no ::before/::after used */
+  position: relative;
 }
 .btn__arrow{ display: inline-flex; }
 .btn__arrow svg{ transition: transform var(--dur) var(--ease); }
@@ -577,10 +541,16 @@ button{ font-family: inherit; }
 .chapter{
   max-width: var(--wrap);
   margin: 0 auto;
-  padding: clamp(64px, 10vw, 160px) var(--pad-x);
+  padding: clamp(80px, 12vw, 180px) var(--pad-x);
+  position: relative;
 }
 .chapter__head{
   margin-bottom: clamp(48px, 6vw, 96px);
+}
+.chapter__head--direction{
+  display: grid;
+  gap: 18px;
+  max-width: 820px;
 }
 .chapter__title{
   margin: 0;
@@ -593,6 +563,26 @@ button{ font-family: inherit; }
   line-height: 1.1;
   padding-bottom: 0.05em;
   display: inline-block;
+}
+.chapter__title--xl{
+  font-size: clamp(42px, 6vw, 84px);
+  line-height: 1.05;
+  font-style: normal;
+  letter-spacing: -0.02em;
+  display: block;
+  max-width: 14ch;
+}
+.chapter__title--xl em{
+  font-style: italic;
+  color: var(--accent);
+}
+.chapter__sub{
+  margin: 0;
+  color: var(--fg-muted);
+  font-family: var(--f-body);
+  font-size: clamp(16px, 1.2vw, 19px);
+  line-height: 1.5;
+  max-width: 48ch;
 }
 
 /* ============================================================
@@ -637,79 +627,115 @@ button{ font-family: inherit; }
   font-family: var(--f-display);
   font-style: italic;
   font-weight: 400;
-  font-size: clamp(20px, 1.8vw, 24px);
+  font-size: clamp(22px, 2vw, 28px);
   color: var(--fg);
   letter-spacing: -0.01em;
   line-height: 1.4;
 }
 .about__coda em{ font-style: italic; color: var(--accent); }
 
-/* ============================================================
-   NUMBERS
-   ============================================================ */
-.ledger{ list-style: none; padding: 0; margin: 0; display: grid; gap: 0; }
-.row{
-  display: flex; align-items: baseline;
-  gap: clamp(16px, 2vw, 32px);
-  padding: clamp(20px, 2.6vw, 36px) 0;
-  border-top: 1px solid var(--border);
-  transition: background-color var(--dur) var(--ease);
-  min-width: 0;
+.photo{
+  position: relative;
+  aspect-ratio: 4/5;
+  overflow: hidden;
+  border-radius: var(--r-md);
+  border: 1px solid var(--border);
+  background: var(--surface);
 }
-.row:last-child{ border-bottom: 1px solid var(--border); }
-.row:hover{ background: rgba(240,235,224,0.012); }
+.photo img,
+.photo > .photo-fallback{
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  display: block;
+}
+.photo-fallback svg{ width: 100%; height: 100%; }
+.photo--float{
+  animation: floatY 7s var(--ease) infinite;
+  will-change: transform;
+}
+@keyframes floatY{
+  0%,100% { transform: translate3d(0, -6px, 0); }
+  50%     { transform: translate3d(0,  6px, 0); }
+}
+.photo--about{ animation-duration: 9s; animation-delay: -2s; }
+.photo--approach{ animation-duration: 8s; animation-delay: -3s; }
+@media (prefers-reduced-motion: reduce){ .photo--float{ animation: none; } }
 
-.row__num{
+/* ============================================================
+   NUMBERS — 4 key metrics in a quiet grid
+   ============================================================ */
+.metrics{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+}
+.metric{
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 1.4vw, 20px);
+  padding: clamp(40px, 5vw, 72px) clamp(24px, 3vw, 48px);
+  border-top: 1px solid var(--border);
+  border-left: 1px solid var(--border);
+  min-width: 0;
+  transition: background-color var(--dur-slow) var(--ease);
+}
+.metric:nth-child(odd){ border-left: 0; }
+.metric:hover{ background: rgba(240,235,224,0.014); }
+
+.metric__num{
   font-family: var(--f-display);
   font-weight: 400;
   font-style: italic;
-  font-size: clamp(56px, 9.5vw, 128px);
+  font-size: clamp(54px, 7.5vw, 112px);
   color: var(--fg-strong);
-  letter-spacing: -0.015em;
+  letter-spacing: -0.02em;
   line-height: 1;
   font-variant-numeric: lining-nums;
   display: inline-flex; align-items: baseline;
-  white-space: nowrap;
+  flex-wrap: wrap;
   min-width: 0;
   padding-bottom: 0.02em;
 }
-.row__num > span{ font-variant-numeric: lining-nums tabular-nums; }
-.row__unit{
-  font-size: 0.5em;
+.metric__num > span{ font-variant-numeric: lining-nums tabular-nums; }
+.metric__unit{
+  font-size: 0.42em;
   font-style: normal;
   color: var(--fg);
-  padding-bottom: 0.05em;
+  padding-bottom: 0.08em;
+  letter-spacing: -0.01em;
 }
-.row__plus{
-  font-size: 0.4em;
+.metric__plus{
+  font-size: 0.42em;
   color: var(--accent);
   font-style: normal;
-  padding-bottom: 0.4em;
+  padding-bottom: 0.38em;
   margin-left: 2px;
 }
-.row__label{
+.metric__label{
   font-family: var(--f-body);
-  font-size: clamp(15px, 1.15vw, 19px);
+  font-size: clamp(14px, 1.05vw, 17px);
   color: var(--fg-muted);
-  line-height: 1.3;
+  line-height: 1.4;
   letter-spacing: -0.005em;
-  align-self: baseline;
+  max-width: 28ch;
 }
 
 /* ============================================================
-   DIRECTIONS
+   DIRECTION / SKILLS — a single system shown as 5 filling bars
    ============================================================ */
-.dirs{
-  list-style: none; padding: 0; margin: 0;
-  display: grid; gap: 0;
+.skills{
+  list-style: none;
+  padding: 0; margin: 0;
+  display: grid;
+  gap: 0;
   position: relative;
 }
-/* Subtle light lines that visually cap the list top and bottom.
-   Horizontal gradient — fades in from transparent, hairline of champagne
-   light in the middle, fades back out. Same brass family as the rest of
-   the site, no bright glow. */
-.dirs::before,
-.dirs::after{
+/* Soft light-line caps, top and bottom of the list */
+.skills::before,
+.skills::after{
   content: "";
   display: block;
   height: 1px;
@@ -721,42 +747,74 @@ button{ font-family: inherit; }
     rgba(210,197,164,0.28) 78%,
     rgba(240,235,224,0) 100%
   );
-  /* Very soft halo so the line reads as a filament of light, not a rule */
   box-shadow: 0 0 6px rgba(210,197,164,0.10);
 }
-.dir{
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  align-items: baseline;
-  gap: clamp(24px, 4vw, 56px);
-  padding: clamp(28px, 3.4vw, 44px) 0;
+.skill{
+  padding: clamp(28px, 3.2vw, 44px) 0;
   border-top: 1px solid var(--border);
-  transition: background-color var(--dur) var(--ease),
-              padding-left var(--dur-slow) var(--ease);
+  display: grid;
+  gap: clamp(16px, 1.8vw, 24px);
+  transition: padding-left var(--dur-slow) var(--ease);
 }
-/* First & last rows: the ::before/::after already cap the list,
-   drop the doubled hairline. */
-.dir:first-child{ border-top: 0; }
-.dir:last-child{ border-bottom: 0; }
-.dir:hover{ background: rgba(240,235,224,0.012); padding-left: 8px; }
-.dir__title{
+.skill:first-child{ border-top: 0; }
+.skill:last-child{ border-bottom: 1px solid var(--border); }
+.skills > .skill:last-child{ border-bottom: 0; }
+@media (hover: hover){
+  .skill:hover{ padding-left: 8px; }
+}
+
+.skill__head{
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  gap: clamp(18px, 2.4vw, 32px);
+}
+.skill__index{
+  font-family: var(--f-body);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  color: var(--fg-quiet);
+  font-variant-numeric: tabular-nums;
+}
+.skill__name{
   margin: 0;
   font-family: var(--f-display);
-  font-weight: 400;
   font-style: italic;
-  font-size: clamp(28px, 3.6vw, 44px);
-  letter-spacing: -0.005em;
-  color: var(--accent-warm);
-  line-height: 1.05;
+  font-weight: 400;
+  font-size: clamp(26px, 3.4vw, 44px);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  color: var(--fg-strong);
   transition: color var(--dur) var(--ease);
 }
-.dir:hover .dir__title{ color: var(--accent-hover); }
-.dir__desc{
-  margin: 0;
-  color: var(--fg-muted);
-  font-size: clamp(15px, 1.15vw, 18px);
-  line-height: 1.55;
-  max-width: 46ch;
+@media (hover: hover){ .skill:hover .skill__name{ color: var(--accent-warm); } }
+
+.skill__bar{
+  position: relative;
+  height: 2px;
+  background: rgba(240,235,224,0.06);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.skill__fill{
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(210,197,164,0.55) 0%,
+    var(--accent-warm) 40%,
+    var(--accent) 100%
+  );
+  box-shadow: 0 0 10px rgba(201,165,107,0.35);
+  transition: width var(--dur-fill) var(--ease-fill);
+  will-change: width;
+}
+.skill.is-filled .skill__fill{
+  /* actual target width set from JS via data-fill */
+}
+@media (prefers-reduced-motion: reduce){
+  .skill__fill{ transition: none; }
 }
 
 /* ============================================================
@@ -808,12 +866,12 @@ button{ font-family: inherit; }
 .approach__figure .photo{
   aspect-ratio: 4/5;
   max-width: min(420px, 100%);
-  margin: 0;                /* was 0 0 0 auto — bring photo closer to quote */
+  margin: 0;
   border: 1px solid var(--border-strong);
 }
 
 /* ============================================================
-   TELEGRAM CHANNEL CARD — clean, single-piece, no artifacts
+   CHANNEL CARD — brass CTA with Telegram glyph
    ============================================================ */
 .channel{
   padding-top: clamp(48px, 6vw, 96px);
@@ -821,40 +879,40 @@ button{ font-family: inherit; }
 }
 .channel-card{
   display: block;
-  max-width: 720px;
+  max-width: 820px;
   margin: 0 auto;
-  padding: clamp(36px, 5vw, 56px) clamp(28px, 4vw, 48px);
-  background: var(--bg-2);
+  padding: clamp(40px, 5.5vw, 64px) clamp(28px, 4vw, 56px);
+  background: linear-gradient(180deg, rgba(240,235,224,0.02) 0%, rgba(240,235,224,0) 100%), var(--bg-2);
   border: 1px solid var(--border-strong);
   border-radius: var(--r-xl);
   text-align: center;
   position: relative;
   isolation: isolate;
 }
+.channel-card__eyebrow{
+  margin-bottom: clamp(18px, 2vw, 24px);
+  color: var(--accent);
+}
 .channel-card__title{
-  margin: 0 0 clamp(14px, 1.4vw, 20px);
+  margin: 0 0 clamp(28px, 3.2vw, 40px);
   font-family: var(--f-display);
   font-weight: 400;
-  font-style: italic;
-  font-size: clamp(36px, 5vw, 64px);
+  font-style: normal;
+  font-size: clamp(30px, 4.2vw, 54px);
   letter-spacing: -0.015em;
-  line-height: 1.1;
+  line-height: 1.15;
   padding-bottom: 0.06em;
   color: var(--fg-strong);
+  max-width: 24ch;
+  margin-left: auto;
+  margin-right: auto;
 }
-.channel-card__desc{
-  margin: 0 auto clamp(24px, 3vw, 32px);
-  color: var(--fg-muted);
-  font-size: clamp(15px, 1.1vw, 17px);
-  line-height: 1.5;
-  max-width: 44ch;
-  overflow-wrap: break-word;
+.channel-card__title em{
+  font-style: italic;
+  color: var(--accent-warm);
 }
 
-/* Channel CTA — richer presentation than the generic .btn--primary.
-   Larger footprint, warm brass surface with a soft internal light,
-   a Telegram brand icon on the left, and a slow shimmer that reads
-   as ambient light on metal, not as a moving highlight. */
+/* Channel CTA — brass pill with shimmer */
 .channel-card .btn--primary{
   padding: 20px 32px;
   min-height: 60px;
@@ -877,11 +935,9 @@ button{ font-family: inherit; }
     transform var(--dur) var(--ease),
     border-color var(--dur) var(--ease);
   position: relative;
-  overflow: hidden;              /* clip the shimmer inside the pill */
+  overflow: hidden;
   isolation: isolate;
 }
-/* Brand mark — mono, sits left of the label. Uses currentColor so it
-   inherits the deep-brown text color; no color shift, no pathos. */
 .btn__brand{
   display: inline-flex;
   align-items: center;
@@ -891,10 +947,6 @@ button{ font-family: inherit; }
   flex: 0 0 auto;
 }
 .btn__brand svg{ display: block; }
-
-/* Slow ambient shimmer — a wide, low-opacity light sweep passing across
-   the metal every ~6s. Sits above the surface, below the label, and is
-   completely disabled for reduced-motion users. */
 .channel-card .btn--primary::before{
   content: "";
   position: absolute;
@@ -915,7 +967,7 @@ button{ font-family: inherit; }
 @keyframes btnShimmer{
   0%   { transform: translateX(-140%); }
   55%  { transform: translateX(140%); }
-  100% { transform: translateX(140%); }   /* pause off-screen before repeating */
+  100% { transform: translateX(140%); }
 }
 @media (prefers-reduced-motion: reduce){
   .channel-card .btn--primary::before{ animation: none; opacity: 0; }
@@ -936,7 +988,6 @@ button{ font-family: inherit; }
 }
 .channel-card .btn--primary:active{ transform: translateY(1px); }
 
-/* Mobile — keep the CTA readable without stretching to full width */
 @media (max-width: 640px){
   .channel-card .btn--primary{
     padding: 18px 26px;
@@ -954,7 +1005,21 @@ button{ font-family: inherit; }
 .contact{
   padding-top: clamp(96px, 12vw, 160px);
   padding-bottom: clamp(96px, 12vw, 160px);
+  position: relative; isolation: isolate; overflow: hidden;
 }
+.contact::before{
+  content: "";
+  position: absolute;
+  top: 20%;
+  right: -6%;
+  width: min(48vw, 660px);
+  height: min(48vw, 660px);
+  background: radial-gradient(closest-side, rgba(196,164,110,0.11), rgba(196,164,110,0.03) 45%, rgba(196,164,110,0) 72%);
+  filter: blur(4px);
+  pointer-events: none;
+  z-index: -1;
+}
+@media (max-width: 900px){ .contact::before{ display: none; } }
 .contact__inner{ max-width: 900px; }
 .contact__title{
   margin: 0 0 clamp(20px, 2.4vw, 32px);
@@ -1058,35 +1123,26 @@ button{ font-family: inherit; }
    ============================================================ */
 @media (max-width: 1100px){
   .hero{ min-height: auto; padding-top: 120px; padding-bottom: 96px; }
-  .hero__grid{ grid-template-columns: 1fr; gap: 44px; }
-  .hero__figure{ justify-content: flex-start; }
-  .hero__figure .photo{ max-width: min(420px, 100%); }
-  .hero__line--offset{ padding-left: 24px; }
+  .hero__title{ font-size: clamp(36px, 7vw, 72px); max-width: 20ch; }
 
   .about__grid{ grid-template-columns: 1fr; gap: 48px; }
   .about__figure .photo{ max-width: 480px; }
 
-  .row__num{ font-size: clamp(52px, 10vw, 92px); }
-  .dir{ grid-template-columns: 1fr 1fr; gap: 24px; }
-  .dir__title{ font-size: clamp(24px, 4.4vw, 34px); }
-
   .approach__grid{ grid-template-columns: 1fr; gap: 48px; }
   .approach__figure .photo{ margin: 0; max-width: 480px; }
+
+  .chapter__title--xl{ max-width: 18ch; }
 }
 @media (max-width: 900px){
   .nav__links{ display: none; }
   .nav__cta{ display: none; }
-  /* 2-track grid: logo (auto) + stretched toggle (1fr) */
   .nav__inner{ grid-template-columns: auto 1fr; gap: 16px; }
   .nav__toggle{ display: flex; grid-column: 2; justify-self: stretch; }
 }
-/* On slightly wider mobile (tablet portrait), cap the toggle width so it
-   doesn't span the whole 1fr and look banner-like on ~700–900px */
 @media (min-width: 560px) and (max-width: 900px){
   .nav__toggle{ justify-self: end; max-width: 320px; width: 100%; }
 }
 @media (max-width: 720px){
-  /* Hide desktop-only scroll cue on mobile — overlaps hero photo */
   .scroll-cue{ display: none; }
 }
 @media (max-width: 640px){
@@ -1095,48 +1151,53 @@ button{ font-family: inherit; }
   .brand-mark{ width: 36px; height: 36px; }
   .brand-mark svg{ width: 16px; height: 16px; }
 
-  .chapter{ padding-top: 64px; padding-bottom: 64px; }
+  .chapter{ padding-top: 72px; padding-bottom: 72px; }
   .chapter__head{ margin-bottom: 40px; }
-  .chapter__title{ font-size: clamp(36px, 10vw, 46px); }
+  .chapter__title{ font-size: clamp(36px, 10vw, 46px); overflow-wrap: break-word; }
+  .chapter__title--xl{ font-size: clamp(34px, 10vw, 48px); max-width: 100%; }
+  .chapter__sub{ font-size: 15px; }
 
-  .hero{ padding-top: 100px; padding-bottom: 72px; gap: 24px; }
-  .hero__title{ font-size: clamp(48px, 18vw, 108px); line-height: 1.05; overflow-wrap: break-word; }
-  .hero__line{ white-space: normal; overflow-wrap: break-word; word-break: break-word; }
-  .hero__line--offset{ padding-left: 16px; }
-  .hero__desc{ margin-top: 24px; font-size: 15px; overflow-wrap: break-word; }
-  .hero__actions{ margin-top: 32px; }
-  .hero__figure{ justify-content: center; }
-  .hero__figure .photo{ max-width: min(340px, 90%); }
+  .hero{ padding-top: 100px; padding-bottom: 96px; min-height: 100vh; min-height: 100svh; }
+  .hero__inner{ gap: 24px; }
+  .hero__title{
+    font-size: clamp(30px, 8.8vw, 48px);
+    line-height: 1.1;
+    max-width: 100%;
+    overflow-wrap: break-word;
+  }
+  .hero__scrim{
+    background:
+      linear-gradient(180deg, rgba(10,8,6,0.65) 0%, rgba(10,8,6,0.5) 40%, rgba(10,8,6,0.78) 100%);
+  }
+  .eyebrow--hero{ font-size: 11px; letter-spacing: 0.18em; }
 
   .about__lede{ font-size: clamp(26px, 7vw, 30px); overflow-wrap: break-word; }
-  .about__coda{ font-size: 19px; overflow-wrap: break-word; }
+  .about__coda{ font-size: 20px; overflow-wrap: break-word; }
   .about__body p{ overflow-wrap: break-word; }
 
-  .row{
-    flex-wrap: wrap;
-    gap: 4px 16px;
-    padding: 22px 0;
+  .metrics{ grid-template-columns: 1fr; }
+  .metric{
+    padding: 32px 0;
+    border-left: 0 !important;
   }
-  .row__num{ font-size: clamp(42px, 14vw, 80px); white-space: normal; overflow-wrap: break-word; }
-  .row__label{ flex-basis: 100%; font-size: 15px; overflow-wrap: break-word; word-break: break-word; }
+  .metric:first-child{ border-top: 0; }
+  .metric__num{ font-size: clamp(44px, 13vw, 72px); overflow-wrap: break-word; }
+  .metric__label{ font-size: 14px; overflow-wrap: break-word; word-break: break-word; }
 
-  .dir{
-    grid-template-columns: 1fr;
-    gap: 8px;
-    padding: 22px 0;
-  }
-  .dir:hover{ padding-left: 0; }
-  .dir__title{ font-size: 26px; overflow-wrap: break-word; }
-  .dir__desc{ font-size: 15px; overflow-wrap: break-word; }
+  .skill{ padding: 22px 0; }
+  .skill:hover{ padding-left: 0; }
+  .skill__head{ grid-template-columns: 1fr; gap: 6px; }
+  .skill__index{ font-size: 11px; }
+  .skill__name{ font-size: 22px; overflow-wrap: break-word; }
 
-  .approach{ padding-top: 64px; padding-bottom: 64px; }
+  .approach{ padding-top: 72px; padding-bottom: 72px; }
   .approach__quote{ font-size: clamp(30px, 8vw, 40px); overflow-wrap: break-word; word-break: break-word; }
   .approach__mark{ font-size: 1.4em; top: -0.4em; left: -0.2em; }
   .approach__figure .photo{ max-width: min(340px, 90%); margin: 0 auto; }
 
-  .channel{ padding-top: 48px; padding-bottom: 48px; }
-  .channel-card{ padding: 32px 24px; border-radius: var(--r-lg); }
-  .channel-card__title{ font-size: clamp(32px, 9vw, 40px); overflow-wrap: break-word; word-break: break-word; }
+  .channel{ padding-top: 56px; padding-bottom: 56px; }
+  .channel-card{ padding: 36px 24px; border-radius: var(--r-lg); }
+  .channel-card__title{ font-size: clamp(26px, 7.5vw, 34px); overflow-wrap: break-word; word-break: break-word; }
 
   .contact{ padding-top: 80px; padding-bottom: 80px; }
   .contact__title{ font-size: clamp(40px, 12vw, 56px); line-height: 1.1; overflow-wrap: break-word; word-break: break-word; }
@@ -1152,10 +1213,9 @@ button{ font-family: inherit; }
 @media (max-width: 380px){
   :root{ --pad-x: 16px; }
 }
+
 /* ============================================================
-   SAFE AREA — notches, rounded corners, home-bar
-   Enhances padding on edge-touching elements when env() insets
-   are available (viewport-fit=cover in <meta>).
+   SAFE AREA — notched / rounded-corner devices (viewport-fit=cover)
    ============================================================ */
 @supports(padding: max(0px, env(safe-area-inset-left))){
   .nav{
