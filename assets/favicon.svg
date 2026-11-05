@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="10" fill="#0d0b09"/>
+  <text x="50%" y="72%" dominant-baseline="alphabetic" text-anchor="middle"
+        font-family="'Bonheur Royale', 'Snell Roundhand', 'Zapfino', 'Apple Chancery', 'Palatino Linotype', Georgia, serif"
+        font-weight="400"
+        font-style="italic"
+        font-size="60" fill="#f0ebe0">A</text>
+</svg>
