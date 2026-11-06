@@ -1,5 +1,5 @@
 /* ============================================================
-   Andrew Artemiev — Site Script  v3
+   Andrew Artemiev — Site Script  v5
    Native scroll + IntersectionObserver reveals. No wheel hijack.
    ============================================================ */
 ;(function(){
@@ -10,7 +10,7 @@
 
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ── Hero video — robust autoplay ── */
+  /* ── Hero video ── */
   const heroVideo = document.querySelector('.hero__video');
   if(heroVideo){
     let attempts = 0;
@@ -24,7 +24,6 @@
     };
     heroVideo.addEventListener('loadeddata', tryPlay, {once:true});
     if(heroVideo.readyState >= 2) tryPlay();
-    // Resume on tab focus
     document.addEventListener('visibilitychange', ()=>{
       if(!document.hidden && heroVideo.paused) tryPlay();
     });
@@ -48,7 +47,7 @@
     onScroll();
   }
 
-  /* ── Hero-in-view: nav styles differently over the dark hero ── */
+  /* ── Hero-in-view (nav light styles over dark hero) ── */
   const hero = document.querySelector('.hero');
   if(hero && 'IntersectionObserver' in window){
     const heroObs = new IntersectionObserver((entries)=>{
@@ -63,47 +62,70 @@
   const toggle = document.querySelector('.nav__toggle');
   const menu   = document.getElementById('mobile-menu');
   if(toggle && menu){
+    const toggleLabel = toggle.querySelector('.nav__toggle-label');
+    const openLabel  = toggleLabel ? toggleLabel.getAttribute('data-label-open')  || 'Меню'   : null;
+    const closeLabel = toggleLabel ? toggleLabel.getAttribute('data-label-close') || 'Закрыть' : null;
+
     const closeMenu = ()=>{
       toggle.setAttribute('aria-expanded','false');
+      toggle.setAttribute('aria-label','Меню');
       menu.hidden = true;
       document.body.style.overflow = '';
+      document.body.classList.remove('menu-open');
+      if(toggleLabel) toggleLabel.textContent = openLabel;
+    };
+    const openMenu = ()=>{
+      toggle.setAttribute('aria-expanded','true');
+      toggle.setAttribute('aria-label','Закрыть меню');
+      menu.hidden = false;
+      document.body.style.overflow = 'hidden';
+      document.body.classList.add('menu-open');
+      if(toggleLabel) toggleLabel.textContent = closeLabel;
     };
     toggle.addEventListener('click', ()=>{
-      const open = toggle.getAttribute('aria-expanded') === 'true';
-      toggle.setAttribute('aria-expanded', String(!open));
-      menu.hidden = open;
-      document.body.style.overflow = open ? '' : 'hidden';
+      (toggle.getAttribute('aria-expanded') === 'true') ? closeMenu() : openMenu();
     });
     menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
-    // Close on esc
     document.addEventListener('keydown', e=>{
       if(e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') closeMenu();
     });
   }
 
-  /* ── Split hero headline into words for stagger reveal ── */
+  /* ── Split hero headline into words ── */
   const splitTarget = document.querySelector('[data-split]');
   if(splitTarget && !prefersReduced){
     let i = 0;
     splitTarget.querySelectorAll('.hero__title-line').forEach(line=>{
-      const text = line.innerHTML;
-      // Split on space, preserving <em>…</em> as one unit
-      const parts = [];
-      const tokens = text.split(/(<em>.*?<\/em>|\s+)/g).filter(t => t && t.trim().length);
-      tokens.forEach(tok=>{
-        const span = document.createElement('span');
-        span.className = 'word';
-        span.style.setProperty('--i', i++);
-        span.innerHTML = tok;
-        parts.push(span);
+      // Walk nodes so we keep inline <em>/<span> elements intact
+      const original = Array.from(line.childNodes);
+      const wrap = [];
+      original.forEach(node=>{
+        if(node.nodeType === 3){
+          // text — split on whitespace
+          const parts = node.textContent.split(/(\s+)/);
+          parts.forEach(p=>{
+            if(/^\s*$/.test(p)){
+              wrap.push(document.createTextNode(p));
+            } else if(p.length){
+              const span = document.createElement('span');
+              span.className = 'word';
+              span.style.setProperty('--i', i++);
+              span.textContent = p;
+              wrap.push(span);
+            }
+          });
+        } else {
+          // element — wrap whole
+          const span = document.createElement('span');
+          span.className = 'word';
+          span.style.setProperty('--i', i++);
+          span.appendChild(node.cloneNode(true));
+          wrap.push(span);
+        }
       });
       line.innerHTML = '';
-      parts.forEach((p,idx)=>{
-        line.appendChild(p);
-        if(idx < parts.length - 1) line.appendChild(document.createTextNode(' '));
-      });
+      wrap.forEach(n => line.appendChild(n));
     });
-    // Trigger reveal immediately on paint; safety fallback at 300ms.
     const show = ()=> splitTarget.classList.add('is-in');
     requestAnimationFrame(()=> requestAnimationFrame(show));
     setTimeout(show, 300);
@@ -111,36 +133,30 @@
     splitTarget.classList.add('is-in');
   }
 
-  /* ── Safety fallback: if IntersectionObserver fails or an item
-     never comes into view (user never scrolled near it), reveal it
-     anyway so content is never permanently hidden. ── */
+  /* ── Safety fallback ── */
   setTimeout(()=>{
     document.querySelectorAll('[data-reveal]:not(.is-in)').forEach(el => el.classList.add('is-in'));
   }, 4500);
 
-  /* ── Scroll reveal: mark elements ── */
+  /* ── Mark reveal targets ── */
   const revealTargets = [
-    '.about__title', '.about__body',
-    '.about__col--photo',
-    '.path__head', '.timeline__step',
+    '.hero__sub',
+    '.about__title', '.about__body', '.about__gallery',
+    '.path__head',
     '.work__head', '.format', '.work__cta',
-    '.quote-section__figure', '.quote-section__text',
+    '.quote-card',
     '.channel__text', '.channel__btn',
-    '.contact__title', '.cta',
-    '.photo-reveal'
+    '.contact__title', '.cta'
   ];
   revealTargets.forEach(sel=>{
     document.querySelectorAll(sel).forEach(el => el.setAttribute('data-reveal',''));
   });
 
-  // Stagger indices for sibling groups
-  document.querySelectorAll('.timeline__step').forEach((el,i)=> el.style.setProperty('--i', i));
   document.querySelectorAll('.format').forEach((el,i)=> el.style.setProperty('--i', i));
 
-  // Arm reveals
   requestAnimationFrame(()=> html.classList.add('reveals-armed'));
 
-  /* ── IntersectionObserver for reveals ── */
+  /* ── IntersectionObserver ── */
   if('IntersectionObserver' in window){
     const revealObs = new IntersectionObserver((entries)=>{
       entries.forEach(e =>{
@@ -150,10 +166,9 @@
         }
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
-
     document.querySelectorAll('[data-reveal]').forEach(el => revealObs.observe(el));
 
-    /* ── Timeline progress line ── */
+    /* Timeline — line fill + sequential photo fall ── */
     const timeline = document.querySelector('.timeline');
     if(timeline){
       const timelineObs = new IntersectionObserver((entries)=>{
@@ -167,7 +182,7 @@
       timelineObs.observe(timeline);
     }
 
-    /* ── Contact accent line ── */
+    /* Contact accent line */
     const contactLine = document.querySelector('.contact__line');
     if(contactLine){
       const lineObs = new IntersectionObserver((entries)=>{
@@ -181,7 +196,6 @@
       lineObs.observe(contactLine);
     }
   } else {
-    // Fallback: show everything
     document.querySelectorAll('[data-reveal]').forEach(el => el.classList.add('is-in'));
     const timeline = document.querySelector('.timeline');
     if(timeline) timeline.classList.add('is-animating');
@@ -197,10 +211,10 @@
     cueCheck();
   }
 
-  /* ── Parallax for giant background section words ── */
+  /* ── Parallax for section words (desktop only) ── */
   if(!prefersReduced && window.matchMedia('(min-width: 900px)').matches){
     const words = document.querySelectorAll('.section__word');
-    if(words.length && 'IntersectionObserver' in window){
+    if(words.length){
       let ticking = false;
       const onScroll = ()=>{
         if(ticking) return;
@@ -211,7 +225,7 @@
             const r = w.getBoundingClientRect();
             if(r.bottom < -200 || r.top > vh + 200) return;
             const center = r.top + r.height/2;
-            const offset = (center - vh/2) * 0.08;
+            const offset = (center - vh/2) * 0.06;
             w.style.transform = `translate3d(0, ${offset * -1}px, 0)`;
           });
           ticking = false;
@@ -222,7 +236,7 @@
     }
   }
 
-  /* ── Smooth anchor scroll with offset for sticky nav ── */
+  /* ── Smooth anchor scroll with nav offset ── */
   const navH = ()=> (nav ? nav.getBoundingClientRect().height : 0) + 8;
   document.querySelectorAll('a[href^="#"]').forEach(a=>{
     a.addEventListener('click', e=>{
@@ -235,8 +249,5 @@
       window.scrollTo({ top: y, behavior: prefersReduced ? 'auto' : 'smooth' });
     });
   });
-
-  /* NOTE: No wheel-hijacking lerp scroll. Native scroll only — the
-     previous version's preventDefault on wheel broke the mouse. */
 
 })();
