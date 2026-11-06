@@ -1,325 +1,177 @@
-/* Andrew Artemiev — personal site */
-(function () {
-  'use strict';
+/* ============================================================
+   Andrew Artemiev — Site Script
+   ============================================================ */
+;(function () {
+  'use strict'
 
-  var reduced   = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var isMobile  = window.matchMedia('(max-width: 720px)').matches;
-  var isNarrow  = window.matchMedia('(max-width: 900px)').matches;
-  var fineHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  document.documentElement.classList.add('js')
 
-  // Footer year
-  var yearEl = document.getElementById('year');
-  if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+  /* ── Hero video retry ── */
+  const heroVideo = document.querySelector('.hero__video')
+  if (heroVideo) {
+    const tryPlay = () => {
+      const p = heroVideo.play()
+      if (p && typeof p.catch === 'function') {
+        p.catch(() => setTimeout(tryPlay, 2000))
+      }
+    }
+    if (heroVideo.paused) tryPlay()
+  }
 
-  // ── HERO VIDEO — retry play (inline <source> handles initial load) ───
-  var video = document.getElementById('hero-video');
-  if (video) {
-    var tryPlay = function () {
-      try {
-        var p = video.play();
-        if (p && typeof p.catch === 'function') {
-          p.catch(function () { /* autoplay blocked — poster stays */ });
+  /* ── Sticky nav ── */
+  const nav = document.querySelector('.nav')
+  if (nav) {
+    const onScroll = () => {
+      nav.classList.toggle('is-scrolled', window.scrollY > 40)
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
+  }
+
+  /* ── Mobile menu toggle ── */
+  const toggle = document.querySelector('.nav__toggle')
+  const menu = document.getElementById('mobile-menu')
+  if (toggle && menu) {
+    const open = () => {
+      menu.hidden = false
+      toggle.setAttribute('aria-expanded', 'true')
+      document.body.style.overflow = 'hidden'
+    }
+    const close = () => {
+      menu.hidden = true
+      toggle.setAttribute('aria-expanded', 'false')
+      document.body.style.overflow = ''
+    }
+    toggle.addEventListener('click', () => {
+      menu.hidden ? open() : close()
+    })
+    menu.querySelectorAll('a').forEach((a) =>
+      a.addEventListener('click', close)
+    )
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !menu.hidden) close()
+    })
+  }
+
+  /* ── Strip reveal overlay builder ── */
+  document.querySelectorAll('.strip-wrap').forEach((wrap) => {
+    const count = parseInt(wrap.dataset.strips, 10) || 6
+    const container = document.createElement('div')
+    container.classList.add('strips')
+    container.setAttribute('aria-hidden', 'true')
+    for (let i = 0; i < count; i++) {
+      const s = document.createElement('span')
+      s.style.flex = '1'
+      s.style.setProperty('--i', i)
+      container.appendChild(s)
+    }
+    wrap.appendChild(container)
+  })
+
+  /* ── IntersectionObserver — scroll reveal ── */
+  const reveals = document.querySelectorAll('[data-reveal]')
+  if (reveals.length) {
+    document.documentElement.classList.add('reveals-armed')
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-in')
+            io.unobserve(entry.target)
+          }
+        })
+      },
+      { rootMargin: '0px 0px -12% 0px', threshold: 0.15 }
+    )
+
+    reveals.forEach((el) => io.observe(el))
+  }
+
+  /* ── Scroll cue fade ── */
+  const scrollCue = document.querySelector('.scroll-cue')
+  if (scrollCue) {
+    const hideCue = () => {
+      if (window.scrollY > 120) {
+        scrollCue.classList.add('is-hidden')
+      } else {
+        scrollCue.classList.remove('is-hidden')
+      }
+    }
+    window.addEventListener('scroll', hideCue, { passive: true })
+    hideCue()
+  }
+
+  /* ── Lerp-based smooth scroll (desktop) ── */
+  if (
+    window.matchMedia('(pointer: fine)').matches &&
+    !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  ) {
+    document.querySelectorAll('a[href^="#"]').forEach((a) => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href')
+        if (!id || id === '#') return
+        const target = document.querySelector(id)
+        if (!target) return
+        e.preventDefault()
+
+        const start = window.scrollY
+        const end =
+          target.getBoundingClientRect().top + window.scrollY - 80
+        const dist = end - start
+        let progress = 0
+
+        const step = () => {
+          progress += (1 - progress) * 0.085
+          if (Math.abs(1 - progress) < 0.005) {
+            window.scrollTo(0, end)
+            return
+          }
+          window.scrollTo(0, start + dist * progress)
+          requestAnimationFrame(step)
         }
-      } catch (e) { /* ignore */ }
-    };
-    tryPlay();
-    var retry = function () { tryPlay(); document.removeEventListener('pointerdown', retry); };
-    document.addEventListener('pointerdown', retry, { once: true, passive: true });
-    // Also retry on visibilitychange — some browsers pause hidden tabs
-    document.addEventListener('visibilitychange', function () {
-      if (!document.hidden) tryPlay();
-    });
+        requestAnimationFrame(step)
+      })
+    })
   }
 
-  // ── Sticky nav state ─────────────────────────────────────
-  var nav = document.getElementById('nav');
-  var scrolled = null;
-  function onScroll() {
-    var v = window.scrollY > 20;
-    if (v !== scrolled) { nav.classList.toggle('is-scrolled', v); scrolled = v; }
-  }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+  /* ── Custom cursor (fine pointer only) ── */
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    const dot = document.querySelector('.cursor-dot')
+    const trail = document.querySelector('.cursor-trail')
 
-  // ── Scroll cue fade-out ─────────────────────────────────
-  var cue = document.getElementById('scroll-cue');
-  var cueHidden = null;
-  function updateCue() {
-    if (!cue) return;
-    var v = window.scrollY > 60;
-    if (v !== cueHidden) { cue.classList.toggle('is-hidden', v); cueHidden = v; }
-  }
-  window.addEventListener('scroll', updateCue, { passive: true });
-  updateCue();
+    if (dot && trail) {
+      document.documentElement.classList.add('has-cursor')
 
-  // ── Mobile menu ──────────────────────────────────────────
-  var toggle = document.querySelector('.nav__toggle');
-  var menu   = document.getElementById('mobile-menu');
-  function setMenu(open) {
-    if (!toggle || !menu) return;
-    toggle.setAttribute('aria-expanded', String(open));
-    menu.hidden = !open;
-    document.documentElement.style.overflow = open ? 'hidden' : '';
-  }
-  if (toggle) toggle.addEventListener('click', function () {
-    setMenu(toggle.getAttribute('aria-expanded') !== 'true');
-  });
-  if (menu) menu.addEventListener('click', function (e) {
-    if (e.target && e.target.tagName === 'A') setMenu(false);
-  });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
+      let mx = 0, my = 0
+      let tx = 0, ty = 0
 
-  // ── STRIP REVEAL — build strip overlays on tagged elements ──
-  var stripTargets = document.querySelectorAll('[data-reveal="strips"]');
-  var STRIP_COUNT = 5;
-  if (!reduced) {
-    stripTargets.forEach(function (el) {
-      el.classList.add('strip-wrap');
-      var wrap = document.createElement('div');
-      wrap.className = 'strips';
-      for (var i = 0; i < STRIP_COUNT; i++) {
-        var sp = document.createElement('span');
-        sp.style.setProperty('--i', i);
-        sp.style.width = (100 / STRIP_COUNT) + '%';
-        wrap.appendChild(sp);
+      document.addEventListener('mousemove', (e) => {
+        mx = e.clientX
+        my = e.clientY
+        dot.style.transform = `translate3d(${mx}px,${my}px,0) translate(-50%,-50%)`
+      })
+
+      const lerp = () => {
+        tx += (mx - tx) * 0.15
+        ty += (my - ty) * 0.15
+        trail.style.transform = `translate3d(${tx}px,${ty}px,0) translate(-50%,-50%)`
+        requestAnimationFrame(lerp)
       }
-      el.appendChild(wrap);
-    });
-  }
+      requestAnimationFrame(lerp)
 
-  // ── Scroll-reveal (plain, strips, skill bars) ───────────
-  // Arm reveals only after we've wired the observer, so if the observer
-  // is unavailable the fallback path below keeps everything visible.
-  var reveals = document.querySelectorAll('[data-reveal]');
-  var forceAll = /(?:^|[?&])show=all(?:&|$)/.test(location.search);
-  function revealAll() {
-    reveals.forEach(function (el) { el.classList.add('is-in'); fillSkillIfNeeded(el, true); });
-  }
-  if (forceAll || reduced) {
-    revealAll();
-  } else if ('IntersectionObserver' in window) {
-    document.documentElement.classList.add('reveals-armed');
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-in');
-          fillSkillIfNeeded(entry.target, false);
-          io.unobserve(entry.target);
+      /* Hover grow on interactive elements */
+      const hoverTargets = 'a, button, [role="button"], input, textarea, select'
+      document.addEventListener('mouseover', (e) => {
+        if (e.target.closest(hoverTargets)) {
+          document.documentElement.classList.add('cursor-hover')
         }
-      });
-    }, { threshold: 0.14, rootMargin: '0px 0px -6% 0px' });
-    reveals.forEach(function (el) { io.observe(el); });
-    // Safety: anything already in viewport that the observer didn't fire for
-    // within 400ms gets force-revealed. Covers Safari edge cases + slow pages.
-    setTimeout(function () {
-      reveals.forEach(function (el) {
-        if (el.classList.contains('is-in')) return;
-        var r = el.getBoundingClientRect();
-        if (r.top < window.innerHeight && r.bottom > 0) {
-          el.classList.add('is-in');
-          fillSkillIfNeeded(el, false);
+      })
+      document.addEventListener('mouseout', (e) => {
+        if (e.target.closest(hoverTargets)) {
+          document.documentElement.classList.remove('cursor-hover')
         }
-      });
-    }, 400);
-  } else {
-    revealAll();
-  }
-
-  function fillSkillIfNeeded(el, instant) {
-    if (!el.classList || !el.classList.contains('skill')) return;
-    var pct = parseFloat(el.getAttribute('data-fill') || '92');
-    pct = Math.max(0, Math.min(100, pct));
-    var fill = el.querySelector('.skill__fill');
-    if (!fill) return;
-    if (instant) { fill.style.width = pct + '%'; return; }
-    var idx = Array.prototype.indexOf.call(el.parentNode.children, el);
-    var delay = Math.max(0, idx) * 90;
-    setTimeout(function () { fill.style.width = pct + '%'; }, delay);
-  }
-
-  // ── Count-up on numbers ──────────────────────────────────
-  var NBSP = ' ';
-  function fmt(v, d) {
-    var s = v.toFixed(d);
-    var p = s.split('.');
-    p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, NBSP);
-    return p.length > 1 ? p[0] + ',' + p[1] : p[0];
-  }
-  function easeOut(t){ return 1 - Math.pow(1 - t, 3); }
-  var counters = document.querySelectorAll('[data-count-to]');
-  function setFinal(el) {
-    if (el.dataset.done) return;
-    el.dataset.done = '1';
-    var target = parseFloat(el.getAttribute('data-count-to')) || 0;
-    var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
-    el.textContent = fmt(target, decimals);
-  }
-  function runCount(el) {
-    if (el.dataset.done) return;
-    if (reduced) { setFinal(el); return; }
-    el.dataset.done = '1';
-    var target = parseFloat(el.getAttribute('data-count-to')) || 0;
-    var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
-    var duration = isMobile ? 1100 : 1500, start = null;
-    function step(ts) {
-      if (start === null) start = ts;
-      var t = Math.min(1, (ts - start) / duration);
-      el.textContent = fmt(target * easeOut(t), decimals);
-      if (t < 1) requestAnimationFrame(step);
-      else el.textContent = fmt(target, decimals);
+      })
     }
-    requestAnimationFrame(step);
   }
-  if (reduced) {
-    counters.forEach(setFinal);
-  } else if (forceAll) {
-    counters.forEach(runCount);
-  } else if ('IntersectionObserver' in window) {
-    var cio = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) { runCount(entry.target); cio.unobserve(entry.target); }
-      });
-    }, { threshold: 0.5 });
-    counters.forEach(function (el) { cio.observe(el); });
-  } else {
-    counters.forEach(setFinal);
-  }
-
-  // ── SMOOTH SCROLL — desktop only, respects reduced-motion ──
-  // Lerp between target and current scroll on each frame.
-  // Touch devices keep native momentum; reduced-motion opts out entirely.
-  (function initSmoothScroll(){
-    if (reduced || !fineHover) return;
-    if (/(?:^|[?&])nosmooth(?:&|$)/.test(location.search)) return;
-
-    var target  = window.scrollY;
-    var current = target;
-    var EASE    = 0.085;       // lower = slower, more premium feel
-    var running = false;
-    var syncing = false;       // ignore our own scrollTo in the scroll listener
-
-    function maxScroll() {
-      return Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-    }
-    function clamp(v){ return Math.max(0, Math.min(v, maxScroll())); }
-
-    function raf() {
-      var diff = target - current;
-      if (Math.abs(diff) < 0.4) {
-        current = target;
-        syncing = true; window.scrollTo(0, current); syncing = false;
-        running = false;
-        return;
-      }
-      current += diff * EASE;
-      syncing = true; window.scrollTo(0, current); syncing = false;
-      running = true;
-      requestAnimationFrame(raf);
-    }
-
-    function kick(){
-      if (!running) { running = true; requestAnimationFrame(raf); }
-    }
-
-    window.addEventListener('wheel', function (e) {
-      if (menu && !menu.hidden) return;
-      if (e.ctrlKey) return;
-      e.preventDefault();
-      var d = e.deltaY;
-      if (e.deltaMode === 1) d *= 16;
-      else if (e.deltaMode === 2) d *= window.innerHeight;
-      target = clamp(target + d);
-      kick();
-    }, { passive: false });
-
-    window.addEventListener('keydown', function (e) {
-      if (menu && !menu.hidden) return;
-      var ae = document.activeElement;
-      if (ae && (ae.tagName === 'INPUT' || ae.tagName === 'TEXTAREA' || ae.isContentEditable)) return;
-      var vh = window.innerHeight;
-      var map = {
-        'PageDown': vh * 0.9,
-        'PageUp': -vh * 0.9,
-        ' ': e.shiftKey ? -vh * 0.9 : vh * 0.9,
-        'ArrowDown': 80,
-        'ArrowUp': -80,
-        'Home': -maxScroll() - 1,
-        'End':  maxScroll() + 1
-      };
-      if (map[e.key] !== undefined) {
-        e.preventDefault();
-        target = clamp(target + map[e.key]);
-        kick();
-      }
-    });
-
-    window.addEventListener('scroll', function () {
-      if (syncing || running) return;
-      target = window.scrollY;
-      current = target;
-    }, { passive: true });
-
-    document.querySelectorAll('a[href^="#"]').forEach(function (a) {
-      var href = a.getAttribute('href');
-      if (!href || href === '#') return;
-      a.addEventListener('click', function (e) {
-        var id = href.slice(1);
-        var el = id === 'top' ? document.body : document.getElementById(id);
-        if (!el) return;
-        e.preventDefault();
-        var y = id === 'top' ? 0 : (el.getBoundingClientRect().top + window.scrollY - 60);
-        target = clamp(y);
-        kick();
-      });
-    });
-  })();
-
-  // ── Custom cursor (desktop / fine-pointer only) ──────────
-  if (fineHover && !reduced) {
-    document.documentElement.classList.add('has-cursor');
-    var dot   = document.querySelector('.cursor-dot');
-    var trail = document.querySelector('.cursor-trail');
-    var tx = -100, ty = -100;
-    var dx = tx,   dy = ty;
-    var rx = tx,   ry = ty;
-    var running2 = false;
-
-    function loop(){
-      dx += (tx - dx) * 0.55;
-      dy += (ty - dy) * 0.55;
-      rx += (tx - rx) * 0.14;
-      ry += (ty - ry) * 0.14;
-      if (dot)   dot.style.transform   = 'translate3d(' + dx + 'px,' + dy + 'px,0) translate(-50%,-50%)';
-      if (trail) trail.style.transform = 'translate3d(' + rx + 'px,' + ry + 'px,0) translate(-50%,-50%)';
-      running2 = false;
-      if (Math.abs(tx - rx) > 0.1 || Math.abs(ty - ry) > 0.1) {
-        running2 = true;
-        requestAnimationFrame(loop);
-      }
-    }
-
-    window.addEventListener('mousemove', function (e) {
-      tx = e.clientX; ty = e.clientY;
-      if (!running2) { running2 = true; requestAnimationFrame(loop); }
-    }, { passive: true });
-
-    window.addEventListener('mouseleave', function () {
-      if (dot)   dot.style.opacity = '0';
-      if (trail) trail.style.opacity = '0';
-    });
-    window.addEventListener('mouseenter', function () {
-      if (dot)   dot.style.opacity = '';
-      if (trail) trail.style.opacity = '';
-    });
-
-    var hoverSel = 'a, button, [role="button"], input, textarea, select, label';
-    document.querySelectorAll(hoverSel).forEach(function (el) {
-      el.addEventListener('mouseenter', function () {
-        document.documentElement.classList.add('cursor-hover');
-      });
-      el.addEventListener('mouseleave', function () {
-        document.documentElement.classList.remove('cursor-hover');
-      });
-    });
-  }
-})();
+})()
