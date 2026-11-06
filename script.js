@@ -48,6 +48,17 @@
     onScroll();
   }
 
+  /* ── Hero-in-view: nav styles differently over the dark hero ── */
+  const hero = document.querySelector('.hero');
+  if(hero && 'IntersectionObserver' in window){
+    const heroObs = new IntersectionObserver((entries)=>{
+      entries.forEach(e =>{
+        document.body.classList.toggle('hero-in-view', e.isIntersecting && e.intersectionRatio > 0.15);
+      });
+    }, { threshold: [0, 0.15, 0.3] });
+    heroObs.observe(hero);
+  }
+
   /* ── Mobile menu ── */
   const toggle = document.querySelector('.nav__toggle');
   const menu   = document.getElementById('mobile-menu');
@@ -109,13 +120,13 @@
 
   /* ── Scroll reveal: mark elements ── */
   const revealTargets = [
-    '.about__col--text > .eyebrow', '.about__title', '.about__body', '.about__stat',
+    '.about__title', '.about__body',
     '.about__col--photo',
     '.path__head', '.timeline__step',
     '.work__head', '.format', '.work__cta',
     '.quote-section__figure', '.quote-section__text',
     '.channel__text', '.channel__btn',
-    '.contact__inner > .eyebrow', '.contact__title', '.contact__sub', '.cta',
+    '.contact__title', '.cta',
     '.photo-reveal'
   ];
   revealTargets.forEach(sel=>{
