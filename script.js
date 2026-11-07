@@ -1,4 +1,4 @@
-/* ANDREW ARTEMIEV — site v8 */
+/* ANDREW ARTEMIEV — site v9 */
 (function () {
   'use strict';
 
@@ -12,14 +12,11 @@
     const hero = document.querySelector('.hero');
     const heroBottom = hero ? hero.offsetHeight : 600;
 
-    // Scrolled state
     const scrolled = y > 20;
     if (scrolled !== lastScrolled) {
       nav.classList.toggle('nav--scrolled', scrolled);
       lastScrolled = scrolled;
     }
-
-    // On-dark state (in hero or channel card)
     const inHero = y < heroBottom - 80;
     nav.classList.toggle('nav--on-dark', inHero);
   }
@@ -41,9 +38,7 @@
         document.body.style.overflow = 'hidden';
       }
       const label = toggle.querySelector('.nav__toggle-label');
-      if (label) {
-        label.textContent = open ? label.dataset.labelOpen : label.dataset.labelClose;
-      }
+      if (label) label.textContent = open ? label.dataset.labelOpen : label.dataset.labelClose;
     });
     menu.querySelectorAll('a').forEach(a => {
       a.addEventListener('click', () => {
@@ -59,16 +54,14 @@
   /* ---------- Reveal on scroll ---------- */
   const revealTargets = document.querySelectorAll(
     '.about__title, .about__body, .about__ph, .path__title, .timeline__step, .timeline-caption, ' +
-    '.work__title, .format, .quote-card, .channel__card, .contact__title, .contact__action, .contrast'
+    '.timeline-mobile__item, .work__title, .format, .quote-card, .channel__card, ' +
+    '.contact__title, .contact__text, .contact__action, .contrast'
   );
   if ('IntersectionObserver' in window && !prefersReduced) {
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
           e.target.classList.add('is-revealed');
-          if (e.target.classList.contains('contrast')) {
-            // leave observed for contrast replays if needed; we stop observing
-          }
           io.unobserve(e.target);
         }
       });
@@ -78,10 +71,11 @@
     revealTargets.forEach(t => t.classList.add('is-revealed'));
   }
 
-  /* ---------- Timeline progress (scroll-linked) ---------- */
+  /* ---------- Desktop timeline progress ---------- */
   const pathSection = document.querySelector('.path');
   const track = document.querySelector('.timeline-track');
-  if (pathSection && track) {
+  const mobileRail = document.querySelector('.timeline-mobile__rail');
+  if (pathSection) {
     let ticking = false;
     function updateProgress() {
       const rect = pathSection.getBoundingClientRect();
@@ -89,7 +83,8 @@
       const total = rect.height + vh * 0.4;
       const scrolled = Math.min(Math.max(vh * 0.8 - rect.top, 0), total);
       const p = Math.min(Math.max(scrolled / total, 0), 1);
-      track.style.setProperty('--progress', p.toFixed(3));
+      if (track) track.style.setProperty('--progress', p.toFixed(3));
+      if (mobileRail) mobileRail.style.setProperty('--progress', p.toFixed(3));
       ticking = false;
     }
     function onScroll() {
@@ -133,7 +128,7 @@
     updateJourney();
   }
 
-  /* ---------- Smooth scroll for in-page links ---------- */
+  /* ---------- Smooth scroll ---------- */
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', (e) => {
       const id = a.getAttribute('href');

@@ -113,7 +113,7 @@
     <h1 class="hero__title" data-split>
       <span class="hero__title-line">В <span class="hero__hero-num">17</span> сделал</span>
       <span class="hero__title-line hero__title-line--serif"><em>первый миллион</em></span>
-      <span class="hero__title-line">рублей и запустил</span>
+      <span class="hero__title-line">рублей, запустил</span>
       <span class="hero__title-line">два бизнеса в <em class="hero__digital">Digital</em></span>
     </h1>
 
@@ -183,78 +183,141 @@
 <section class="path" id="path" aria-labelledby="path-title">
   <div class="path__head">
     <h2 class="path__title" id="path-title">
-      Ещё <em>4 года назад</em> я&nbsp;делал первые шаги, а&nbsp;сегодня мой собственный проект и&nbsp;большая команда.
+      Ещё <em>четыре года назад</em> я&nbsp;делал первые шаги, а&nbsp;сегодня имею свои проекты и&nbsp;большую команду.
     </h2>
   </div>
 
-  <!-- 1) photos -->
-  <ol class="timeline" aria-label="Хронология: с&nbsp;15 до&nbsp;18 лет">
-    <li class="timeline__step" data-step="1">
-      <figure class="timeline__photo">
-        <img src="assets/age-15.webp" alt="Andrew в&nbsp;15 лет" loading="lazy" />
-      </figure>
-    </li>
-    <li class="timeline__step" data-step="2">
-      <figure class="timeline__photo">
-        <img src="assets/age-16.webp" alt="Andrew в&nbsp;16 лет" loading="lazy" />
-      </figure>
-    </li>
-    <li class="timeline__step" data-step="3">
-      <figure class="timeline__photo">
-        <img src="assets/age-17.webp" alt="Andrew в&nbsp;17 лет" loading="lazy" />
-      </figure>
-    </li>
-    <li class="timeline__step timeline__step--now" data-step="4">
-      <figure class="timeline__photo">
-        <img src="assets/age-18.webp" alt="Andrew в&nbsp;18 лет" loading="lazy" />
-      </figure>
-    </li>
-  </ol>
+  <!-- Desktop: horizontal photos → line → captions -->
+  <div class="timeline-desktop">
+    <ol class="timeline" aria-label="Хронология: с&nbsp;15 до&nbsp;18 лет">
+      <li class="timeline__step" data-step="1">
+        <figure class="timeline__photo">
+          <img src="assets/age-15.webp" alt="Andrew в&nbsp;15 лет" loading="lazy" />
+        </figure>
+      </li>
+      <li class="timeline__step" data-step="2">
+        <figure class="timeline__photo">
+          <img src="assets/age-16.webp" alt="Andrew в&nbsp;16 лет" loading="lazy" />
+        </figure>
+      </li>
+      <li class="timeline__step" data-step="3">
+        <figure class="timeline__photo">
+          <img src="assets/age-17.webp" alt="Andrew в&nbsp;17 лет" loading="lazy" />
+        </figure>
+      </li>
+      <li class="timeline__step timeline__step--now" data-step="4">
+        <figure class="timeline__photo">
+          <img src="assets/age-18.webp" alt="Andrew в&nbsp;18 лет" loading="lazy" />
+        </figure>
+      </li>
+    </ol>
 
-  <!-- 2) orange progress line -->
-  <div class="timeline-track" aria-hidden="true">
-    <div class="timeline-track__rail"></div>
-    <div class="timeline-track__fill"></div>
-    <div class="timeline-track__dot"></div>
-    <span class="timeline-track__anchor" data-anchor="1"></span>
-    <span class="timeline-track__anchor" data-anchor="2"></span>
-    <span class="timeline-track__anchor" data-anchor="3"></span>
-    <span class="timeline-track__anchor" data-anchor="4"></span>
+    <div class="timeline-track" aria-hidden="true">
+      <div class="timeline-track__rail"></div>
+      <div class="timeline-track__fill"></div>
+      <div class="timeline-track__dot"></div>
+      <span class="timeline-track__anchor" data-anchor="1"></span>
+      <span class="timeline-track__anchor" data-anchor="2"></span>
+      <span class="timeline-track__anchor" data-anchor="3"></span>
+      <span class="timeline-track__anchor" data-anchor="4"></span>
+    </div>
+
+    <ol class="timeline-captions" aria-label="Возраста">
+      <li class="timeline-caption">
+        <div class="timeline-caption__meta">
+          <span class="timeline-caption__num">15</span>
+          <span class="timeline-caption__unit">лет</span>
+        </div>
+        <h3 class="timeline-caption__head">Первый интерес</h3>
+      </li>
+      <li class="timeline-caption">
+        <div class="timeline-caption__meta">
+          <span class="timeline-caption__num">16</span>
+          <span class="timeline-caption__unit">лет</span>
+        </div>
+        <h3 class="timeline-caption__head">Учёба и&nbsp;практика</h3>
+        <p>Изучаю материалы, нарабатываю компетенции и&nbsp;практикуюсь.</p>
+      </li>
+      <li class="timeline-caption">
+        <div class="timeline-caption__meta">
+          <span class="timeline-caption__num">17</span>
+          <span class="timeline-caption__unit">лет</span>
+        </div>
+        <h3 class="timeline-caption__head">Точка опоры</h3>
+        <p>Начинаю продюсирование. Делаю первый миллион рублей. Открываю два бизнеса в&nbsp;digital.</p>
+      </li>
+      <li class="timeline-caption timeline-caption--now">
+        <div class="timeline-caption__meta">
+          <span class="timeline-caption__num">18</span>
+          <span class="timeline-caption__unit">лет</span>
+        </div>
+        <span class="timeline-caption__now">Сейчас</span>
+        <h3 class="timeline-caption__head">Собственные проекты</h3>
+        <p>Развиваю собственные проекты и&nbsp;работаю с&nbsp;большой командой.</p>
+      </li>
+    </ol>
   </div>
 
-  <!-- 3) age captions under the line -->
-  <ol class="timeline-captions" aria-label="Возраста">
-    <li class="timeline-caption">
-      <div class="timeline-caption__meta">
-        <span class="timeline-caption__num">15</span>
-        <span class="timeline-caption__unit">лет</span>
+  <!-- Mobile: vertical timeline (photo + text side by side) -->
+  <ol class="timeline-mobile" aria-label="Хронология: с&nbsp;15 до&nbsp;18 лет">
+    <div class="timeline-mobile__rail" aria-hidden="true">
+      <span class="timeline-mobile__rail-fill"></span>
+    </div>
+    <li class="timeline-mobile__item">
+      <figure class="timeline-mobile__photo">
+        <img src="assets/age-15.webp" alt="Andrew в&nbsp;15 лет" loading="lazy" />
+      </figure>
+      <div class="timeline-mobile__body">
+        <div class="timeline-mobile__meta">
+          <span class="timeline-mobile__num">15</span>
+          <span class="timeline-mobile__unit">лет</span>
+        </div>
+        <h3 class="timeline-mobile__head">Первый интерес</h3>
       </div>
-      <h3 class="timeline-caption__head">Первый интерес</h3>
+      <span class="timeline-mobile__dot" aria-hidden="true"></span>
     </li>
-    <li class="timeline-caption">
-      <div class="timeline-caption__meta">
-        <span class="timeline-caption__num">16</span>
-        <span class="timeline-caption__unit">лет</span>
+    <li class="timeline-mobile__item">
+      <figure class="timeline-mobile__photo">
+        <img src="assets/age-16.webp" alt="Andrew в&nbsp;16 лет" loading="lazy" />
+      </figure>
+      <div class="timeline-mobile__body">
+        <div class="timeline-mobile__meta">
+          <span class="timeline-mobile__num">16</span>
+          <span class="timeline-mobile__unit">лет</span>
+        </div>
+        <h3 class="timeline-mobile__head">Учёба и&nbsp;практика</h3>
+        <p>Изучаю материалы, нарабатываю компетенции и&nbsp;практикуюсь.</p>
       </div>
-      <h3 class="timeline-caption__head">Учёба и&nbsp;практика</h3>
-      <p>Изучаю материалы, нарабатываю компетенции и&nbsp;практикуюсь.</p>
+      <span class="timeline-mobile__dot" aria-hidden="true"></span>
     </li>
-    <li class="timeline-caption">
-      <div class="timeline-caption__meta">
-        <span class="timeline-caption__num">17</span>
-        <span class="timeline-caption__unit">лет</span>
+    <li class="timeline-mobile__item">
+      <figure class="timeline-mobile__photo">
+        <img src="assets/age-17.webp" alt="Andrew в&nbsp;17 лет" loading="lazy" />
+      </figure>
+      <div class="timeline-mobile__body">
+        <div class="timeline-mobile__meta">
+          <span class="timeline-mobile__num">17</span>
+          <span class="timeline-mobile__unit">лет</span>
+        </div>
+        <h3 class="timeline-mobile__head">Точка опоры</h3>
+        <p>Начинаю продюсирование. Делаю первый миллион рублей. Открываю два бизнеса в&nbsp;digital.</p>
       </div>
-      <h3 class="timeline-caption__head">Точка опоры</h3>
-      <p>Начинаю продюсирование. Делаю первый миллион рублей. Открываю два бизнеса в&nbsp;digital.</p>
+      <span class="timeline-mobile__dot" aria-hidden="true"></span>
     </li>
-    <li class="timeline-caption timeline-caption--now">
-      <div class="timeline-caption__meta">
-        <span class="timeline-caption__num">18</span>
-        <span class="timeline-caption__unit">лет</span>
+    <li class="timeline-mobile__item timeline-mobile__item--now">
+      <figure class="timeline-mobile__photo">
+        <img src="assets/age-18.webp" alt="Andrew в&nbsp;18 лет" loading="lazy" />
+      </figure>
+      <div class="timeline-mobile__body">
+        <div class="timeline-mobile__meta">
+          <span class="timeline-mobile__num">18</span>
+          <span class="timeline-mobile__unit">лет</span>
+        </div>
+        <span class="timeline-mobile__now">Сейчас</span>
+        <h3 class="timeline-mobile__head">Собственные проекты</h3>
+        <p>Развиваю собственные проекты и&nbsp;работаю с&nbsp;большой командой.</p>
       </div>
-      <span class="timeline-caption__now">Сейчас</span>
-      <h3 class="timeline-caption__head">Собственные проекты</h3>
-      <p>Развиваю собственные проекты и&nbsp;работаю с&nbsp;большой командой.</p>
+      <span class="timeline-mobile__dot" aria-hidden="true"></span>
     </li>
   </ol>
 </section>
@@ -367,7 +430,7 @@
       <div class="format__layout format__layout--editorial">
         <div class="format__body format__body--wide">
           <p class="format__lede">
-            Помогаю экспертам превращать свои социальные сети в&nbsp;<em>источник клиентов и&nbsp;продаж.</em>
+            Помогаю экспертам превращать свои социальные сети в&nbsp;<em class="olive-accent">источник клиентов и&nbsp;продаж.</em>
           </p>
           <p>Работаю с&nbsp;начинающими блогерами и&nbsp;с&nbsp;теми, кто уже&nbsp;пробовал продвигаться самостоятельно.</p>
         </div>
@@ -451,9 +514,9 @@
       </div>
 
       <div class="format--03__cta">
-        <a href="#contact" class="btn-premium btn-premium--on-dark">
-          <span class="btn-premium__glow" aria-hidden="true"></span>
-          <span class="btn-premium__text">Обсудить формат</span>
+        <a href="#contact" class="btn-ghost-light">
+          <span>Обсудить формат</span>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </a>
       </div>
     </article>
@@ -477,8 +540,8 @@
     <blockquote class="quote-card__text">
       <h2 id="quote-title" class="visually-hidden">Подход</h2>
       <p>
-        <span class="quote-card__mark" aria-hidden="true">“</span>
-        Не <em>усложняй</em> то, что можно построить <em>просто</em>.
+        <span class="quote-card__mark quote-card__mark--open" aria-hidden="true">“</span>
+        Не <em>усложняй</em> то, что можно построить <em>просто</em>.<span class="quote-card__mark quote-card__mark--close" aria-hidden="true">”</span>
       </p>
     </blockquote>
   </article>
@@ -527,14 +590,19 @@
       <h2 class="contact__title" id="contact-title">
         Есть запрос<br/>
         на&nbsp;работу?<br/>
-        <em>напишите мне лично</em><span class="contact__line" aria-hidden="true"></span>
+        напишите <em class="contact__underline">мне лично</em>
       </h2>
     </div>
 
     <div class="contact__action">
-      <a class="btn-premium btn-premium--xl btn-premium--levitate" href="https://t.me/andrewsmm1" target="_blank" rel="noopener">
-        <span class="btn-premium__glow" aria-hidden="true"></span>
-        <span class="btn-premium__text">Написать в&nbsp;Telegram</span>
+      <a class="btn-tg" href="https://t.me/andrewsmm1" target="_blank" rel="noopener">
+        <span class="btn-tg__icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M22 3L2 11l6 3 2 7 4-5 6 5 3-18z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="btn-tg__text">Написать в&nbsp;Telegram</span>
+        <span class="btn-tg__arrow" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 12L12 2M12 2H4M12 2V10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </span>
       </a>
     </div>
 
