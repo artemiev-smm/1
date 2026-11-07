@@ -1416,7 +1416,6 @@ main { position: relative; z-index: 1; }
   .about__gallery { min-height: 480px; max-width: 520px; margin: 0 auto; }
 
   /* switch to mobile vertical timeline */
-  .timeline-desktop { display: none; }
   .timeline-mobile  { display: flex; }
 
   .format__layout, .format__layout--editorial, .format__layout--sales {
