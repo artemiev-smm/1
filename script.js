@@ -146,7 +146,7 @@
     '.work__head', '.format', '.work__cta',
     '.quote-card',
     '.channel__text', '.channel__btn',
-    '.contact__title', '.cta'
+    '.contact__title', '.btn-premium'
   ];
   revealTargets.forEach(sel=>{
     document.querySelectorAll(sel).forEach(el => el.setAttribute('data-reveal',''));
